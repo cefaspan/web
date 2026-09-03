@@ -35,6 +35,28 @@ const jsonld = (obj) => JSON.stringify(obj, null, 2).replace(/</g, '\\u003c');
 const DIRECCION_UNA_LINEA = [N.direccion.calle, N.direccion.zona, N.direccion.ciudad, 'Guatemala']
   .filter(Boolean).join(', ');
 
+/* --- Qué se vende en este sitio -------------------------------------------
+   El sitio vende para eventos y actividades: docenas, paquetes, bandejas,
+   cajas, pasteles y mayoreo. La venta al menudeo (la pieza suelta) va por
+   PedidosYa, así que los productos con "minorista": true en
+   datos/productos.json no se publican acá: no salen en el menú, ni en los
+   destacados, ni en el <select> del formulario, ni en el JSON-LD.
+   -------------------------------------------------------------------------- */
+const esDeEventos = (p) => !p.minorista;
+
+/* Categorías con al menos un producto de eventos. Una categoría que se queda
+   sin nada (p. ej. si toda la repostería es por pieza) no se publica vacía. */
+const CATEGORIAS = CAT.categorias
+  .map((c) => ({ ...c, productos: c.productos.filter(esDeEventos) }))
+  .filter((c) => c.productos.length > 0);
+
+const CATEGORIAS_VACIAS = CAT.categorias
+  .filter((c) => !c.productos.some(esDeEventos))
+  .map((c) => c.nombre);
+
+/* Todas las zonas donde se entrega, con su municipio */
+const ZONAS = N.cobertura.flatMap((g) => g.zonas.map((z) => ({ zona: z, municipio: g.municipio })));
+
 /* Foto de relleno mientras no haya fotos reales de cada producto.
    Poné el nombre del archivo en el campo "imagen" de datos/productos.json
    (categoría o producto) y se usa esa en lugar de la genérica.            */
@@ -56,7 +78,7 @@ function piezasPorUnidad(unidad) {
 }
 
 
-const todosLosProductos = CAT.categorias.flatMap((c) =>
+const todosLosProductos = CATEGORIAS.flatMap((c) =>
   c.productos.map((p) => ({ ...p, categoria: c.nombre, categoriaId: c.id })));
 
 /* Productos que se venden por paquete y cuyo precio por pieza es calculable */
@@ -69,39 +91,39 @@ const PAGINAS = [
   {
     archivo: 'index.html', ruta: '/', profundidad: 0, nav: 'inicio', prioridad: '1.0',
     plantilla: 'inicio.html',
-    titulo: 'Cefas Panadería en Guatemala | Pan fresco y encargos',
-    descripcion: 'Pedí pan francés, pan dulce, pan artesanal, repostería y pasteles. Armá tu pedido y envialo por WhatsApp. Entregamos sólo en Ciudad de Guatemala.'
+    titulo: 'Pan para eventos y empresas | Cefas Panadería Guatemala',
+    descripcion: 'Coffee breaks, cajas de desayuno, bandejas de bocadillos, pasteles y docenas para tu evento u oficina. Cotizá por WhatsApp. Ciudad de Guatemala y San Cristóbal.'
   },
   {
     archivo: 'menu/index.html', ruta: '/menu/', profundidad: 1, nav: 'menu', prioridad: '0.9',
     plantilla: 'menu.html',
-    titulo: 'Menú y precios | Cefas Panadería Guatemala',
-    descripcion: 'Precios en quetzales de pan francés, champurradas, cubiletes, pan artesanal, croissants, pasteles y café. Agregá al pedido y envialo por WhatsApp en un clic.'
+    titulo: 'Menú para eventos y precios | Cefas Panadería',
+    descripcion: 'Precios en quetzales de docenas, paquetes, bandejas, cajas de desayuno, coffee breaks y pasteles por encargo. Armá tu cotización y enviala por WhatsApp.'
   },
   {
     archivo: 'encargos/index.html', ruta: '/encargos/', profundidad: 1, nav: 'encargos', prioridad: '0.9',
     plantilla: 'encargos.html',
-    titulo: 'Pedidos por encargo | Pan y pasteles a domicilio en Guatemala',
-    descripcion: 'Encargá pan, pasteles y bocadillos para casa, oficina y eventos con 24 horas de anticipación. Entregamos sólo dentro de Ciudad de Guatemala. Cotizá por WhatsApp.'
+    titulo: 'Cotizar un encargo | Eventos y empresas en Guatemala',
+    descripcion: 'Cotizá pan, pasteles y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregamos en Ciudad de Guatemala y San Cristóbal.'
   },
   {
     archivo: 'contacto/index.html', ruta: '/contacto/', profundidad: 1, nav: 'contacto', prioridad: '0.7',
     plantilla: 'contacto.html',
     titulo: 'Contacto y horarios | Cefas Panadería Ciudad de Guatemala',
-    descripcion: 'Dirección, teléfono, WhatsApp y horarios de Cefas Panadería en Ciudad de Guatemala. Escribinos para pedidos por encargo y entregas a domicilio.'
+    descripcion: 'Dirección, teléfono, WhatsApp y horarios de Cefas Panadería. Escribinos para cotizar pan y bocadillos para eventos en Ciudad de Guatemala y San Cristóbal.'
   },
   {
     archivo: '404.html', ruta: '/404.html', profundidad: 0, nav: '', prioridad: null, noindex: true,
     plantilla: '404.html',
     titulo: 'Página no encontrada | Cefas Panadería',
-    descripcion: 'La página que buscás no existe o cambió de dirección. Volvé al menú de Cefas Panadería para ver nuestro pan, repostería y pasteles por encargo en Guatemala.'
+    descripcion: 'La página que buscás no existe o cambió de dirección. Volvé al menú de Cefas Panadería para cotizar pan, bocadillos y pasteles para tu evento en Guatemala.'
   }
 ];
 
 /* --- Bloques generados ---------------------------------------------------- */
 
 function tarjetasCategorias() {
-  return CAT.categorias.map((c) => `
+  return CATEGORIAS.map((c) => `
         <a class="categoria" href="{{BASE}}menu/#${esc(c.id)}" data-reveal>
           <div class="foto foto--16-10">
             <img src="${imagenDe(c)}" alt="${esc(c.nombre)} en ${esc(N.nombre)}" width="554" height="554" loading="lazy" decoding="async">
@@ -161,8 +183,30 @@ function bloquePaquetes() {
   return PAQUETES.map((p) => tarjetaProducto(p, { porPieza: true })).join('');
 }
 
+/* Desvío al menudeo: lo que se vende por pieza no se cotiza acá, se pide en
+   PedidosYa. Va en inicio, menú y contacto para que nadie escriba por
+   WhatsApp pidiendo un pan francés. */
+function bloquePedidosYa() {
+  if (!N.redes.pedidosya) return '';
+  return `
+    <div class="desvio" data-reveal>
+      <span class="desvio__ico" aria-hidden="true">${ico('bolsa', 'ico--l')}</span>
+      <div class="desvio__texto">
+        <h3>¿Buscás pan para hoy, por unidad?</h3>
+        <p>
+          Este sitio es para pedidos de eventos y actividades: docenas, paquetes, bandejas,
+          cajas y pasteles. El pan por pieza, la repostería individual y el café se piden en
+          PedidosYa, con entrega inmediata.
+        </p>
+      </div>
+      <a class="btn btn--principal" href="${N.redes.pedidosya}" rel="noopener nofollow">
+        ${ico('bolsa')} Pedir en PedidosYa
+      </a>
+    </div>`;
+}
+
 function menuCompleto() {
-  return CAT.categorias.map((c) => `
+  return CATEGORIAS.map((c) => `
       <section class="categoria-bloque" id="${esc(c.id)}" data-categoria-bloque="${esc(c.id)}" aria-labelledby="titulo-${esc(c.id)}">
         <h2 class="categoria-bloque__titulo" id="titulo-${esc(c.id)}"><span class="chapa" aria-hidden="true">${ico(c.icono, 'ico--l')}</span> ${esc(c.nombre)}</h2>
         <p>${esc(c.descripcion)}</p>
@@ -173,7 +217,7 @@ function menuCompleto() {
 
 function botonesFiltro() {
   const botones = [`<button class="filtro" type="button" data-filtro="todas" aria-pressed="true">${ico('canasta')} Todo el menú</button>`]
-    .concat(CAT.categorias.map((c) =>
+    .concat(CATEGORIAS.map((c) =>
       `<button class="filtro" type="button" data-filtro="${esc(c.id)}" aria-pressed="false">${ico(c.icono)} ${esc(c.nombre)}</button>`));
   return botones.join('\n          ');
 }
@@ -192,7 +236,11 @@ function bloqueFAQ() {
 }
 
 function bloqueZonas() {
-  return N.zonasCobertura.map((z) => `<li>${ico('pin')} ${esc(z)}</li>`).join('\n            ');
+  return N.cobertura.map((g) => `
+            <li class="zonas__grupo">
+              <span class="zonas__municipio">${ico('pin')} ${esc(g.municipio)}</span>
+              <span class="zonas__lista">${g.zonas.map((z) => `<span class="zonas__zona">${esc(z)}</span>`).join('')}</span>
+            </li>`).join('');
 }
 
 function bloqueHorarios() {
@@ -201,7 +249,7 @@ function bloqueHorarios() {
 }
 
 function opcionesProducto() {
-  return CAT.categorias.map((c) =>
+  return CATEGORIAS.map((c) =>
     `<optgroup label="${esc(c.nombre)}">${c.productos.map((p) => `<option value="${esc(p.nombre)}">${esc(p.nombre)}</option>`).join('')}</optgroup>`
   ).join('\n              ');
 }
@@ -243,9 +291,9 @@ function schemaNegocio() {
       opens: h.abre,
       closes: h.cierra
     })),
-    // Sólo Ciudad de Guatemala: no se listan municipios del área metropolitana
-    areaServed: [{ '@type': 'City', name: 'Ciudad de Guatemala' }].concat(
-      N.zonasCobertura.map((z) => ({ '@type': 'Place', name: `${z}, Ciudad de Guatemala` }))),
+    // Solo lo que está en negocio.json → cobertura, con su municipio real
+    areaServed: N.cobertura.map((g) => ({ '@type': 'City', name: `${g.municipio}, Guatemala` }))
+      .concat(ZONAS.map((z) => ({ '@type': 'Place', name: `${z.zona}, ${z.municipio}` }))),
     sameAs: Object.values(N.redes).filter(Boolean),
     potentialAction: {
       '@type': 'OrderAction',
@@ -306,7 +354,7 @@ function schemaMenu() {
     name: `Menú de ${N.nombre}`,
     inLanguage: 'es-GT',
     url: `${DOMINIO}/menu/`,
-    hasMenuSection: CAT.categorias.map((c) => ({
+    hasMenuSection: CATEGORIAS.map((c) => ({
       '@type': 'MenuSection',
       name: c.nombre,
       description: c.descripcion,
@@ -333,9 +381,9 @@ function schemaServicioEncargos() {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: 'Pedidos de pan y pasteles por encargo',
-    serviceType: 'Panadería por encargo y entrega a domicilio',
+    serviceType: 'Panadería por encargo para eventos y empresas',
     provider: { '@id': ID_NEGOCIO },
-    areaServed: { '@type': 'City', name: 'Ciudad de Guatemala' },
+    areaServed: N.cobertura.map((g) => ({ '@type': 'City', name: `${g.municipio}, Guatemala` })),
     availableChannel: {
       '@type': 'ServiceChannel',
       serviceUrl: `${DOMINIO}/encargos/`,
@@ -482,7 +530,7 @@ function pie(pagina) {
       <div>
         <h3>Menú</h3>
         <ul>
-          ${CAT.categorias.slice(0, 5).map((c) => `<li><a href="${base}menu/#${esc(c.id)}">${esc(c.nombre)}</a></li>`).join('\n          ')}
+          ${CATEGORIAS.slice(0, 5).map((c) => `<li><a href="${base}menu/#${esc(c.id)}">${esc(c.nombre)}</a></li>`).join('\n          ')}
           <li><a href="${base}menu/">Ver menú completo</a></li>
         </ul>
       </div>
@@ -582,15 +630,18 @@ function sustituir(html, pagina) {
     MAPA_ENLACE: N.redes.googleMaps || `https://www.google.com/maps/search/${encodeURIComponent(N.nombre + ' ' + DIRECCION_UNA_LINEA)}`,
     ANTICIPACION: String(N.anticipacionEncargoHoras),
     ENTREGA_SOLO: esc(N.entregaSolo),
+    COBERTURA_RESUMEN: esc(N.coberturaResumen),
+    TOTAL_MUNICIPIOS: String(N.cobertura.length),
     PRECIO_DESDE: money(Math.min(...todosLosProductos.filter((p) => p.precio > 0).map((p) => p.precio))),
     TOTAL_PRODUCTOS: String(todosLosProductos.length),
-    TOTAL_CATEGORIAS: String(CAT.categorias.length),
-    TOTAL_ZONAS: String(N.zonasCobertura.length),
+    TOTAL_CATEGORIAS: String(CATEGORIAS.length),
+    TOTAL_ZONAS: String(ZONAS.length),
     CATEGORIAS_TARJETAS: tarjetasCategorias(),
     MENU_COMPLETO: menuCompleto(),
     FILTROS: botonesFiltro(),
     DESTACADOS: destacados(),
     PAQUETES: bloquePaquetes(),
+    PEDIDOSYA_BLOQUE: bloquePedidosYa(),
     FAQ: bloqueFAQ(),
     ZONAS: bloqueZonas(),
     HORARIOS: bloqueHorarios(),
@@ -699,4 +750,9 @@ construirRobots();
 construirManifest();
 escribir('.nojekyll', '');
 
-console.log(`\n${CAT.categorias.length} categorías · ${todosLosProductos.length} productos · listo.\n`);
+const MENUDEO = CAT.categorias.reduce((n, c) => n + c.productos.filter((p) => p.minorista).length, 0);
+if (CATEGORIAS_VACIAS.length) {
+  console.log(`\n  ⚠ sin productos de eventos, no se publican: ${CATEGORIAS_VACIAS.join(', ')}`);
+}
+console.log(`\n${CATEGORIAS.length} categorías · ${todosLosProductos.length} productos de eventos` +
+  ` · ${MENUDEO} de menudeo van por PedidosYa · listo.\n`);

@@ -35,11 +35,21 @@
   "simboloMoneda": "Q",
   "rangoPrecios": "Q",
   "anticipacionEncargoHoras": 24,
-  "_notaCobertura": "Entregamos SOLO dentro de Ciudad de Guatemala. En zonasCobertura van unicamente zonas de la capital: si se agrega un municipio (Mixco, Villa Nueva, etc.) el sitio empezaria a prometer algo que no se cumple.",
-  "entregaSolo": "Entregamos únicamente dentro de Ciudad de Guatemala",
-  "zonasCobertura": [
-    "Zona 1", "Zona 2", "Zona 4", "Zona 5", "Zona 7", "Zona 9", "Zona 10",
-    "Zona 11", "Zona 12", "Zona 13", "Zona 14", "Zona 15", "Zona 16", "Zona 18",
-    "Zona 21"
+
+  "_notaCobertura": "Solo se entrega en las zonas listadas aca. Todo lo que se agregue se publica como promesa de entrega en la pagina y en el areaServed de los datos estructurados, asi que no agregues una zona a la que no se llega. Cada municipio va en su propio grupo: el nombre del municipio se usa tal cual en los datos estructurados.",
+  "entregaSolo": "Entregamos solo en las zonas de esta lista",
+  "coberturaResumen": "Ciudad de Guatemala y San Cristóbal",
+  "cobertura": [
+    {
+      "municipio": "Ciudad de Guatemala",
+      "zonas": [
+        "Zona 1", "Zona 2", "Zona 4", "Zona 5", "Zona 9", "Zona 10",
+        "Zona 11", "Zona 13", "Zona 14", "Zona 15", "Zona 16"
+      ]
+    },
+    {
+      "municipio": "Mixco",
+      "zonas": ["Zona 8 (San Cristóbal)", "Zona 11"]
+    }
   ]
 }

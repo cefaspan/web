@@ -11,28 +11,53 @@ pedidos por encargo vía WhatsApp.
 
 ---
 
-## Reglas del negocio que el sitio da por ciertas
+## Dos canales: este sitio vende eventos, PedidosYa vende menudeo
 
-- **Solo se entrega dentro de Ciudad de Guatemala.** Ni Mixco, ni Villa Nueva, ni Petapa, ni
-  Santa Catarina Pinula, ni Carretera a El Salvador. Esto está escrito en el inicio, el menú,
-  contacto, las preguntas frecuentes y el `areaServed` de los datos estructurados.
-  `datos/negocio.json` → `zonasCobertura` debe contener **únicamente zonas de la capital**: si
-  se agrega un municipio, el sitio empieza a prometer una entrega que no se hace.
-- El texto "Entregamos únicamente dentro de Ciudad de Guatemala" sale de
-  `negocio.json` → `entregaSolo` y se usa como `{{ENTREGA_SOLO}}` en las plantillas.
-- Fuera de la capital la alternativa que ofrece el sitio es **recoger en la panadería**.
+**Este sitio es para pedidos de eventos y actividades**: docenas, paquetes, bandejas, cajas
+de desayuno, coffee breaks, pasteles y mayoreo. **La venta por unidad va por PedidosYa.**
+
+Eso está implementado, no es solo redacción:
+
+- Un producto con `"minorista": true` en `datos/productos.json` **no se publica**: no sale en
+  el menú, ni en los destacados, ni en el `<select>` del formulario, ni en el JSON-LD `Menu`.
+- Una categoría que se queda sin productos de eventos **no se publica vacía**. El generador
+  avisa en consola cuáles quedaron fuera.
+- Inicio, menú y contacto llevan un bloque que manda a PedidosYa a quien busca pan por pieza,
+  para que no llegue por WhatsApp un pedido de Q1.25.
+
+Para mover un producto de un canal al otro: agregá o quitá `"minorista": true` y regenerá.
+
+## Cobertura: solo lo que está en la lista
+
+`datos/negocio.json` → `cobertura` es la única fuente. Está agrupada por municipio porque el
+nombre del municipio se usa tal cual en el `areaServed` de los datos estructurados:
+
+```json
+"cobertura": [
+  { "municipio": "Ciudad de Guatemala", "zonas": ["Zona 1", "Zona 2", "…"] },
+  { "municipio": "Mixco", "zonas": ["Zona 8 (San Cristóbal)", "Zona 11"] }
+]
+```
+
+Todo lo que se agregue ahí se publica como promesa de entrega en el inicio, el menú, contacto
+y las preguntas frecuentes. **No agregues una zona a la que no se llega.** Para direcciones
+fuera de la lista, la alternativa que ofrece el sitio es recoger en la panadería.
+
+> El texto de las preguntas frecuentes enumera las zonas a mano (`datos/productos.json` →
+> `faq`). Si cambiás `cobertura`, actualizá también esa respuesta.
 
 ## El sitio está armado para vender
 
-El orden del inicio es un embudo, no un folleto: primero el producto y el botón de pedir,
+El orden del inicio es un embudo, no un folleto: primero para qué sirve y el botón de cotizar,
 la historia del negocio al final.
 
-1. Hero con la oferta, el precio más bajo del menú y dos botones de compra.
-2. Barra de datos de compra (productos, 1 clic, anticipación, zonas).
-3. **Lo más pedido**, con `Agregar al pedido` a la vista.
-4. **Docenas, paquetes y bandejas**, con el precio por pieza calculado.
-5. Categorías → 6. Cómo pedir → 7. Cobertura → 8. Pedidos grandes → 9. Preguntas.
-10. Quiénes horneamos (corto) → 11. Cierre con los dos botones de compra.
+1. Hero con la ocasión (eventos, oficinas, actividades) y dos botones de cotización.
+2. Barra de datos de compra (mínimo, 1 clic, anticipación, zonas).
+3. **Para qué ocasión**: las seis situaciones que se venden.
+4. **Lo más pedido**, con `Agregar al pedido` a la vista.
+5. **Docenas, paquetes y bandejas**, con el precio por pieza calculado.
+6. Desvío a PedidosYa → 7. Cómo cotizar → 8. Cobertura → 9. Preguntas.
+10. Quiénes horneamos (corto) → 11. Cierre con los dos botones.
 
 Piezas de conversión que conviene no quitar:
 
@@ -61,7 +86,17 @@ reemplazarlos:
 | Dirección exacta | `datos/negocio.json` → `direccion.calle`, `geo` | `PENDIENTE` |
 | Enlace de Google Maps | `datos/negocio.json` → `redes.googleMaps` | vacío |
 | Catálogo y precios | `datos/productos.json` | Menú realista de ejemplo, **no** el de PedidosYa |
-| Zonas de entrega | `datos/negocio.json` → `zonasCobertura` | 15 zonas de la capital, revisá que sean las tuyas |
+| Zonas de entrega | `datos/negocio.json` → `cobertura` | ✅ 11 zonas de la capital + San Cristóbal y Mixco z11 |
+| SKU de eventos que faltan | `datos/productos.json` | Repostería y Café quedaron sin nada para eventos |
+
+**Faltan presentaciones de eventos en dos categorías.** Al separar el menudeo, «Repostería y
+Postres» y «Café y Bebidas» se quedaron sin un solo producto de eventos, porque el catálogo
+solo los tiene por pieza o por vaso. Esas dos categorías ya no se publican. Para recuperarlas
+hay que agregar las presentaciones que sí se venden a una actividad, con tu precio real:
+
+- Docena de croissants, docena de donas, bandeja de brownies, bandeja de milhojas,
+  bandeja surtida de repostería.
+- Café por termo o por galón, jugos por litro, atol por galón.
 
 > El menú de PedidosYa está protegido con PerimeterX y no se pudo leer de forma automática.
 > El catálogo actual es un menú de panadería guatemalteca plausible con precios de mercado,

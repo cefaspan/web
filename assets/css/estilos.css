@@ -617,6 +617,42 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 .zonas li:hover { transform: translateY(-2px); border-color: var(--corteza); box-shadow: var(--sombra); }
 .zonas .ico { width: 1rem; height: 1rem; color: var(--corteza); }
 
+/* Zonas agrupadas por municipio: el municipio manda, las zonas son su lista */
+.zonas--agrupadas { flex-direction: column; align-items: stretch; gap: 24px; }
+/* El municipio va siempre en su propia línea: si se deja en la misma fila,
+   un nombre corto queda alineado distinto que uno largo. */
+.zonas--agrupadas li, .zonas--agrupadas li:hover {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  background: none; border: none; border-radius: 0; padding: 0; transform: none; box-shadow: none;
+}
+.zonas__municipio {
+  display: inline-flex; align-items: center; gap: .45em;
+  font-family: var(--f-titulo); font-size: 1.05rem; font-weight: 600; color: var(--carbon);
+}
+.zonas__lista { display: flex; flex-wrap: wrap; gap: 8px; }
+.zonas__zona {
+  background: var(--masa); border: 1px solid var(--linea); border-radius: 999px;
+  padding: .45em 1em; font-size: .92rem; color: var(--tinta);
+  transition: transform .2s var(--salida), border-color .2s, box-shadow .2s;
+}
+.zonas__zona:hover { transform: translateY(-2px); border-color: var(--corteza); box-shadow: var(--sombra); }
+
+/* --- Desvío al menudeo (PedidosYa) --------------------------------------- */
+.desvio {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  background: var(--masa); border: 1px solid var(--linea); border-left: 4px solid var(--dorado);
+  border-radius: var(--radio); padding: 24px 26px; box-shadow: var(--sombra);
+}
+.desvio__ico {
+  display: grid; place-items: center; width: 54px; height: 54px; flex: none; border-radius: 16px;
+  background: var(--dorado-suave); color: var(--corteza-oscura);
+}
+.desvio__ico .ico { vertical-align: 0; }
+.desvio__texto { flex: 1 1 320px; min-width: 0; }
+.desvio__texto h3 { margin-bottom: .3em; font-size: 1.2rem; }
+.desvio__texto p { margin: 0; font-size: .95rem; color: var(--tinta-suave); }
+.desvio .btn { flex: none; }
+
 .faq { max-width: 840px; margin-inline: auto; }
 .faq details {
   background: var(--masa); border: 1px solid var(--linea); border-radius: var(--radio-s);

@@ -13,8 +13,8 @@
       <span class="eyebrow eyebrow--ico">{{ico:pin}} Contacto</span>
       <h1>Dónde estamos y cómo pedir</h1>
       <p class="entradilla">
-        Estamos en {{CIUDAD}}. Escribinos por WhatsApp para encargos, llamanos si preferís, o
-        pasá directamente por la panadería.
+        Cotizamos pan y bocadillos para eventos, oficinas y actividades. Escribinos por WhatsApp,
+        llamanos o pasá por la panadería. El pan por unidad se pide en PedidosYa.
       </p>
     </div>
 
@@ -58,10 +58,10 @@
         <span class="chapa" aria-hidden="true">{{ico:canasta:ico--l}}</span>
         <h3>Formas de pedir</h3>
         <ul class="lista-ico">
-          <li>{{ico:check}} <span><a href="{{BASE}}menu/">Armá tu pedido en el menú</a> y envialo por WhatsApp</span></li>
+          <li>{{ico:check}} <span><a href="{{BASE}}menu/">Armá tu cotización en el menú</a> y enviala por WhatsApp</span></li>
           <li>{{ico:check}} <span><a href="{{BASE}}encargos/#formulario">Llená el formulario de encargos</a></span></li>
           <li>{{ico:check}} <span>Llamanos al <a href="tel:{{TELEFONO_E164}}">{{TELEFONO}}</a></span></li>
-          <li>{{ico:check}} <span>Entrega inmediata en <a href="{{PEDIDOSYA}}" rel="noopener nofollow">PedidosYa</a></span></li>
+          <li>{{ico:check}} <span>Pan por unidad, con entrega inmediata, en <a href="{{PEDIDOSYA}}" rel="noopener nofollow">PedidosYa</a></span></li>
         </ul>
       </div>
     </div>
@@ -104,14 +104,14 @@
   <div class="contenedor">
     <div class="cabecera-seccion" data-reveal>
       <span class="eyebrow eyebrow--ico">{{ico:camion}} Entregas a domicilio</span>
-      <h2 id="t-zonas">Zonas donde entregamos</h2>
+      <h2 id="t-zonas">Zonas con entrega programada</h2>
       <p class="entradilla">
-        {{ENTREGA_SOLO}}, en estas {{TOTAL_ZONAS}} zonas. Fuera de la capital no hacemos entregas:
-        si estás en Mixco, Villa Nueva u otro municipio, podés pasar a recoger tu pedido. El costo
-        del envío depende de la zona y te lo confirmamos al agendar.
+        Hacemos entregas programadas en estas {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}. Si tu
+        dirección queda fuera, podés pasar a recoger tu pedido por la panadería. El costo del
+        envío depende de la zona y te lo confirmamos junto con el total, antes de agendar.
       </p>
     </div>
-    <ul class="zonas" data-reveal>
+    <ul class="zonas zonas--agrupadas" data-reveal>
       {{ZONAS}}
     </ul>
   </div>
@@ -121,11 +121,11 @@
   <div class="contenedor">
     <div class="cta-final" data-reveal>
       <span class="cta-final__ico" aria-hidden="true">{{ico:baguette:ico--xl}}</span>
-      <h2>Hacé tu encargo hoy</h2>
+      <h2>Cotizá tu actividad hoy</h2>
       <p>Con {{ANTICIPACION}} horas de anticipación te tenemos todo recién horneado.</p>
       <div class="grupo-btn grupo-btn--centro">
-        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20hacer%20un%20encargo." rel="noopener">{{ico:whatsapp}} Pedir por WhatsApp</a>
-        <a class="btn btn--claro btn--grande" href="{{BASE}}menu/">{{ico:canasta}} Ver el menú</a>
+        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20hacer%20un%20encargo." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+        <a class="btn btn--claro btn--grande" href="{{BASE}}menu/">{{ico:canasta}} Ver precios</a>
       </div>
     </div>
   </div>

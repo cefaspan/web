@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pedidos por encargo | Pan y pasteles a domicilio en Guatemala</title>
-<meta name="description" content="Encargá pan, pasteles y bocadillos para casa, oficina y eventos con 24 horas de anticipación. Entregamos sólo dentro de Ciudad de Guatemala. Cotizá por WhatsApp.">
+<title>Cotizar un encargo | Eventos y empresas en Guatemala</title>
+<meta name="description" content="Cotizá pan, pasteles y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregamos en Ciudad de Guatemala y San Cristóbal.">
 <link rel="canonical" href="https://willianhuit.github.io/cefas-web/encargos/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Cefas Panadería">
@@ -20,14 +20,14 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cefas Panadería">
 <meta property="og:locale" content="es_GT">
-<meta property="og:title" content="Pedidos por encargo | Pan y pasteles a domicilio en Guatemala">
-<meta property="og:description" content="Encargá pan, pasteles y bocadillos para casa, oficina y eventos con 24 horas de anticipación. Entregamos sólo dentro de Ciudad de Guatemala. Cotizá por WhatsApp.">
+<meta property="og:title" content="Cotizar un encargo | Eventos y empresas en Guatemala">
+<meta property="og:description" content="Cotizá pan, pasteles y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregamos en Ciudad de Guatemala y San Cristóbal.">
 <meta property="og:url" content="https://willianhuit.github.io/cefas-web/encargos/">
 <meta property="og:image" content="https://willianhuit.github.io/cefas-web/assets/img/logo-cefas.png">
 <meta property="og:image:alt" content="Logo de Cefas Panadería">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Pedidos por encargo | Pan y pasteles a domicilio en Guatemala">
-<meta name="twitter:description" content="Encargá pan, pasteles y bocadillos para casa, oficina y eventos con 24 horas de anticipación. Entregamos sólo dentro de Ciudad de Guatemala. Cotizá por WhatsApp.">
+<meta name="twitter:title" content="Cotizar un encargo | Eventos y empresas en Guatemala">
+<meta name="twitter:description" content="Cotizá pan, pasteles y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregamos en Ciudad de Guatemala y San Cristóbal.">
 <meta name="twitter:image" content="https://willianhuit.github.io/cefas-web/assets/img/logo-cefas.png">
 
 <link rel="alternate" hreflang="es-gt" href="https://willianhuit.github.io/cefas-web/encargos/">
@@ -119,7 +119,11 @@
   "areaServed": [
     {
       "@type": "City",
-      "name": "Ciudad de Guatemala"
+      "name": "Ciudad de Guatemala, Guatemala"
+    },
+    {
+      "@type": "City",
+      "name": "Mixco, Guatemala"
     },
     {
       "@type": "Place",
@@ -139,10 +143,6 @@
     },
     {
       "@type": "Place",
-      "name": "Zona 7, Ciudad de Guatemala"
-    },
-    {
-      "@type": "Place",
       "name": "Zona 9, Ciudad de Guatemala"
     },
     {
@@ -152,10 +152,6 @@
     {
       "@type": "Place",
       "name": "Zona 11, Ciudad de Guatemala"
-    },
-    {
-      "@type": "Place",
-      "name": "Zona 12, Ciudad de Guatemala"
     },
     {
       "@type": "Place",
@@ -175,11 +171,11 @@
     },
     {
       "@type": "Place",
-      "name": "Zona 18, Ciudad de Guatemala"
+      "name": "Zona 8 (San Cristóbal), Mixco"
     },
     {
       "@type": "Place",
-      "name": "Zona 21, Ciudad de Guatemala"
+      "name": "Zona 11, Mixco"
     }
   ],
   "sameAs": [
@@ -242,14 +238,20 @@
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Pedidos de pan y pasteles por encargo",
-  "serviceType": "Panadería por encargo y entrega a domicilio",
+  "serviceType": "Panadería por encargo para eventos y empresas",
   "provider": {
     "@id": "https://willianhuit.github.io/cefas-web/#panaderia"
   },
-  "areaServed": {
-    "@type": "City",
-    "name": "Ciudad de Guatemala"
-  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Ciudad de Guatemala, Guatemala"
+    },
+    {
+      "@type": "City",
+      "name": "Mixco, Guatemala"
+    }
+  ],
   "availableChannel": {
     "@type": "ServiceChannel",
     "serviceUrl": "https://willianhuit.github.io/cefas-web/encargos/",
@@ -311,11 +313,11 @@
   <div class="contenedor">
     <div class="dos-columnas">
       <div class="dos-columnas__texto" data-reveal>
-        <span class="eyebrow eyebrow--ico"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg> Solo Ciudad de Guatemala</span>
-        <h1>Encargá tu pan, pasteles y bocadillos</h1>
+        <span class="eyebrow eyebrow--ico"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-pin"/></svg> Ciudad de Guatemala y San Cristóbal</span>
+        <h1>Cotizá el pan de tu evento o actividad</h1>
         <p class="entradilla">
-          Vos elegís qué querés y para cuándo; nosotros lo horneamos fresco ese día y te lo
-          llevamos a tu casa, tu oficina o tu evento dentro de la capital. Cotización el mismo
+          Contanos la fecha, cuántas personas y qué necesitás. Lo horneamos ese día y te lo
+          entregamos en tu oficina, salón o evento a la hora que lo pidas. Cotización el mismo
           día por WhatsApp.
         </p>
         <div class="grupo-btn">
@@ -452,13 +454,11 @@
           <label for="producto">Producto principal <span class="ayuda">(opcional)</span></label>
           <select id="producto" name="producto">
             <option value="">— Elegir del menú —</option>
-              <optgroup label="Pan Francés y Pan Salado"><option value="Pan Francés">Pan Francés</option><option value="Pan Francés (docena)">Pan Francés (docena)</option><option value="Pan de Agua">Pan de Agua</option><option value="Pirujo">Pirujo</option><option value="Pan de Manteca">Pan de Manteca</option><option value="Pan Integral de Molde">Pan Integral de Molde</option><option value="Pan de Molde Blanco">Pan de Molde Blanco</option><option value="Pan de Hamburguesa">Pan de Hamburguesa</option><option value="Pan para Hot Dog">Pan para Hot Dog</option></optgroup>
-              <optgroup label="Pan Dulce Tradicional"><option value="Champurrada">Champurrada</option><option value="Cubilete">Cubilete</option><option value="Magdalena">Magdalena</option><option value="Xeca">Xeca</option><option value="Oreja (Palmera)">Oreja (Palmera)</option><option value="Quesadilla Guatemalteca">Quesadilla Guatemalteca</option><option value="Concha">Concha</option><option value="Pan de Banano">Pan de Banano</option><option value="Cachito">Cachito</option><option value="Canillitas de Leche">Canillitas de Leche</option><option value="Docena Surtida de Pan Dulce">Docena Surtida de Pan Dulce</option></optgroup>
-              <optgroup label="Panes Artesanales"><option value="Baguette Artesanal">Baguette Artesanal</option><option value="Ciabatta">Ciabatta</option><option value="Pan de Masa Madre">Pan de Masa Madre</option><option value="Focaccia de Romero">Focaccia de Romero</option><option value="Pan de Centeno">Pan de Centeno</option><option value="Pan de Ajo">Pan de Ajo</option></optgroup>
-              <optgroup label="Repostería y Postres"><option value="Croissant de Mantequilla">Croissant de Mantequilla</option><option value="Croissant de Jamón y Queso">Croissant de Jamón y Queso</option><option value="Dona Glaseada">Dona Glaseada</option><option value="Brownie de Chocolate">Brownie de Chocolate</option><option value="Pie de Manzana">Pie de Manzana</option><option value="Cheesecake de Fresa">Cheesecake de Fresa</option><option value="Empanada de Piña">Empanada de Piña</option><option value="Milhojas">Milhojas</option></optgroup>
+              <optgroup label="Pan Francés y Pan Salado"><option value="Pan Francés (docena)">Pan Francés (docena)</option><option value="Pan de Hamburguesa">Pan de Hamburguesa</option><option value="Pan para Hot Dog">Pan para Hot Dog</option></optgroup>
+              <optgroup label="Pan Dulce Tradicional"><option value="Docena Surtida de Pan Dulce">Docena Surtida de Pan Dulce</option></optgroup>
+              <optgroup label="Panes Artesanales"><option value="Focaccia de Romero">Focaccia de Romero</option></optgroup>
               <optgroup label="Pasteles por Encargo"><option value="Pastel de Chocolate">Pastel de Chocolate</option><option value="Pastel Tres Leches">Pastel Tres Leches</option><option value="Pastel de Fresas con Crema">Pastel de Fresas con Crema</option><option value="Pastel Personalizado">Pastel Personalizado</option><option value="Cupcakes Decorados (docena)">Cupcakes Decorados (docena)</option><option value="Mesa de Mini Postres">Mesa de Mini Postres</option></optgroup>
               <optgroup label="Encargos para Eventos y Empresas"><option value="Caja de Desayuno">Caja de Desayuno</option><option value="Coffee Break Empresarial">Coffee Break Empresarial</option><option value="Bandeja de Bocadillos Salados">Bandeja de Bocadillos Salados</option><option value="Canasta de Regalo">Canasta de Regalo</option><option value="Pan al Mayoreo">Pan al Mayoreo</option></optgroup>
-              <optgroup label="Café y Bebidas"><option value="Café Americano">Café Americano</option><option value="Capuchino">Capuchino</option><option value="Atol de Elote">Atol de Elote</option><option value="Licuado de Fruta">Licuado de Fruta</option><option value="Café en Grano (libra)">Café en Grano (libra)</option></optgroup>
           </select>
         </div>
 
@@ -483,7 +483,7 @@
         <div class="campo">
           <label for="zona">Zona de la capital <span class="ayuda">(si es a domicilio)</span></label>
           <input type="text" id="zona" name="zona" placeholder="Zona 10, Zona 14, Zona 15…" aria-describedby="ayuda-zona">
-          <span class="ayuda" id="ayuda-zona">Entregamos únicamente dentro de Ciudad de Guatemala.</span>
+          <span class="ayuda" id="ayuda-zona">Entregamos en 13 zonas de Ciudad de Guatemala y San Cristóbal.</span>
         </div>
 
         <div class="campo campo--ancho">
@@ -590,8 +590,8 @@
           <li><a href="../menu/#pan-frances">Pan Francés y Pan Salado</a></li>
           <li><a href="../menu/#pan-dulce">Pan Dulce Tradicional</a></li>
           <li><a href="../menu/#artesanal">Panes Artesanales</a></li>
-          <li><a href="../menu/#reposteria">Repostería y Postres</a></li>
           <li><a href="../menu/#pasteles">Pasteles por Encargo</a></li>
+          <li><a href="../menu/#eventos">Encargos para Eventos y Empresas</a></li>
           <li><a href="../menu/">Ver menú completo</a></li>
         </ul>
       </div>

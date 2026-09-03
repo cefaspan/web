@@ -10,18 +10,21 @@
 <section class="seccion seccion--corta">
   <div class="contenedor">
     <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:pin}} Solo Ciudad de Guatemala</span>
-      <h1>Menú y precios de Cefas Panadería</h1>
+      <span class="eyebrow eyebrow--ico">{{ico:usuarios}} Precios para eventos</span>
+      <h1>Menú y precios para eventos y actividades</h1>
       <p class="entradilla">
-        {{TOTAL_PRODUCTOS}} productos desde {{PRECIO_DESDE}}, en quetzales. Tocá
-        <strong>Agregar al pedido</strong> en lo que querés y envialo por WhatsApp en un clic.
+        {{TOTAL_PRODUCTOS}} presentaciones para repartir: docenas, paquetes, bandejas, cajas,
+        pasteles y mayoreo. Precios en quetzales. Tocá <strong>Agregar al pedido</strong> y
+        enviá tu cotización por WhatsApp en un clic.
       </p>
     </div>
+
+    {{PEDIDOSYA_BLOQUE}}
 
     <div class="buscador">
       <label class="solo-lectores" for="buscar">Buscar un producto en el menú</label>
       <span class="buscador__ico" aria-hidden="true">{{ico:lupa}}</span>
-      <input type="search" id="buscar" data-buscador placeholder="Buscar pan francés, champurradas, pastel de chocolate…" autocomplete="off">
+      <input type="search" id="buscar" data-buscador placeholder="Buscar coffee break, bandeja, docena, pastel…" autocomplete="off">
     </div>
   </div>
 </section>
@@ -41,9 +44,10 @@
     <div class="aviso" data-reveal>
       <span class="aviso__ico" aria-hidden="true">{{ico:camion}}</span>
       <p>
-        <strong>{{ENTREGA_SOLO}}.</strong> Fuera de la capital no hacemos entregas, pero podés
-        pasar a recoger tu pedido. Para encargos grandes pedimos {{ANTICIPACION}} horas de
-        anticipación y te confirmamos el total final por WhatsApp.
+        <strong>Entregas programadas en {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}.</strong>
+        Fuera de esas zonas podés pasar a recoger tu pedido por la panadería. Pedimos desde
+        {{ANTICIPACION}} horas de anticipación y te confirmamos el total final, con el envío,
+        por WhatsApp.
       </p>
     </div>
 
@@ -61,8 +65,8 @@
       <span class="chapa chapa--centro" aria-hidden="true">{{ico:pastel:ico--l}}</span>
       <h2 id="t-menu-cta">¿Necesitás algo que no está en el menú?</h2>
       <p class="entradilla">
-        Hacemos pasteles personalizados, bandejas de bocadillos y pedidos al mayoreo a la medida
-        de lo que necesités. Contanos tu idea y te cotizamos.
+        Armamos paquetes a la medida de tu actividad: cantidades, sabores y presentación.
+        Contanos cuántas personas y para cuándo, y te cotizamos hoy mismo.
       </p>
       <div class="grupo-btn grupo-btn--centro">
         <a class="btn btn--principal" href="{{BASE}}encargos/#formulario">Pedir una cotización</a>
