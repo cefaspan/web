@@ -1,0 +1,5 @@
+# Cefas Panadería — Ciudad de Guatemala
+User-agent: *
+Allow: /
+
+Sitemap: https://willianhuit.github.io/cefas-web/sitemap.xml

@@ -1,0 +1,43 @@
+{
+  "nombre": "Cefas Panadería",
+  "nombreLegal": "Cefas Panadería",
+  "eslogan": "Pan fresco, horneado cada día en Ciudad de Guatemala",
+  "descripcionCorta": "Panadería artesanal en Ciudad de Guatemala. Pan francés, pan dulce tradicional, repostería y pasteles. Pedidos por encargo para casa, oficina y eventos.",
+  "dominio": "https://willianhuit.github.io/cefas-web",
+  "rutaBase": "/cefas-web",
+  "telefono": "+502 0000-0000",
+  "telefonoE164": "+50200000000",
+  "whatsapp": "50200000000",
+  "email": "pedidos@cefaspanaderia.com",
+  "direccion": {
+    "calle": "PENDIENTE: dirección exacta",
+    "zona": "Ciudad de Guatemala",
+    "ciudad": "Ciudad de Guatemala",
+    "departamento": "Guatemala",
+    "codigoPostal": "01001",
+    "pais": "GT"
+  },
+  "geo": { "lat": "14.628434", "lng": "-90.522713" },
+  "horarios": [
+    { "dias": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "etiqueta": "Lunes a viernes", "abre": "06:00", "cierra": "20:00" },
+    { "dias": ["Saturday"], "etiqueta": "Sábado", "abre": "06:00", "cierra": "20:00" },
+    { "dias": ["Sunday"], "etiqueta": "Domingo", "abre": "07:00", "cierra": "14:00" }
+  ],
+  "redes": {
+    "facebook": "https://www.facebook.com/cefaspanaderia",
+    "instagram": "https://www.instagram.com/cefaspanaderia",
+    "tiktok": "",
+    "pedidosya": "https://www.pedidosya.com.gt/restaurantes/ciudad-de-guatemala/cefas-panaderia-6374a132-54b4-4157-8e55-ebbc0e6cf786-menu",
+    "googleMaps": "",
+    "googleMapsEmbed": ""
+  },
+  "moneda": "GTQ",
+  "simboloMoneda": "Q",
+  "rangoPrecios": "Q",
+  "anticipacionEncargoHoras": 24,
+  "zonasCobertura": [
+    "Zona 1", "Zona 2", "Zona 4", "Zona 5", "Zona 7", "Zona 9", "Zona 10",
+    "Zona 11", "Zona 12", "Zona 13", "Zona 14", "Zona 15", "Zona 16", "Zona 18",
+    "Zona 21", "Mixco", "Villa Nueva", "San Miguel Petapa", "Santa Catarina Pinula", "Carretera a El Salvador"
+  ]
+}

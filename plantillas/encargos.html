@@ -1,0 +1,269 @@
+<div class="contenedor">
+  <nav class="migas" aria-label="Ruta de navegación">
+    <ol>
+      <li><a href="{{BASE}}index.html">Inicio</a></li>
+      <li>Encargos</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="seccion seccion--corta">
+  <div class="contenedor">
+    <div class="dos-columnas">
+      <div class="dos-columnas__texto" data-reveal>
+        <span class="eyebrow eyebrow--ico">{{ico:caja}} Pedidos por encargo</span>
+        <h1>Encargá tu pan, pasteles y bocadillos en {{CIUDAD}}</h1>
+        <p class="entradilla">
+          Preparamos pedidos por encargo para casa, oficina y eventos. Vos elegís qué querés y para
+          cuándo; nosotros horneamos fresco ese mismo día y te lo entregamos o te lo llevamos a
+          domicilio.
+        </p>
+        <div class="grupo-btn">
+          <a class="btn btn--principal btn--grande" href="#formulario">{{ico:calendario}} Llenar el formulario</a>
+          <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20un%20encargo." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="dos-columnas__medios" data-reveal>
+        <figure class="foto foto--4-3 foto--marco">
+          <img src="{{IMG_GENERICA}}" alt="Caja de pan y repostería lista para entregar de Cefas Panadería" width="554" height="554" loading="lazy" decoding="async">
+        </figure>
+        <div class="dato-flotante">
+          <span class="dato-flotante__ico" aria-hidden="true">{{ico:reloj}}</span>
+          <span><strong>{{ANTICIPACION}} horas</strong>de anticipación mínima</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CÓMO FUNCIONA ===================== -->
+<section class="seccion seccion--oscura" aria-labelledby="t-pasos">
+  <div class="contenedor">
+    <div class="cabecera-seccion" data-reveal>
+      <h2 id="t-pasos">Cómo funciona un encargo</h2>
+    </div>
+    <ol class="pasos">
+      <li data-reveal>
+        <span class="pasos__ico" aria-hidden="true">{{ico:chat}}</span>
+        <h3>Contanos qué necesitás</h3>
+        <p>Llená el formulario de abajo o mandanos un WhatsApp con el producto, la cantidad y la fecha.</p>
+      </li>
+      <li data-reveal>
+        <span class="pasos__ico" aria-hidden="true">{{ico:check}}</span>
+        <h3>Te confirmamos el pedido</h3>
+        <p>Revisamos disponibilidad y te pasamos el total, el tiempo de entrega y la forma de pago.</p>
+      </li>
+      <li data-reveal>
+        <span class="pasos__ico" aria-hidden="true">{{ico:calendario}}</span>
+        <h3>Agendamos la fecha</h3>
+        <p>En pasteles y eventos pedimos un anticipo del 50% para reservar el día de entrega.</p>
+      </li>
+      <li data-reveal>
+        <span class="pasos__ico" aria-hidden="true">{{ico:camion}}</span>
+        <h3>Horneamos y entregamos</h3>
+        <p>Preparamos todo el mismo día. Pasás a recogerlo o te lo llevamos a tu dirección.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== TIEMPOS ===================== -->
+<section class="seccion" aria-labelledby="t-tiempos">
+  <div class="contenedor">
+    <div class="cabecera-seccion" data-reveal>
+      <span class="eyebrow eyebrow--ico">{{ico:reloj}} Planificá con tiempo</span>
+      <h2 id="t-tiempos">Con cuánta anticipación pedir</h2>
+      <p class="entradilla">
+        Todo se hornea fresco, así que necesitamos tiempo de preparación. Estos son nuestros
+        tiempos habituales.
+      </p>
+    </div>
+
+    <div class="rejilla rejilla--3">
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:croissant:ico--l}}</span>
+        <h3>Pan y repostería</h3>
+        <p class="tarjeta-info__plazo">Desde {{ANTICIPACION}} horas</p>
+        <p>
+          Docenas de pan francés y pan dulce, panes artesanales, croissants, donas y brownies.
+          Para cantidades pequeñas muchas veces podemos el mismo día: preguntanos.
+        </p>
+      </div>
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:pastel:ico--l}}</span>
+        <h3>Pasteles personalizados</h3>
+        <p class="tarjeta-info__plazo">De 48 a 72 horas</p>
+        <p>
+          Mandanos la foto de referencia, el número de porciones, el sabor y la dedicatoria.
+          Te cotizamos según el tamaño y la decoración.
+        </p>
+      </div>
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:usuarios:ico--l}}</span>
+        <h3>Eventos y empresas</h3>
+        <p class="tarjeta-info__plazo">De 3 a 5 días</p>
+        <p>
+          Coffee breaks, cajas de desayuno, bandejas de bocadillos y mesas de postres.
+          Para pedidos recurrentes armamos un calendario de entregas.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FORMULARIO ===================== -->
+<section class="seccion seccion--crema" id="formulario" aria-labelledby="t-form">
+  <div class="contenedor contenedor--angosto">
+    <div class="cabecera-seccion centro" data-reveal>
+      <span class="chapa chapa--centro" aria-hidden="true">{{ico:calendario:ico--l}}</span>
+      <h2 id="t-form">Contanos tu pedido</h2>
+      <p class="entradilla">
+        Al enviar se abre WhatsApp con todo el detalle ya escrito. Si ya armaste una canasta en el
+        menú, también se incluye automáticamente.
+      </p>
+    </div>
+
+    <form class="formulario" data-form-encargo novalidate data-reveal>
+      <div class="campos">
+        <div class="campo">
+          <label for="nombre">Tu nombre</label>
+          <input type="text" id="nombre" name="nombre" required autocomplete="name" placeholder="María López">
+        </div>
+
+        <div class="campo">
+          <label for="telefono">Teléfono o WhatsApp</label>
+          <input type="tel" id="telefono" name="telefono" required autocomplete="tel" placeholder="5555-5555">
+        </div>
+
+        <div class="campo">
+          <label for="tipo">Tipo de pedido</label>
+          <select id="tipo" name="tipo" required>
+            <option value="Pan y repostería">Pan y repostería</option>
+            <option value="Pastel personalizado">Pastel personalizado</option>
+            <option value="Coffee break / desayunos">Coffee break / desayunos</option>
+            <option value="Bocadillos para evento">Bocadillos para evento</option>
+            <option value="Pan al mayoreo">Pan al mayoreo</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="producto">Producto principal <span class="ayuda">(opcional)</span></label>
+          <select id="producto" name="producto">
+            <option value="">— Elegir del menú —</option>
+              {{OPCIONES_PRODUCTO}}
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="fecha">Fecha de entrega</label>
+          <input type="date" id="fecha" name="fecha" required>
+        </div>
+
+        <div class="campo">
+          <label for="hora">Hora aproximada <span class="ayuda">(opcional)</span></label>
+          <input type="time" id="hora" name="hora">
+        </div>
+
+        <div class="campo">
+          <label for="entrega">¿Cómo lo querés recibir?</label>
+          <select id="entrega" name="entrega" required>
+            <option value="Recojo en la panadería">Recojo en la panadería</option>
+            <option value="Entrega a domicilio">Entrega a domicilio</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="zona">Zona o municipio <span class="ayuda">(si es a domicilio)</span></label>
+          <input type="text" id="zona" name="zona" placeholder="Zona 10, Mixco, Villa Nueva…">
+        </div>
+
+        <div class="campo campo--ancho">
+          <label for="detalle">Detalle del pedido</label>
+          <textarea id="detalle" name="detalle" placeholder="Ej: 4 docenas de pan francés, 2 docenas de pan dulce surtido y un pastel de chocolate de 20 porciones que diga «Feliz cumpleaños Ana»."></textarea>
+        </div>
+      </div>
+
+      <div class="formulario__envio">
+        <button class="btn btn--wa btn--bloque btn--grande" type="submit">{{ico:whatsapp}} Enviar mi encargo por WhatsApp</button>
+      </div>
+
+      <p class="panel__nota centro">
+        No guardamos tus datos en esta página: el formulario sólo arma el mensaje de WhatsApp que
+        vos enviás.
+      </p>
+
+      <div class="aviso aviso--ok" data-form-ok hidden>
+        <span class="aviso__ico" aria-hidden="true">{{ico:check}}</span>
+        <p>
+          <strong>Se abrió WhatsApp con tu pedido.</strong> Si no se abrió, revisá que tu navegador
+          permita ventanas emergentes o escribinos directo al
+          <a href="https://wa.me/{{WHATSAPP}}" rel="noopener">{{TELEFONO}}</a>.
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ===================== EVENTOS ===================== -->
+<section class="seccion" id="eventos" aria-labelledby="t-eventos">
+  <div class="contenedor">
+    <div class="cabecera-seccion" data-reveal>
+      <span class="eyebrow eyebrow--ico">{{ico:usuarios}} Eventos y empresas</span>
+      <h2 id="t-eventos">Pedidos grandes con entrega programada</h2>
+      <p class="entradilla">
+        Si organizás una capacitación, una reunión mensual o una celebración, podemos encargarnos
+        del pan y los bocadillos de principio a fin.
+      </p>
+    </div>
+
+    <div class="rejilla rejilla--3">
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:cafe:ico--l}}</span>
+        <h3>Oficinas y capacitaciones</h3>
+        <ul class="lista-ico">
+          <li>{{ico:check}} <span>Cajas de desayuno individuales</span></li>
+          <li>{{ico:check}} <span>Coffee break con café y bocadillos</span></li>
+          <li>{{ico:check}} <span>Entrega en la hora que necesités</span></li>
+          <li>{{ico:check}} <span>Factura y pedidos recurrentes</span></li>
+        </ul>
+      </div>
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:pastel:ico--l}}</span>
+        <h3>Celebraciones</h3>
+        <ul class="lista-ico">
+          <li>{{ico:check}} <span>Pasteles personalizados y cupcakes</span></li>
+          <li>{{ico:check}} <span>Mesas de mini postres</span></li>
+          <li>{{ico:check}} <span>Bandejas de bocadillos salados</span></li>
+          <li>{{ico:check}} <span>Diseño según tu tema y colores</span></li>
+        </ul>
+      </div>
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:bolsa:ico--l}}</span>
+        <h3>Negocios y mayoreo</h3>
+        <ul class="lista-ico">
+          <li>{{ico:check}} <span>Tiendas, cafeterías, hoteles y restaurantes</span></li>
+          <li>{{ico:check}} <span>Precio por volumen</span></li>
+          <li>{{ico:check}} <span>Calendario fijo de entregas</span></li>
+          <li>{{ico:check}} <span>Producto horneado el mismo día</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="seccion seccion--crema">
+  <div class="contenedor">
+    <div class="cta-final" data-reveal>
+      <span class="cta-final__ico" aria-hidden="true">{{ico:chat:ico--xl}}</span>
+      <h2>¿Preferís hablarlo directo?</h2>
+      <p>Escribinos por WhatsApp o llamanos y armamos tu encargo juntos.</p>
+      <div class="grupo-btn grupo-btn--centro">
+        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20un%20encargo." rel="noopener">{{ico:whatsapp}} Escribir por WhatsApp</a>
+        <a class="btn btn--claro btn--grande" href="tel:{{TELEFONO_E164}}">{{ico:telefono}} Llamar al {{TELEFONO}}</a>
+      </div>
+    </div>
+  </div>
+</section>

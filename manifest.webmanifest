@@ -1,0 +1,25 @@
+{
+  "name": "Cefas Panadería",
+  "short_name": "Cefas",
+  "description": "Panadería artesanal en Ciudad de Guatemala. Pan francés, pan dulce tradicional, repostería y pasteles. Pedidos por encargo para casa, oficina y eventos.",
+  "lang": "es-GT",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FDF8F1",
+  "theme_color": "#171310",
+  "icons": [
+    {
+      "src": "assets/img/logo-cefas.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/logo-cefas.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
