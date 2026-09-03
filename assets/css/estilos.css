@@ -228,6 +228,8 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 .btn--bloque { width: 100%; }
 .btn[disabled] { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
 .btn[disabled]::after { display: none; }
+/* Obligatorio: cualquier display de autor gana al [hidden] del navegador */
+.btn[hidden] { display: none; }
 .grupo-btn { display: flex; flex-wrap: wrap; gap: 12px; }
 .grupo-btn--suelto { margin-top: 36px; }
 .grupo-btn--centro { justify-content: center; }
@@ -310,7 +312,15 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 }
 
 /* --- Botón carrito ------------------------------------------------------- */
-.carrito-btn { position: relative; }
+/* La burbuja del contador sobresale del botón, así que este no puede recortar
+   (y sin recorte el destello de .btn se saldría: se desactiva acá). */
+.carrito-btn { position: relative; overflow: visible; }
+.carrito-btn::after { display: none; }
+.carrito-btn__total {
+  padding-left: .6em; margin-left: .1em; border-left: 1px solid rgba(255, 255, 255, .25);
+  font-variant-numeric: tabular-nums; font-size: .95rem;
+}
+.carrito-btn__total[hidden] { display: none; }
 .carrito-btn__contador {
   position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; padding: 0 5px;
   border-radius: 999px; background: var(--corteza); color: #fff; font-size: .72rem; font-weight: 700;
@@ -388,11 +398,14 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 
 .hero__precio {
   position: absolute; left: 2%; top: 6%; z-index: 3; text-align: center;
-  background: var(--carbon); color: #fff; border-radius: 50%; width: 96px; height: 96px;
-  display: grid; place-content: center; box-shadow: var(--sombra-alta);
+  background: var(--carbon); color: #fff; border-radius: 50%; width: 112px; height: 112px;
+  display: grid; place-content: center; padding: 0 10px; box-shadow: var(--sombra-alta);
   animation: flotar 6.5s ease-in-out .8s infinite;
 }
-.hero__precio-eti { display: block; font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; color: #C9BBAA; }
+.hero__precio-eti {
+  display: block; font-size: .56rem; letter-spacing: .08em; line-height: 1.35;
+  text-transform: uppercase; color: #C9BBAA;
+}
 .hero__precio strong { font-family: var(--f-titulo); font-size: 1.5rem; color: var(--dorado); }
 
 @media (max-width: 900px) {
@@ -403,8 +416,8 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 @media (max-width: 520px) {
   .hero__chapa { left: 0; padding: 7px 14px 7px 8px; }
   .hero__chapa img { width: 32px; height: 32px; }
-  .hero__precio { width: 78px; height: 78px; }
-  .hero__precio strong { font-size: 1.2rem; }
+  .hero__precio { width: 92px; height: 92px; }
+  .hero__precio strong { font-size: 1.25rem; }
 }
 
 /* --- 8. Barra de confianza ----------------------------------------------- */
@@ -488,9 +501,33 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 .producto__precio { font-weight: 700; font-size: 1.05rem; color: var(--corteza-oscura); white-space: nowrap; }
 .producto__unidad { display: block; font-size: .74rem; font-weight: 500; color: var(--tinta-suave); text-align: right; }
 .producto__desc { font-size: .93rem; color: var(--tinta-suave); margin: .6em 0 0; flex-grow: 1; }
+/* Precio por pieza de los paquetes: es el precio real dividido, no una oferta */
+.producto__pieza {
+  display: flex; align-items: center; gap: .45em; margin: .7em 0 0;
+  font-size: .86rem; font-weight: 600; color: var(--verde);
+}
+.producto__pieza .ico { width: 1rem; height: 1rem; }
 .producto__pie { display: flex; align-items: center; gap: 10px; margin-top: 18px; }
 .producto__pie .btn { width: 100%; }
-.producto__pie .btn.es-agregado { background: linear-gradient(160deg, var(--verde-claro), var(--verde-oscuro)); }
+
+/* Contador dentro de la tarjeta: sube y baja la cantidad sin abrir el panel */
+.contador {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
+  border: 1.5px solid var(--carbon); border-radius: 999px; padding: 3px;
+  background: var(--masa); animation: surgir .25s var(--salida);
+}
+.contador[hidden] { display: none; }
+.contador button {
+  display: grid; place-items: center; width: 34px; height: 34px; flex: none;
+  border: none; border-radius: 50%; background: var(--crema-2); color: var(--carbon);
+  cursor: pointer; transition: background-color .18s, color .18s, transform .18s var(--salida);
+}
+.contador button:hover { background: var(--carbon); color: #fff; transform: scale(1.06); }
+.contador button .ico { width: 1rem; height: 1rem; vertical-align: 0; }
+.contador > span {
+  flex: 1; text-align: center; font-weight: 700; font-size: .95rem;
+  font-variant-numeric: tabular-nums;
+}
 
 .etiqueta {
   display: inline-flex; align-items: center; gap: .35em; font-size: .68rem; font-weight: 700;
@@ -723,6 +760,7 @@ html.js .linea-carrito { animation: surgir .35s var(--salida); }
   background: var(--dorado-suave); border: 1px solid #EFD7B0;
   border-radius: var(--radio-s); padding: 18px 20px; font-size: .94rem;
 }
+.aviso[hidden] { display: none; }
 .aviso p:last-child { margin-bottom: 0; }
 .aviso__ico {
   display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 11px;
@@ -824,6 +862,32 @@ html.js .linea-carrito { animation: surgir .35s var(--salida); }
 .wa-flotante:hover .wa-flotante__texto { max-width: 220px; }
 .wa-flotante:focus-visible .wa-flotante__texto { max-width: 220px; }
 
+/* --- Barra fija de pedido (móvil) ---------------------------------------- */
+/* En móvil la cabecera esconde el texto del botón del carrito, así que el
+   total y el paso a cerrar la compra viven acá abajo, siempre visibles. */
+.barra-venta {
+  display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 95;
+  align-items: center; justify-content: space-between; gap: 14px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(253, 248, 241, .96); backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--linea);
+  box-shadow: 0 -8px 28px -18px rgba(23, 19, 16, .6);
+  animation: surgir .3s var(--salida);
+}
+.barra-venta[hidden] { display: none; }
+.barra-venta__info { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.barra-venta__info strong {
+  font-family: var(--f-titulo); font-size: 1.3rem; color: var(--carbon);
+  font-variant-numeric: tabular-nums;
+}
+.barra-venta__info span { font-size: .8rem; color: var(--tinta-suave); }
+.barra-venta .btn { flex: none; }
+@media (max-width: 900px) {
+  .barra-venta:not([hidden]) { display: flex; }
+  /* El flotante de WhatsApp se sube para no quedar debajo de la barra */
+  body.con-barra-venta .wa-flotante { bottom: 92px; }
+}
+
 /* --- 17. Migas, 404, impresión y accesibilidad -------------------------- */
 .migas { font-size: .86rem; color: var(--tinta-suave); padding: 18px 0 0; }
 .migas ol { list-style: none; display: flex; flex-wrap: wrap; gap: .4em; padding: 0; margin: 0; }
@@ -850,7 +914,8 @@ html.js .linea-carrito { animation: surgir .35s var(--salida); }
   .wa-flotante__texto { max-width: 0; }
 }
 @media print {
-  .cabecera, .pie, .wa-flotante, .filtros, .panel, .velo, .btn, .foto { display: none !important; }
+  .cabecera, .pie, .wa-flotante, .filtros, .panel, .velo, .btn, .foto,
+  .barra-venta, .contador { display: none !important; }
   body { background: #fff; font-size: 12pt; }
   html.js [data-reveal] { opacity: 1; transform: none; }
 }

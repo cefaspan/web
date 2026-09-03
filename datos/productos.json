@@ -109,13 +109,13 @@
     }
   ],
   "faq": [
-    { "p": "¿Cómo hago un pedido por encargo en Cefas Panadería?", "r": "Elegí tus productos en el menú, agregalos al pedido y envialo por WhatsApp con un clic. También podés llenar el formulario de encargos o llamarnos. Te confirmamos disponibilidad, total y hora de entrega." },
-    { "p": "¿Con cuánta anticipación debo hacer mi encargo?", "r": "Para pan y repostería pedimos al menos 24 horas de anticipación. Para pasteles personalizados, bandejas de bocadillos y pedidos de eventos, recomendamos de 48 a 72 horas." },
-    { "p": "¿Hacen entregas a domicilio en Ciudad de Guatemala?", "r": "Sí. Entregamos en las principales zonas de Ciudad de Guatemala y municipios cercanos como Mixco, Villa Nueva y Santa Catarina Pinula. El costo de envío depende de la zona y te lo confirmamos al momento de agendar." },
-    { "p": "¿Puedo pedir pan para mi oficina o cafetería?", "r": "Sí. Manejamos pedidos recurrentes y precios al mayoreo para oficinas, cafeterías, hoteles, restaurantes y tiendas, con entrega programada los días que necesités." },
+    { "p": "¿Cómo hago mi pedido?", "r": "Agregá lo que querés al pedido desde el menú y tocá «Enviar pedido por WhatsApp»: el mensaje se arma solo con los productos, las cantidades y el total. Te respondemos con la confirmación, el total final y la hora de entrega. También podés escribirnos directo por WhatsApp o llamarnos." },
+    { "p": "¿Hacen entregas a domicilio?", "r": "Sí, pero entregamos únicamente dentro de Ciudad de Guatemala. No hacemos entregas en Mixco, Villa Nueva, Santa Catarina Pinula ni en otros municipios. El costo del envío depende de la zona y te lo confirmamos por WhatsApp antes de agendar." },
+    { "p": "¿Con cuánta anticipación tengo que pedir?", "r": "Para pan y repostería pedimos al menos 24 horas. Para pasteles personalizados, bandejas de bocadillos y pedidos de eventos, de 48 a 72 horas. Para cantidades pequeñas muchas veces podemos el mismo día: preguntanos por WhatsApp." },
     { "p": "¿Qué formas de pago aceptan?", "r": "Aceptamos efectivo, transferencia bancaria y tarjeta. En pasteles personalizados y pedidos de eventos solicitamos un anticipo del 50% para agendar la fecha." },
-    { "p": "¿A qué hora sale el pan francés fresco?", "r": "Horneamos pan francés varias veces al día. Las tandas principales salen temprano en la mañana y a media tarde, así que casi siempre encontrás pan caliente." },
-    { "p": "¿Puedo pedir un pastel personalizado con un diseño específico?", "r": "Claro. Mandanos por WhatsApp la foto o idea de referencia, el número de porciones y la fecha, y te cotizamos el pastel personalizado." },
-    { "p": "¿Dónde está ubicada Cefas Panadería?", "r": "Estamos en Ciudad de Guatemala. Encontrá la dirección exacta, el mapa y nuestros horarios en la página de contacto." }
+    { "p": "¿Los precios del menú son los finales?", "r": "Los precios del menú son de referencia y el total que ves al armar tu pedido es un estimado. Te confirmamos el total final por WhatsApp, con el envío incluido si es a domicilio, antes de que pagues nada." },
+    { "p": "¿Puedo pedir un pastel personalizado con un diseño específico?", "r": "Claro. Mandanos por WhatsApp la foto o idea de referencia, el número de porciones, el sabor y la fecha, y te cotizamos el pastel personalizado." },
+    { "p": "¿Puedo pedir pan para mi oficina, cafetería o evento?", "r": "Sí. Manejamos pedidos grandes y recurrentes con precio por volumen para oficinas, cafeterías, hoteles, restaurantes y tiendas dentro de Ciudad de Guatemala, con entrega programada los días que necesités." },
+    { "p": "¿A qué hora sale el pan francés fresco?", "r": "Horneamos pan francés varias veces al día. Las tandas principales salen temprano en la mañana y a media tarde, así que casi siempre encontrás pan caliente." }
   ]
 }

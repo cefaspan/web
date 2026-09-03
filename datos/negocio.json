@@ -5,9 +5,9 @@
   "descripcionCorta": "Panadería artesanal en Ciudad de Guatemala. Pan francés, pan dulce tradicional, repostería y pasteles. Pedidos por encargo para casa, oficina y eventos.",
   "dominio": "https://willianhuit.github.io/cefas-web",
   "rutaBase": "/cefas-web",
-  "telefono": "+502 0000-0000",
-  "telefonoE164": "+50200000000",
-  "whatsapp": "50200000000",
+  "telefono": "+502 4637-9417",
+  "telefonoE164": "+50246379417",
+  "whatsapp": "50246379417",
   "email": "pedidos@cefaspanaderia.com",
   "direccion": {
     "calle": "PENDIENTE: dirección exacta",
@@ -35,9 +35,11 @@
   "simboloMoneda": "Q",
   "rangoPrecios": "Q",
   "anticipacionEncargoHoras": 24,
+  "_notaCobertura": "Entregamos SOLO dentro de Ciudad de Guatemala. En zonasCobertura van unicamente zonas de la capital: si se agrega un municipio (Mixco, Villa Nueva, etc.) el sitio empezaria a prometer algo que no se cumple.",
+  "entregaSolo": "Entregamos únicamente dentro de Ciudad de Guatemala",
   "zonasCobertura": [
     "Zona 1", "Zona 2", "Zona 4", "Zona 5", "Zona 7", "Zona 9", "Zona 10",
     "Zona 11", "Zona 12", "Zona 13", "Zona 14", "Zona 15", "Zona 16", "Zona 18",
-    "Zona 21", "Mixco", "Villa Nueva", "San Miguel Petapa", "Santa Catarina Pinula", "Carretera a El Salvador"
+    "Zona 21"
   ]
 }

@@ -41,8 +41,28 @@ const DIRECCION_UNA_LINEA = [N.direccion.calle, N.direccion.zona, N.direccion.ci
 const IMG_GENERICA = 'pan-img-generico.jpg';
 const imagenDe = (obj) => `{{BASE}}assets/img/${esc(obj.imagen || IMG_GENERICA)}`;
 
+/* Cuántas piezas trae una unidad de venta, cuando el texto lo dice sin
+   ambigüedad ("docena", "paquete de 6", "bandeja 40 piezas"). Sirve para
+   mostrar a cuánto sale cada pieza, que es el argumento de venta de los
+   paquetes. Si no se puede deducir, devuelve 0 y no se muestra nada.   */
+function piezasPorUnidad(unidad) {
+  const u = String(unidad || '').toLowerCase();
+  if (/docena/.test(u)) return 12;
+  const paquete = u.match(/(?:paquete|caja|bolsa)\s+de\s+(\d+)/);
+  if (paquete) return Number(paquete[1]);
+  const piezas = u.match(/(\d+)\s*(?:piezas|unidades)/);
+  if (piezas) return Number(piezas[1]);
+  return 0;
+}
+
+
 const todosLosProductos = CAT.categorias.flatMap((c) =>
   c.productos.map((p) => ({ ...p, categoria: c.nombre, categoriaId: c.id })));
+
+/* Productos que se venden por paquete y cuyo precio por pieza es calculable */
+const PAQUETES = todosLosProductos
+  .filter((p) => p.precio > 0 && piezasPorUnidad(p.unidad) > 1)
+  .sort((a, b) => a.precio - b.precio);
 
 /* --- Páginas -------------------------------------------------------------- */
 const PAGINAS = [
@@ -50,19 +70,19 @@ const PAGINAS = [
     archivo: 'index.html', ruta: '/', profundidad: 0, nav: 'inicio', prioridad: '1.0',
     plantilla: 'inicio.html',
     titulo: 'Cefas Panadería en Guatemala | Pan fresco y encargos',
-    descripcion: 'Panadería en Ciudad de Guatemala. Pan francés, pan dulce guatemalteco, pan artesanal, repostería y pasteles por encargo. Pedí por WhatsApp y recibí a domicilio.'
+    descripcion: 'Pedí pan francés, pan dulce, pan artesanal, repostería y pasteles. Armá tu pedido y envialo por WhatsApp. Entregamos sólo en Ciudad de Guatemala.'
   },
   {
     archivo: 'menu/index.html', ruta: '/menu/', profundidad: 1, nav: 'menu', prioridad: '0.9',
     plantilla: 'menu.html',
     titulo: 'Menú y precios | Cefas Panadería Guatemala',
-    descripcion: 'Menú completo de Cefas Panadería: pan francés, champurradas, cubiletes, pan artesanal, croissants, pasteles y café. Precios en quetzales y pedido por WhatsApp.'
+    descripcion: 'Precios en quetzales de pan francés, champurradas, cubiletes, pan artesanal, croissants, pasteles y café. Agregá al pedido y envialo por WhatsApp en un clic.'
   },
   {
     archivo: 'encargos/index.html', ruta: '/encargos/', profundidad: 1, nav: 'encargos', prioridad: '0.9',
     plantilla: 'encargos.html',
     titulo: 'Pedidos por encargo | Pan y pasteles a domicilio en Guatemala',
-    descripcion: 'Hacé tu encargo de pan, pasteles y bocadillos en Cefas Panadería. Entregas en Ciudad de Guatemala para casa, oficina y eventos. Pedí con 24 horas de anticipación.'
+    descripcion: 'Encargá pan, pasteles y bocadillos para casa, oficina y eventos con 24 horas de anticipación. Entregamos sólo dentro de Ciudad de Guatemala. Cotizá por WhatsApp.'
   },
   {
     archivo: 'contacto/index.html', ruta: '/contacto/', profundidad: 1, nav: 'contacto', prioridad: '0.7',
@@ -95,13 +115,25 @@ function tarjetasCategorias() {
         </a>`).join('\n');
 }
 
-function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
+function tarjetaProducto(p, { conBoton = true, insignia = false, porPieza = false } = {}) {
   const precio = p.precio > 0 ? money(p.precio) : 'Cotización';
   const buscar = `${p.nombre} ${p.descripcion} ${p.categoria || ''}`;
+  const piezas = piezasPorUnidad(p.unidad);
   const etiquetas = [
     p.encargo ? `<span class="etiqueta etiqueta--encargo">${ico('calendario')} Por encargo</span>` : '',
     insignia && !p.encargo ? `<span class="etiqueta etiqueta--favorito">${ico('estrella')} Favorito</span>` : ''
   ].filter(Boolean).join('');
+
+  // Precio por pieza: es división del precio real, no un descuento inventado
+  const equivalencia = porPieza && piezas > 1 && p.precio > 0
+    ? `<p class="producto__pieza">${ico('check')} Sale a <strong>${esc(money(p.precio / piezas))}</strong> cada uno</p>`
+    : '';
+
+  // El contador (− 2 +) lo crea app.js la primera vez que se agrega el
+  // producto: son 50 tarjetas por página y no hace falta enviarlo en el HTML.
+  const acciones = p.precio > 0 && conBoton
+    ? `<button class="btn btn--principal btn--compacto" type="button" data-agregar>${ico('mas')} Agregar al pedido</button>`
+    : `<a class="btn btn--secundario btn--compacto" href="{{BASE}}encargos/#formulario">${ico('chat')} Pedir cotización</a>`;
 
   return `
           <article class="producto" data-producto data-id="${esc(p.id)}" data-nombre="${esc(p.nombre)}" data-precio="${p.precio}" data-unidad="${esc(p.unidad)}" data-buscar="${esc(buscar)}" data-reveal>
@@ -118,13 +150,15 @@ function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
                 </div>
               </div>
               <p class="producto__desc">${esc(p.descripcion)}</p>
-              <div class="producto__pie">
-                ${conBoton && p.precio > 0
-                  ? `<button class="btn btn--principal btn--compacto" type="button" data-agregar>${ico('mas')} <span data-agregar-texto>Agregar al pedido</span></button>`
-                  : `<a class="btn btn--secundario btn--compacto" href="{{BASE}}encargos/#formulario">${ico('chat')} Pedir cotización</a>`}
+              ${equivalencia}
+              <div class="producto__pie">${acciones}
               </div>
             </div>
           </article>`;
+}
+
+function bloquePaquetes() {
+  return PAQUETES.map((p) => tarjetaProducto(p, { porPieza: true })).join('');
 }
 
 function menuCompleto() {
@@ -209,7 +243,9 @@ function schemaNegocio() {
       opens: h.abre,
       closes: h.cierra
     })),
-    areaServed: N.zonasCobertura.map((z) => ({ '@type': 'Place', name: `${z}, Guatemala` })),
+    // Sólo Ciudad de Guatemala: no se listan municipios del área metropolitana
+    areaServed: [{ '@type': 'City', name: 'Ciudad de Guatemala' }].concat(
+      N.zonasCobertura.map((z) => ({ '@type': 'Place', name: `${z}, Ciudad de Guatemala` }))),
     sameAs: Object.values(N.redes).filter(Boolean),
     potentialAction: {
       '@type': 'OrderAction',
@@ -410,8 +446,9 @@ function cabecera(pagina) {
     </nav>
 
     <div class="cabecera__acciones">
-      <button class="btn btn--secundario carrito-btn" type="button" data-carrito-abrir aria-label="Ver mi pedido">
+      <button class="btn btn--principal carrito-btn" type="button" data-carrito-abrir aria-label="Ver mi pedido">
         ${ico('canasta')}<span class="btn--texto-largo">Mi pedido</span>
+        <strong class="carrito-btn__total" data-carrito-total data-si-hay-pedido hidden>${N.simboloMoneda}0.00</strong>
         <span class="carrito-btn__contador" data-carrito-contador hidden>0</span>
       </button>
       <button class="menu-btn" type="button" data-menu-btn aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="nav-principal">
@@ -484,6 +521,21 @@ function pie(pagina) {
 </a>`;
 }
 
+/* Barra fija de pedido para móvil: mientras hay algo en el carrito, el total
+   y el botón de cerrar la compra quedan siempre a la vista. */
+function barraVenta() {
+  return `
+<div class="barra-venta" data-barra-venta hidden>
+  <div class="barra-venta__info">
+    <strong data-carrito-total>${N.simboloMoneda}0.00</strong>
+    <span><span data-carrito-unidades>0</span> en tu pedido</span>
+  </div>
+  <button class="btn btn--wa" type="button" data-carrito-abrir>
+    ${ico('canasta')} Ver mi pedido
+  </button>
+</div>`;
+}
+
 function panelCarrito(pagina) {
   const base = '../'.repeat(pagina.profundidad);
   return `
@@ -529,12 +581,16 @@ function sustituir(html, pagina) {
     MAPA_EMBED: N.redes.googleMapsEmbed || '',
     MAPA_ENLACE: N.redes.googleMaps || `https://www.google.com/maps/search/${encodeURIComponent(N.nombre + ' ' + DIRECCION_UNA_LINEA)}`,
     ANTICIPACION: String(N.anticipacionEncargoHoras),
+    ENTREGA_SOLO: esc(N.entregaSolo),
+    PRECIO_DESDE: money(Math.min(...todosLosProductos.filter((p) => p.precio > 0).map((p) => p.precio))),
     TOTAL_PRODUCTOS: String(todosLosProductos.length),
     TOTAL_CATEGORIAS: String(CAT.categorias.length),
+    TOTAL_ZONAS: String(N.zonasCobertura.length),
     CATEGORIAS_TARJETAS: tarjetasCategorias(),
     MENU_COMPLETO: menuCompleto(),
     FILTROS: botonesFiltro(),
     DESTACADOS: destacados(),
+    PAQUETES: bloquePaquetes(),
     FAQ: bloqueFAQ(),
     ZONAS: bloqueZonas(),
     HORARIOS: bloqueHorarios(),
@@ -581,6 +637,7 @@ function construirPagina(pagina) {
     sustituir(cuerpo, pagina).trim(),
     '</main>',
     pie(pagina),
+    barraVenta(),
     panelCarrito(pagina),
     `<script src="${base}assets/js/app.js" defer></script>`,
     '</body>',

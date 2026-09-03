@@ -11,12 +11,12 @@
   <div class="contenedor">
     <div class="dos-columnas">
       <div class="dos-columnas__texto" data-reveal>
-        <span class="eyebrow eyebrow--ico">{{ico:caja}} Pedidos por encargo</span>
-        <h1>Encargá tu pan, pasteles y bocadillos en {{CIUDAD}}</h1>
+        <span class="eyebrow eyebrow--ico">{{ico:pin}} Solo Ciudad de Guatemala</span>
+        <h1>Encargá tu pan, pasteles y bocadillos</h1>
         <p class="entradilla">
-          Preparamos pedidos por encargo para casa, oficina y eventos. Vos elegís qué querés y para
-          cuándo; nosotros horneamos fresco ese mismo día y te lo entregamos o te lo llevamos a
-          domicilio.
+          Vos elegís qué querés y para cuándo; nosotros lo horneamos fresco ese día y te lo
+          llevamos a tu casa, tu oficina o tu evento dentro de la capital. Cotización el mismo
+          día por WhatsApp.
         </p>
         <div class="grupo-btn">
           <a class="btn btn--principal btn--grande" href="#formulario">{{ico:calendario}} Llenar el formulario</a>
@@ -175,8 +175,9 @@
         </div>
 
         <div class="campo">
-          <label for="zona">Zona o municipio <span class="ayuda">(si es a domicilio)</span></label>
-          <input type="text" id="zona" name="zona" placeholder="Zona 10, Mixco, Villa Nueva…">
+          <label for="zona">Zona de la capital <span class="ayuda">(si es a domicilio)</span></label>
+          <input type="text" id="zona" name="zona" placeholder="Zona 10, Zona 14, Zona 15…" aria-describedby="ayuda-zona">
+          <span class="ayuda" id="ayuda-zona">{{ENTREGA_SOLO}}.</span>
         </div>
 
         <div class="campo campo--ancho">

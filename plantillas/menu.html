@@ -10,21 +10,11 @@
 <section class="seccion seccion--corta">
   <div class="contenedor">
     <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:canasta}} Menú y precios</span>
-      <h1>Menú de Cefas Panadería en Guatemala</h1>
+      <span class="eyebrow eyebrow--ico">{{ico:pin}} Solo Ciudad de Guatemala</span>
+      <h1>Menú y precios de Cefas Panadería</h1>
       <p class="entradilla">
-        {{TOTAL_PRODUCTOS}} productos en {{TOTAL_CATEGORIAS}} categorías: pan francés y pan salado,
-        pan dulce guatemalteco, panes artesanales, repostería, pasteles por encargo, opciones para
-        eventos y café. Precios en quetzales.
-      </p>
-    </div>
-
-    <div class="aviso" data-reveal>
-      <span class="aviso__ico" aria-hidden="true">{{ico:canasta}}</span>
-      <p>
-        <strong>Cómo pedir:</strong> tocá <em>Agregar al pedido</em> en lo que querés, revisá tu
-        canasta y enviá todo por WhatsApp. Te confirmamos disponibilidad, total final y hora de
-        entrega. Para encargos grandes pedimos {{ANTICIPACION}} horas de anticipación.
+        {{TOTAL_PRODUCTOS}} productos desde {{PRECIO_DESDE}}, en quetzales. Tocá
+        <strong>Agregar al pedido</strong> en lo que querés y envialo por WhatsApp en un clic.
       </p>
     </div>
 
@@ -47,6 +37,15 @@
 <section class="seccion seccion--menu">
   <div class="contenedor">
     {{MENU_COMPLETO}}
+
+    <div class="aviso" data-reveal>
+      <span class="aviso__ico" aria-hidden="true">{{ico:camion}}</span>
+      <p>
+        <strong>{{ENTREGA_SOLO}}.</strong> Fuera de la capital no hacemos entregas, pero podés
+        pasar a recoger tu pedido. Para encargos grandes pedimos {{ANTICIPACION}} horas de
+        anticipación y te confirmamos el total final por WhatsApp.
+      </p>
+    </div>
 
     <p class="sin-resultados centro" data-sin-resultados hidden>
       <span class="sin-resultados__ico" aria-hidden="true">{{ico:lupa:ico--xl}}</span>

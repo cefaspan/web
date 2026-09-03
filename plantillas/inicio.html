@@ -3,28 +3,27 @@
   <div class="hero__resplandor" aria-hidden="true"></div>
   <div class="contenedor hero__grid">
     <div class="hero__texto">
-      <span class="eyebrow eyebrow--ico">{{ico:fuego}} Panadería en Ciudad de Guatemala</span>
-      <h1>Pan fresco todos los días y <em>pedidos por encargo</em></h1>
+      <span class="eyebrow eyebrow--ico">{{ico:pin}} Solo Ciudad de Guatemala</span>
+      <h1>Pedí tu pan hoy y <em>recibilo recién horneado</em></h1>
       <p>
-        En Cefas horneamos pan francés, pan dulce guatemalteco, pan artesanal y repostería
-        cada mañana. Hacé tu encargo desde acá y recibilo en tu casa, tu oficina o tu evento
-        en {{CIUDAD}}.
+        Armá tu pedido acá, envialo por WhatsApp en un clic y te lo entregamos en tu casa,
+        tu oficina o tu evento. {{TOTAL_PRODUCTOS}} productos desde {{PRECIO_DESDE}}.
       </p>
 
-      <ul class="hero__lista">
-        <li>{{ico:check}} Pan francés recién horneado varias veces al día</li>
-        <li>{{ico:check}} Pasteles y bocadillos personalizados para tus celebraciones</li>
-        <li>{{ico:check}} Entrega a domicilio en las principales zonas de la capital</li>
-      </ul>
-
       <div class="grupo-btn">
-        <a class="btn btn--principal btn--grande" href="{{BASE}}menu/">{{ico:canasta}} Ver el menú y precios</a>
-        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20hacer%20un%20encargo." rel="noopener">{{ico:whatsapp}} Pedir por WhatsApp</a>
+        <a class="btn btn--principal btn--grande" href="{{BASE}}menu/">{{ico:canasta}} Pedir del menú</a>
+        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20hacer%20un%20pedido." rel="noopener">{{ico:whatsapp}} Pedir por WhatsApp</a>
       </div>
 
+      <ul class="hero__lista">
+        <li>{{ico:check}} Horneado el mismo día de la entrega</li>
+        <li>{{ico:check}} Sin apps ni registro: se pide por WhatsApp</li>
+        <li>{{ico:check}} Encargos con {{ANTICIPACION}} horas de anticipación</li>
+      </ul>
+
       <p class="hero__nota">
-        <span>{{ico:reloj}} Encargos con {{ANTICIPACION}} horas de anticipación</span>
-        <span>{{ico:camion}} Envíos en {{CIUDAD}}</span>
+        <span>{{ico:camion}} {{ENTREGA_SOLO}}</span>
+        <span>{{ico:telefono}} <a href="tel:{{TELEFONO_E164}}">{{TELEFONO}}</a></span>
       </p>
     </div>
 
@@ -43,49 +42,31 @@
 
       <div class="hero__precio">
         <span class="hero__precio-eti">Pan francés desde</span>
-        <strong>Q1.25</strong>
+        <strong>{{PRECIO_DESDE}}</strong>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===================== BARRA DE CONFIANZA ===================== -->
-<section class="confianza" aria-label="Por qué elegir Cefas Panadería">
+<section class="confianza" aria-label="Cómo comprar en Cefas Panadería">
   <div class="contenedor confianza__grid">
-    <div><span class="confianza__ico" aria-hidden="true">{{ico:canasta}}</span><strong data-contador="{{TOTAL_PRODUCTOS}}" data-sufijo="+">{{TOTAL_PRODUCTOS}}+</strong><span>productos en el menú</span></div>
+    <div><span class="confianza__ico" aria-hidden="true">{{ico:canasta}}</span><strong data-contador="{{TOTAL_PRODUCTOS}}" data-sufijo="+">{{TOTAL_PRODUCTOS}}+</strong><span>productos para pedir</span></div>
+    <div><span class="confianza__ico" aria-hidden="true">{{ico:whatsapp}}</span><strong>1 clic</strong><span>y tu pedido va por WhatsApp</span></div>
     <div><span class="confianza__ico" aria-hidden="true">{{ico:reloj}}</span><strong data-contador="{{ANTICIPACION}}" data-sufijo=" h">{{ANTICIPACION}} h</strong><span>de anticipación para encargos</span></div>
-    <div><span class="confianza__ico" aria-hidden="true">{{ico:fuego}}</span><strong>Diario</strong><span>horneamos cada mañana</span></div>
-    <div><span class="confianza__ico" aria-hidden="true">{{ico:camion}}</span><strong>A domicilio</strong><span>en Ciudad de Guatemala</span></div>
+    <div><span class="confianza__ico" aria-hidden="true">{{ico:pin}}</span><strong data-contador="{{TOTAL_ZONAS}}" data-sufijo=" zonas">{{TOTAL_ZONAS}} zonas</strong><span>de la capital con entrega</span></div>
   </div>
 </section>
 
-<!-- ===================== CATEGORÍAS ===================== -->
-<section class="seccion" id="categorias" aria-labelledby="t-categorias">
-  <div class="contenedor">
-    <div class="cabecera-seccion centro" data-reveal>
-      <span class="eyebrow">Nuestras variedades</span>
-      <h2 id="t-categorias">Todo el pan que buscás, en un solo lugar</h2>
-      <p class="entradilla">
-        Desde el pan francés de siempre hasta hogazas de masa madre y pasteles personalizados.
-        Elegí una categoría y armá tu pedido.
-      </p>
-    </div>
-
-    <div class="rejilla rejilla--3">
-      {{CATEGORIAS_TARJETAS}}
-    </div>
-  </div>
-</section>
-
-<!-- ===================== DESTACADOS ===================== -->
-<section class="seccion seccion--crema" id="destacados" aria-labelledby="t-destacados">
+<!-- ===================== LO MÁS PEDIDO ===================== -->
+<section class="seccion" id="destacados" aria-labelledby="t-destacados">
   <div class="contenedor">
     <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow">Los favoritos</span>
-      <h2 id="t-destacados">Lo más pedido en Cefas</h2>
+      <span class="eyebrow eyebrow--ico">{{ico:estrella}} Los favoritos</span>
+      <h2 id="t-destacados">Empezá por lo más pedido</h2>
       <p class="entradilla">
-        Agregá lo que querés a tu pedido y envialo por WhatsApp en un clic. Te confirmamos
-        disponibilidad, total y hora de entrega.
+        Tocá <strong>Agregar al pedido</strong> en lo que querés. Cuando termines, el mensaje de
+        WhatsApp se arma solo con todo el detalle y el total.
       </p>
     </div>
 
@@ -94,104 +75,90 @@
     </div>
 
     <div class="grupo-btn grupo-btn--suelto" data-reveal>
-      <a class="btn btn--principal" href="{{BASE}}menu/">Ver el menú completo {{ico:flecha:ico--desliza}}</a>
-      <a class="btn btn--secundario" href="{{BASE}}encargos/">Hacer un encargo grande</a>
+      <a class="btn btn--principal" href="{{BASE}}menu/">Ver los {{TOTAL_PRODUCTOS}} productos {{ico:flecha:ico--desliza}}</a>
     </div>
   </div>
 </section>
 
-<!-- ===================== CÓMO FUNCIONA ===================== -->
-<section class="seccion seccion--oscura" id="como-funciona" aria-labelledby="t-como">
+<!-- ===================== PAQUETES Y DOCENAS ===================== -->
+<section class="seccion seccion--crema" id="paquetes" aria-labelledby="t-paquetes">
+  <div class="contenedor">
+    <div class="cabecera-seccion" data-reveal>
+      <span class="eyebrow eyebrow--ico">{{ico:caja}} Llevá más, pagá menos por pieza</span>
+      <h2 id="t-paquetes">Docenas, paquetes y bandejas</h2>
+      <p class="entradilla">
+        La forma más conveniente de pedir para la casa, la oficina o una reunión. Mismo pan,
+        mejor precio por pieza.
+      </p>
+    </div>
+
+    <div class="rejilla rejilla--4">
+      {{PAQUETES}}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CATEGORÍAS ===================== -->
+<section class="seccion" id="categorias" aria-labelledby="t-categorias">
   <div class="contenedor">
     <div class="cabecera-seccion centro" data-reveal>
-      <span class="eyebrow">Pedidos por encargo</span>
-      <h2 id="t-como">Hacer tu encargo toma menos de un minuto</h2>
-      <p class="entradilla">
-        No necesitás app ni registrarte. Armá tu pedido en la web y lo terminamos de coordinar
-        por WhatsApp.
-      </p>
+      <span class="eyebrow">El menú completo</span>
+      <h2 id="t-categorias">Elegí por categoría y armá tu pedido</h2>
+    </div>
+
+    <div class="rejilla rejilla--3">
+      {{CATEGORIAS_TARJETAS}}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CÓMO PEDIR ===================== -->
+<section class="seccion seccion--oscura" id="como-pedir" aria-labelledby="t-como">
+  <div class="contenedor">
+    <div class="cabecera-seccion centro" data-reveal>
+      <span class="eyebrow">Pedir es así de rápido</span>
+      <h2 id="t-como">Tu pedido en menos de un minuto</h2>
     </div>
 
     <ol class="pasos">
       <li data-reveal>
         <span class="pasos__ico" aria-hidden="true">{{ico:canasta}}</span>
-        <h3>Elegí tus productos</h3>
-        <p>Recorré el menú y agregá lo que querés al pedido. Podés mezclar pan, repostería, pasteles y café.</p>
+        <h3>Agregá al pedido</h3>
+        <p>Recorré el menú y sumá lo que querés. Podés mezclar pan, repostería, pasteles y café.</p>
       </li>
       <li data-reveal>
         <span class="pasos__ico" aria-hidden="true">{{ico:whatsapp}}</span>
-        <h3>Enviá tu pedido</h3>
-        <p>Con un clic se arma el mensaje de WhatsApp con todo el detalle y el total estimado. Solo apretá enviar.</p>
+        <h3>Enviá por WhatsApp</h3>
+        <p>Un clic y el mensaje sale con productos, cantidades y total. Solo apretá enviar.</p>
       </li>
       <li data-reveal>
-        <span class="pasos__ico" aria-hidden="true">{{ico:fuego}}</span>
-        <h3>Confirmamos y horneamos</h3>
-        <p>Te confirmamos disponibilidad, precio final y hora. Preparamos todo fresco para el día que lo necesitás.</p>
+        <span class="pasos__ico" aria-hidden="true">{{ico:check}}</span>
+        <h3>Confirmamos el total</h3>
+        <p>Te decimos disponibilidad, precio final con envío y la hora de entrega.</p>
       </li>
       <li data-reveal>
         <span class="pasos__ico" aria-hidden="true">{{ico:camion}}</span>
-        <h3>Recogé o recibí</h3>
-        <p>Pasá por la panadería o te lo llevamos a domicilio en {{CIUDAD}} y municipios cercanos.</p>
+        <h3>Recibilo caliente</h3>
+        <p>Lo horneamos ese día y te lo llevamos, o pasás a recogerlo por la panadería.</p>
       </li>
     </ol>
-  </div>
-</section>
 
-<!-- ===================== EVENTOS Y EMPRESAS ===================== -->
-<section class="seccion" id="eventos" aria-labelledby="t-eventos">
-  <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow">Eventos y empresas</span>
-      <h2 id="t-eventos">Pan y bocadillos para tu oficina, reunión o celebración</h2>
-      <p class="entradilla">
-        Preparamos pedidos grandes con entrega programada: coffee breaks, cajas de desayuno,
-        bandejas de bocadillos, mesas de postres y pan al mayoreo.
-      </p>
-    </div>
-
-    <div class="rejilla rejilla--3">
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:cafe:ico--l}}</span>
-        <h3>Coffee break y desayunos</h3>
-        <p>
-          Pan dulce surtido, bocadillos salados, café y jugos para capacitaciones, juntas y
-          eventos corporativos. Servimos desde 10 personas.
-        </p>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:pastel:ico--l}}</span>
-        <h3>Pasteles y mesas dulces</h3>
-        <p>
-          Pasteles personalizados para cumpleaños, bautizos y graduaciones, además de mesas de
-          mini postres con el tema y los colores de tu evento.
-        </p>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:caja:ico--l}}</span>
-        <h3>Pan al mayoreo</h3>
-        <p>
-          Abastecemos tiendas, cafeterías, hoteles y restaurantes con entrega programada y
-          precio por volumen. Pedidos recurrentes bienvenidos.
-        </p>
-      </div>
-    </div>
-
-    <div class="grupo-btn grupo-btn--suelto" data-reveal>
-      <a class="btn btn--principal" href="{{BASE}}encargos/#formulario">Cotizar mi evento</a>
-      <a class="btn btn--secundario" href="{{BASE}}menu/#eventos">Ver opciones para eventos</a>
+    <div class="grupo-btn grupo-btn--centro grupo-btn--suelto" data-reveal>
+      <a class="btn btn--claro btn--grande" href="{{BASE}}menu/">{{ico:canasta}} Empezar mi pedido</a>
     </div>
   </div>
 </section>
 
 <!-- ===================== COBERTURA ===================== -->
-<section class="seccion seccion--crema" id="cobertura" aria-labelledby="t-cobertura">
+<section class="seccion" id="cobertura" aria-labelledby="t-cobertura">
   <div class="contenedor">
     <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow">Entregas</span>
-      <h2 id="t-cobertura">Dónde entregamos en Guatemala</h2>
+      <span class="eyebrow eyebrow--ico">{{ico:camion}} Entregas</span>
+      <h2 id="t-cobertura">Entregamos solo en Ciudad de Guatemala</h2>
       <p class="entradilla">
-        Llevamos tu pedido a las principales zonas de {{CIUDAD}} y a los municipios cercanos.
-        El costo de envío depende de la zona y te lo confirmamos al agendar.
+        Trabajamos únicamente dentro de la capital, en estas {{TOTAL_ZONAS}} zonas. Fuera de
+        Ciudad de Guatemala no hacemos entregas, pero podés pasar a recoger tu pedido por la
+        panadería. El costo del envío depende de la zona y te lo confirmamos al agendar.
       </p>
     </div>
 
@@ -200,59 +167,63 @@
     </ul>
 
     <p class="nota-suelta">
-      ¿No ves tu zona? Escribinos por
-      <a href="https://wa.me/{{WHATSAPP}}" rel="noopener">WhatsApp</a> y vemos cómo hacerlo llegar.
+      ¿Tu zona no aparece? Escribinos por
+      <a href="https://wa.me/{{WHATSAPP}}" rel="noopener">WhatsApp</a> y te confirmamos si llegamos.
     </p>
   </div>
 </section>
 
-<!-- ===================== SOBRE CEFAS ===================== -->
-<section class="seccion" id="nosotros" aria-labelledby="t-nosotros">
+<!-- ===================== EVENTOS Y EMPRESAS ===================== -->
+<section class="seccion seccion--crema" id="eventos" aria-labelledby="t-eventos">
   <div class="contenedor">
-    <div class="dos-columnas">
-      <div class="dos-columnas__medios" data-reveal>
-        <figure class="foto foto--4-3 foto--marco">
-          <img src="{{IMG_GENERICA}}" alt="Panaderos de Cefas amasando pan artesanal en Ciudad de Guatemala" width="554" height="554" loading="lazy" decoding="async">
-        </figure>
-        <div class="dato-flotante">
-          <span class="dato-flotante__ico" aria-hidden="true">{{ico:trigo}}</span>
-          <span><strong>24 h</strong>de fermentación en la masa madre</span>
-        </div>
-      </div>
+    <div class="cabecera-seccion" data-reveal>
+      <span class="eyebrow eyebrow--ico">{{ico:usuarios}} Pedidos grandes</span>
+      <h2 id="t-eventos">Para tu oficina, reunión o celebración</h2>
+      <p class="entradilla">
+        Coffee breaks, cajas de desayuno, bandejas de bocadillos, mesas de postres y pan al
+        mayoreo, con entrega programada en la capital. Cotización el mismo día.
+      </p>
+    </div>
 
-      <div class="dos-columnas__texto" data-reveal>
-        <span class="eyebrow">Sobre nosotros</span>
-        <h2 id="t-nosotros">Una panadería guatemalteca, hecha a mano</h2>
+    <div class="rejilla rejilla--3">
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:cafe:ico--l}}</span>
+        <h3>Coffee break y desayunos</h3>
         <p>
-          Cefas Panadería nació con una idea sencilla: que en Guatemala se pueda conseguir pan
-          de verdad, hecho con tiempo y buenos ingredientes, sin que sea un lujo.
+          Pan dulce surtido, bocadillos salados, café y jugos para capacitaciones y juntas.
+          Servimos desde 10 personas.
         </p>
-        <p>
-          Cada día amasamos y horneamos en tandas, para que el pan que llega a tu mesa salga del
-          horno el mismo día. El pan francés, las champurradas y los cubiletes se hacen con las
-          recetas de siempre; los panes artesanales, con fermentaciones largas que les dan más
-          sabor y los hacen más fáciles de digerir.
-        </p>
-        <p>
-          También creemos que un buen pedido no debería ser complicado: armá tu encargo desde
-          esta página y terminá de coordinarlo por WhatsApp, sin apps ni registros. Trabajamos
-          igual para una docena de pan dulce que para el coffee break de una empresa.
-        </p>
-
-        <div class="grupo-btn">
-          <a class="btn btn--secundario" href="{{BASE}}contacto/">{{ico:pin}} Cómo llegar</a>
-          <a class="btn btn--secundario" href="{{PEDIDOSYA}}" rel="noopener nofollow">{{ico:bolsa}} Pedir en PedidosYa</a>
-        </div>
       </div>
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:pastel:ico--l}}</span>
+        <h3>Pasteles y mesas dulces</h3>
+        <p>
+          Pasteles personalizados para cumpleaños, bautizos y graduaciones, y mesas de mini
+          postres con el tema y los colores de tu evento.
+        </p>
+      </div>
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:caja:ico--l}}</span>
+        <h3>Pan al mayoreo</h3>
+        <p>
+          Abastecemos tiendas, cafeterías, hoteles y restaurantes de la capital con entrega
+          programada y precio por volumen.
+        </p>
+      </div>
+    </div>
+
+    <div class="grupo-btn grupo-btn--suelto" data-reveal>
+      <a class="btn btn--principal" href="{{BASE}}encargos/#formulario">{{ico:calendario}} Cotizar mi pedido</a>
+      <a class="btn btn--wa" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20un%20pedido%20para%20mi%20empresa." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
     </div>
   </div>
 </section>
 
 <!-- ===================== FAQ ===================== -->
-<section class="seccion seccion--crema" id="preguntas" aria-labelledby="t-faq">
+<section class="seccion" id="preguntas" aria-labelledby="t-faq">
   <div class="contenedor">
     <div class="cabecera-seccion centro" data-reveal>
-      <span class="eyebrow">Preguntas frecuentes</span>
+      <span class="eyebrow">Antes de pedir</span>
       <h2 id="t-faq">Lo que más nos preguntan</h2>
     </div>
 
@@ -262,19 +233,50 @@
   </div>
 </section>
 
+<!-- ===================== SOBRE CEFAS (corto, al final) ===================== -->
+<section class="seccion seccion--crema" id="nosotros" aria-labelledby="t-nosotros">
+  <div class="contenedor">
+    <div class="dos-columnas">
+      <div class="dos-columnas__medios" data-reveal>
+        <figure class="foto foto--16-10 foto--marco">
+          <img src="{{IMG_GENERICA}}" alt="Panaderos de Cefas amasando pan artesanal en Ciudad de Guatemala" width="554" height="554" loading="lazy" decoding="async">
+        </figure>
+        <div class="dato-flotante">
+          <span class="dato-flotante__ico" aria-hidden="true">{{ico:trigo}}</span>
+          <span><strong>24 h</strong>de fermentación en la masa madre</span>
+        </div>
+      </div>
+
+      <div class="dos-columnas__texto" data-reveal>
+        <span class="eyebrow">Quiénes horneamos</span>
+        <h2 id="t-nosotros">Pan de verdad, hecho el mismo día</h2>
+        <p>
+          Amasamos y horneamos en tandas cada día, para que lo que llega a tu mesa salga del
+          horno el mismo día. El pan francés, las champurradas y los cubiletes con las recetas
+          de siempre; los panes artesanales con fermentaciones largas.
+        </p>
+        <div class="grupo-btn">
+          <a class="btn btn--secundario" href="{{BASE}}contacto/">{{ico:pin}} Dónde estamos</a>
+          <a class="btn btn--secundario" href="{{PEDIDOSYA}}" rel="noopener nofollow">{{ico:bolsa}} Pedir en PedidosYa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== CTA FINAL ===================== -->
 <section class="seccion">
   <div class="contenedor">
     <div class="cta-final" data-reveal>
-      <span class="cta-final__ico" aria-hidden="true">{{ico:pan:ico--xl}}</span>
-      <h2>¿Listo para hacer tu pedido?</h2>
+      <span class="cta-final__ico" aria-hidden="true">{{ico:canasta:ico--xl}}</span>
+      <h2>Armá tu pedido ahora</h2>
       <p>
-        Armá tu encargo en el menú o escribinos directo por WhatsApp. Con {{ANTICIPACION}} horas
-        de anticipación te tenemos todo listo y recién horneado.
+        {{TOTAL_PRODUCTOS}} productos desde {{PRECIO_DESDE}}. Con {{ANTICIPACION}} horas de
+        anticipación te lo tenemos recién horneado.
       </p>
       <div class="grupo-btn grupo-btn--centro">
-        <a class="btn btn--claro btn--grande" href="{{BASE}}menu/">{{ico:canasta}} Ver el menú</a>
-        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20hacer%20un%20encargo." rel="noopener">{{ico:whatsapp}} Escribir por WhatsApp</a>
+        <a class="btn btn--claro btn--grande" href="{{BASE}}menu/">{{ico:canasta}} Ir al menú</a>
+        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20hacer%20un%20pedido." rel="noopener">{{ico:whatsapp}} Pedir por WhatsApp</a>
       </div>
     </div>
   </div>

@@ -162,8 +162,11 @@
   var velo = $('[data-velo]');
   var cuerpo = $('[data-carrito-cuerpo]');
   var vacio = $('[data-carrito-vacio]');
-  var totalEl = $('[data-carrito-total]');
+  var totales = $$('[data-carrito-total]');
+  var unidadesEls = $$('[data-carrito-unidades]');
   var contadores = $$('[data-carrito-contador]');
+  var soloSiHayPedido = $$('[data-si-hay-pedido]');
+  var barraVenta = $('[data-barra-venta]');
   var ultimoFoco = null;
 
   function totalPedido() {
@@ -173,16 +176,87 @@
     return pedido.reduce(function (s, l) { return s + l.cantidad; }, 0);
   }
 
+  function cantidadDe(id) {
+    for (var i = 0; i < pedido.length; i++) {
+      if (pedido[i].id === id) return pedido[i].cantidad;
+    }
+    return 0;
+  }
+
   function pintarContador() {
     var n = unidadesPedido();
+    var hay = n > 0;
     contadores.forEach(function (el) {
       el.textContent = n;
-      el.hidden = n === 0;
+      el.hidden = !hay;
+    });
+    unidadesEls.forEach(function (el) {
+      el.textContent = n + (n === 1 ? ' producto' : ' productos');
+    });
+    totales.forEach(function (el) { el.textContent = precio(totalPedido()); });
+    soloSiHayPedido.forEach(function (el) { el.hidden = !hay; });
+    // La barra fija de pedido sólo aparece cuando hay algo que cerrar
+    if (barraVenta) barraVenta.hidden = !hay;
+    document.body.classList.toggle('con-barra-venta', hay);
+  }
+
+  /* Crea el contador (− 2 +) de una tarjeta. No viene en el HTML: son 50
+     tarjetas por página y sólo hace falta cuando el producto ya está pedido. */
+  function crearContador(tarjeta) {
+    var nombre = tarjeta.dataset.nombre || 'este producto';
+    var caja = document.createElement('div');
+    caja.className = 'contador';
+    caja.setAttribute('data-contador-producto', '');
+
+    var menos = document.createElement('button');
+    menos.type = 'button';
+    menos.setAttribute('data-quitar', '');
+    menos.setAttribute('aria-label', 'Quitar uno de ' + nombre);
+    menos.innerHTML = iconoHTML('menos');
+
+    var cifra = document.createElement('span');
+    cifra.setAttribute('data-cantidad', '');
+    cifra.setAttribute('aria-live', 'polite');
+    cifra.setAttribute('aria-label', 'Cantidad de ' + nombre);
+
+    var mas = document.createElement('button');
+    mas.type = 'button';
+    mas.setAttribute('data-sumar', '');
+    mas.setAttribute('aria-label', 'Agregar otro de ' + nombre);
+    mas.innerHTML = iconoHTML('mas');
+
+    caja.appendChild(menos);
+    caja.appendChild(cifra);
+    caja.appendChild(mas);
+
+    var pie = $('.producto__pie', tarjeta) || tarjeta;
+    pie.appendChild(caja);
+    return caja;
+  }
+
+  /* Cada tarjeta muestra "Agregar al pedido" o, si ya está en el pedido, el
+     contador con su cantidad. Así se puede subir y bajar sin abrir el panel. */
+  function pintarTarjetas() {
+    $$('[data-producto]').forEach(function (tarjeta) {
+      var boton = $('[data-agregar]', tarjeta);
+      if (!boton) return;                       // productos de sólo cotización
+      var n = cantidadDe(tarjeta.dataset.id);
+      var contador = $('[data-contador-producto]', tarjeta);
+      if (n === 0) {
+        if (contador) contador.hidden = true;
+        boton.hidden = false;
+        return;
+      }
+      if (!contador) contador = crearContador(tarjeta);
+      $('[data-cantidad]', contador).textContent = n;
+      contador.hidden = false;
+      boton.hidden = true;
     });
   }
 
   function pintarCarrito() {
     pintarContador();
+    pintarTarjetas();
     if (!cuerpo) return;
 
     $$('.linea-carrito', cuerpo).forEach(function (el) { el.remove(); });
@@ -239,7 +313,6 @@
       if (vacio) cuerpo.insertBefore(fila, vacio); else cuerpo.appendChild(fila);
     });
 
-    if (totalEl) totalEl.textContent = precio(totalPedido());
     var enviar = $('[data-enviar-wa]');
     if (enviar) enviar.toggleAttribute('disabled', pedido.length === 0);
   }
@@ -290,14 +363,9 @@
     if (e.key === 'Escape' && panel && !panel.hidden) cerrarPanel();
   });
 
-  /* Botones "Agregar" de cada tarjeta de producto */
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest ? e.target.closest('[data-agregar]') : null;
-    if (!btn) return;
-    var tarjeta = btn.closest('[data-producto]');
-    if (!tarjeta) return;
+  function datosDeTarjeta(tarjeta) {
     var foto = tarjeta.querySelector('img');
-    agregar({
+    return {
       id: tarjeta.dataset.id,
       nombre: tarjeta.dataset.nombre,
       precio: parseFloat(tarjeta.dataset.precio) || 0,
@@ -305,18 +373,37 @@
       // .src (no getAttribute) devuelve la URL absoluta: el panel del carrito
       // vive en todas las páginas y las rutas relativas no coincidirían.
       img: foto ? foto.src : ''
-    });
-    // Confirmación en el propio botón, sin tocar el icono que ya trae
-    var etiqueta = $('[data-agregar-texto]', btn) || btn;
-    var original = btn.dataset.textoOriginal || etiqueta.textContent;
-    btn.dataset.textoOriginal = original;
-    etiqueta.textContent = 'Agregado al pedido';
-    btn.classList.add('es-agregado');
-    window.clearTimeout(btn._temporizador);
-    btn._temporizador = window.setTimeout(function () {
-      etiqueta.textContent = original;
-      btn.classList.remove('es-agregado');
-    }, 1400);
+    };
+  }
+
+  function quitarUno(id) {
+    for (var i = 0; i < pedido.length; i++) {
+      if (pedido[i].id === id) { cambiarCantidad(i, -1); return; }
+    }
+  }
+
+  /* Un solo oyente para "Agregar al pedido" y para el + / − de las tarjetas */
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest) return;
+    var accion = e.target.closest('[data-agregar], [data-sumar], [data-quitar]');
+    if (!accion) return;
+    var tarjeta = accion.closest('[data-producto]');
+    if (!tarjeta) return;
+
+    if (accion.hasAttribute('data-quitar')) {
+      quitarUno(tarjeta.dataset.id);
+      return;
+    }
+
+    agregar(datosDeTarjeta(tarjeta));
+
+    // Al agregar por primera vez el botón se reemplaza por el contador; se
+    // mueve el foco al "+" para que el teclado no lo pierda. Con el ratón no
+    // se ve nada porque el anillo de foco es :focus-visible.
+    if (accion.hasAttribute('data-agregar')) {
+      var mas = $('[data-sumar]', tarjeta);
+      if (mas) mas.focus();
+    }
   });
 
   /* --- Mensaje de WhatsApp ------------------------------------------------ */
