@@ -26,7 +26,7 @@
 
       <div class="dos-columnas__medios" data-reveal>
         <figure class="foto foto--4-3 foto--marco">
-          <img src="{{IMG_GENERICA}}" alt="Caja de pan y repostería lista para entregar de Cefas Panadería" width="554" height="554" loading="lazy" decoding="async">
+          <img src="{{IMG_GENERICA}}" alt="Caja de pan lista para entregar de Cefas Panadería" width="554" height="554" loading="lazy" decoding="async">
         </figure>
         <div class="dato-flotante">
           <span class="dato-flotante__ico" aria-hidden="true">{{ico:reloj}}</span>
@@ -57,7 +57,7 @@
       <li data-reveal>
         <span class="pasos__ico" aria-hidden="true">{{ico:calendario}}</span>
         <h3>Agendamos la fecha</h3>
-        <p>En pasteles y eventos pedimos un anticipo del 50% para reservar el día de entrega.</p>
+        <p>En pedidos para eventos podemos solicitar un anticipo para reservar el día de entrega.</p>
       </li>
       <li data-reveal>
         <span class="pasos__ico" aria-hidden="true">{{ico:camion}}</span>
@@ -83,20 +83,11 @@
     <div class="rejilla rejilla--3">
       <div class="tarjeta-info" data-reveal>
         <span class="chapa" aria-hidden="true">{{ico:croissant:ico--l}}</span>
-        <h3>Pan y repostería</h3>
+        <h3>Pan dulce y salado</h3>
         <p class="tarjeta-info__plazo">Desde {{ANTICIPACION}} horas</p>
         <p>
-          Docenas de pan francés y pan dulce, panes artesanales, croissants, donas y brownies.
+          Docenas de pan francés y pan dulce, panes artesanales, donas y panes decorados.
           Para cantidades pequeñas muchas veces podemos el mismo día: preguntanos.
-        </p>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:pastel:ico--l}}</span>
-        <h3>Pasteles personalizados</h3>
-        <p class="tarjeta-info__plazo">De 48 a 72 horas</p>
-        <p>
-          Mandanos la foto de referencia, el número de porciones, el sabor y la dedicatoria.
-          Te cotizamos según el tamaño y la decoración.
         </p>
       </div>
       <div class="tarjeta-info" data-reveal>
@@ -104,7 +95,7 @@
         <h3>Eventos y empresas</h3>
         <p class="tarjeta-info__plazo">De 3 a 5 días</p>
         <p>
-          Coffee breaks, cajas de desayuno, bandejas de bocadillos y mesas de postres.
+          Coffee breaks, cajas de desayuno y bandejas de bocadillos.
           Para pedidos recurrentes armamos un calendario de entregas.
         </p>
       </div>
@@ -139,8 +130,7 @@
         <div class="campo">
           <label for="tipo">Tipo de pedido</label>
           <select id="tipo" name="tipo" required>
-            <option value="Pan y repostería">Pan y repostería</option>
-            <option value="Pastel personalizado">Pastel personalizado</option>
+            <option value="Pan dulce y salado">Pan dulce y salado</option>
             <option value="Coffee break / desayunos">Coffee break / desayunos</option>
             <option value="Bocadillos para evento">Bocadillos para evento</option>
             <option value="Pan al mayoreo">Pan al mayoreo</option>
@@ -182,7 +172,7 @@
 
         <div class="campo campo--ancho">
           <label for="detalle">Detalle del pedido</label>
-          <textarea id="detalle" name="detalle" placeholder="Ej: 4 docenas de pan francés, 2 docenas de pan dulce surtido y un pastel de chocolate de 20 porciones que diga «Feliz cumpleaños Ana»."></textarea>
+          <textarea id="detalle" name="detalle" placeholder="Ej: 4 docenas de pan francés y 2 docenas de pan dulce surtido para el viernes a las 3:00 p. m."></textarea>
         </div>
       </div>
 
@@ -231,21 +221,11 @@
         </ul>
       </div>
       <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:pastel:ico--l}}</span>
-        <h3>Celebraciones</h3>
-        <ul class="lista-ico">
-          <li>{{ico:check}} <span>Pasteles personalizados y cupcakes</span></li>
-          <li>{{ico:check}} <span>Mesas de mini postres</span></li>
-          <li>{{ico:check}} <span>Bandejas de bocadillos salados</span></li>
-          <li>{{ico:check}} <span>Diseño según tu tema y colores</span></li>
-        </ul>
-      </div>
-      <div class="tarjeta-info" data-reveal>
         <span class="chapa" aria-hidden="true">{{ico:bolsa:ico--l}}</span>
         <h3>Negocios y mayoreo</h3>
         <ul class="lista-ico">
           <li>{{ico:check}} <span>Tiendas, cafeterías, hoteles y restaurantes</span></li>
-          <li>{{ico:check}} <span>Precio por volumen</span></li>
+          <li>{{ico:check}} <span>Condiciones especiales por volumen</span></li>
           <li>{{ico:check}} <span>Calendario fijo de entregas</span></li>
           <li>{{ico:check}} <span>Producto horneado el mismo día</span></li>
         </ul>

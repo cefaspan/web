@@ -287,7 +287,7 @@
       nombre.textContent = linea.nombre;
       var det = document.createElement('span');
       det.className = 'linea-carrito__precio';
-      det.textContent = precio(linea.precio) + (linea.unidad ? ' / ' + linea.unidad : '');
+      det.textContent = linea.unidad || '';
       info.appendChild(nombre);
       info.appendChild(det);
 
@@ -412,9 +412,9 @@
     var lineas = pedido.map(function (l) {
       return '• ' + l.cantidad + ' x ' + l.nombre +
         (l.unidad ? ' (' + l.unidad + ')' : '') +
-        ' — ' + precio(l.precio * l.cantidad);
+        '';
     });
-    return lineas.join('\n') + '\n\nTotal estimado: ' + precio(totalPedido());
+    return lineas.join('\n');
   }
 
   function abrirWhatsApp(texto) {

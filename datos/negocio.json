@@ -1,18 +1,18 @@
 {
   "nombre": "Cefas Panadería",
   "nombreLegal": "Cefas Panadería",
-  "eslogan": "Pan fresco, horneado cada día en Ciudad de Guatemala",
-  "descripcionCorta": "Panadería artesanal en Ciudad de Guatemala. Pan francés, pan dulce tradicional, repostería y pasteles. Pedidos por encargo para casa, oficina y eventos.",
+  "eslogan": "Pan fresco, horneado cada día en Guatemala zona 6",
+  "descripcionCorta": "Panadería artesanal en Guatemala zona 6. Pan francés, pan dulce tradicional y panes artesanales por encargo.",
   "dominio": "https://willianhuit.github.io/cefas-web",
   "rutaBase": "/cefas-web",
   "telefono": "+502 4637-9417",
   "telefonoE164": "+50246379417",
   "whatsapp": "50246379417",
-  "email": "pedidos@cefaspanaderia.com",
+  "email": "correocefas.panaderia@gmail.com",
   "direccion": {
-    "calle": "PENDIENTE: dirección exacta",
-    "zona": "Ciudad de Guatemala",
-    "ciudad": "Ciudad de Guatemala",
+    "calle": "Guatemala zona 6 (Dark kitchen)",
+    "zona": "",
+    "ciudad": "",
     "departamento": "Guatemala",
     "codigoPostal": "01001",
     "pais": "GT"
@@ -20,13 +20,15 @@
   "geo": { "lat": "14.628434", "lng": "-90.522713" },
   "horarios": [
     { "dias": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "etiqueta": "Lunes a viernes", "abre": "06:00", "cierra": "20:00" },
-    { "dias": ["Saturday"], "etiqueta": "Sábado", "abre": "06:00", "cierra": "20:00" },
-    { "dias": ["Sunday"], "etiqueta": "Domingo", "abre": "07:00", "cierra": "14:00" }
+    { "dias": ["Saturday"], "etiqueta": "Sábado", "abre": "06:00", "cierra": "12:00" },
+    { "dias": ["Sunday"], "etiqueta": "Domingo", "cerrado": true }
   ],
   "redes": {
-    "facebook": "https://www.facebook.com/cefaspanaderia",
-    "instagram": "https://www.instagram.com/cefaspanaderia",
-    "tiktok": "",
+    "facebook": "https://www.facebook.com/cefas.pan",
+    "instagram": "https://www.instagram.com/cefas.pan",
+    "tiktok": "https://www.tiktok.com/@cefas.pan",
+    "threads": "https://www.threads.net/@cefas.pan",
+    "youtube": "https://www.youtube.com/@cefas.panaderia",
     "pedidosya": "https://www.pedidosya.com.gt/restaurantes/ciudad-de-guatemala/cefas-panaderia-6374a132-54b4-4157-8e55-ebbc0e6cf786-menu",
     "googleMaps": "",
     "googleMapsEmbed": ""

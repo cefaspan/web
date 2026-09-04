@@ -32,12 +32,11 @@ const esc = (s) => String(s ?? '')
 const money = (n) => `${N.simboloMoneda}${Number(n).toFixed(2)}`;
 const jsonld = (obj) => JSON.stringify(obj, null, 2).replace(/</g, '\\u003c');
 
-const DIRECCION_UNA_LINEA = [N.direccion.calle, N.direccion.zona, N.direccion.ciudad, 'Guatemala']
-  .filter(Boolean).join(', ');
+const DIRECCION_UNA_LINEA = N.direccion.calle;
 
 /* --- Qué se vende en este sitio -------------------------------------------
    El sitio vende para eventos y actividades: docenas, paquetes, bandejas,
-   cajas, pasteles y mayoreo. La venta al menudeo (la pieza suelta) va por
+   cajas, panes y mayoreo. La venta al menudeo (la pieza suelta) va por
    PedidosYa, así que los productos con "minorista": true en
    datos/productos.json no se publican acá: no salen en el menú, ni en los
    destacados, ni en el <select> del formulario, ni en el JSON-LD.
@@ -45,7 +44,7 @@ const DIRECCION_UNA_LINEA = [N.direccion.calle, N.direccion.zona, N.direccion.ci
 const esDeEventos = (p) => !p.minorista;
 
 /* Categorías con al menos un producto de eventos. Una categoría que se queda
-   sin nada (p. ej. si toda la repostería es por pieza) no se publica vacía. */
+   sin productos para eventos no se publica vacía. */
 const CATEGORIAS = CAT.categorias
   .map((c) => ({ ...c, productos: c.productos.filter(esDeEventos) }))
   .filter((c) => c.productos.length > 0);
@@ -92,19 +91,19 @@ const PAGINAS = [
     archivo: 'index.html', ruta: '/', profundidad: 0, nav: 'inicio', prioridad: '1.0',
     plantilla: 'inicio.html',
     titulo: 'Pan para eventos y empresas | Cefas Panadería Guatemala',
-    descripcion: 'Coffee breaks, cajas de desayuno, bandejas de bocadillos, pasteles y docenas para tu evento u oficina. Cotizá por WhatsApp. Ciudad de Guatemala y San Cristóbal.'
+    descripcion: 'Coffee breaks, cajas de desayuno, bandejas de bocadillos y docenas de pan para tu evento u oficina. Cotizá por WhatsApp.'
   },
   {
     archivo: 'menu/index.html', ruta: '/menu/', profundidad: 1, nav: 'menu', prioridad: '0.9',
     plantilla: 'menu.html',
-    titulo: 'Menú para eventos y precios | Cefas Panadería',
-    descripcion: 'Precios en quetzales de docenas, paquetes, bandejas, cajas de desayuno, coffee breaks y pasteles por encargo. Armá tu cotización y enviala por WhatsApp.'
+    titulo: 'Menú para eventos | Cefas Panadería',
+    descripcion: 'Docenas, paquetes, bandejas, cajas de desayuno y coffee breaks por encargo. Pedí tu cotización por WhatsApp.'
   },
   {
     archivo: 'encargos/index.html', ruta: '/encargos/', profundidad: 1, nav: 'encargos', prioridad: '0.9',
     plantilla: 'encargos.html',
     titulo: 'Cotizar un encargo | Eventos y empresas en Guatemala',
-    descripcion: 'Cotizá pan, pasteles y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregamos en Ciudad de Guatemala y San Cristóbal.'
+    descripcion: 'Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación.'
   },
   {
     archivo: 'contacto/index.html', ruta: '/contacto/', profundidad: 1, nav: 'contacto', prioridad: '0.7',
@@ -116,7 +115,7 @@ const PAGINAS = [
     archivo: '404.html', ruta: '/404.html', profundidad: 0, nav: '', prioridad: null, noindex: true,
     plantilla: '404.html',
     titulo: 'Página no encontrada | Cefas Panadería',
-    descripcion: 'La página que buscás no existe o cambió de dirección. Volvé al menú de Cefas Panadería para cotizar pan, bocadillos y pasteles para tu evento en Guatemala.'
+    descripcion: 'La página que buscás no existe o cambió de dirección. Volvé al menú de Cefas Panadería para cotizar pan y bocadillos.'
   }
 ];
 
@@ -138,7 +137,6 @@ function tarjetasCategorias() {
 }
 
 function tarjetaProducto(p, { conBoton = true, insignia = false, porPieza = false } = {}) {
-  const precio = p.precio > 0 ? money(p.precio) : 'Cotización';
   const buscar = `${p.nombre} ${p.descripcion} ${p.categoria || ''}`;
   const piezas = piezasPorUnidad(p.unidad);
   const etiquetas = [
@@ -147,9 +145,7 @@ function tarjetaProducto(p, { conBoton = true, insignia = false, porPieza = fals
   ].filter(Boolean).join('');
 
   // Precio por pieza: es división del precio real, no un descuento inventado
-  const equivalencia = porPieza && piezas > 1 && p.precio > 0
-    ? `<p class="producto__pieza">${ico('check')} Sale a <strong>${esc(money(p.precio / piezas))}</strong> cada uno</p>`
-    : '';
+  const equivalencia = '';
 
   // El contador (− 2 +) lo crea app.js la primera vez que se agrega el
   // producto: son 50 tarjetas por página y no hace falta enviarlo en el HTML.
@@ -166,10 +162,7 @@ function tarjetaProducto(p, { conBoton = true, insignia = false, porPieza = fals
             <div class="producto__cuerpo">
               <div class="producto__cabecera">
                 <h3 class="producto__nombre">${esc(p.nombre)}</h3>
-                <div>
-                  <span class="producto__precio">${esc(precio)}</span>
-                  <span class="producto__unidad">${esc(p.unidad)}</span>
-                </div>
+                <span class="producto__unidad">${esc(p.unidad)}</span>
               </div>
               <p class="producto__desc">${esc(p.descripcion)}</p>
               ${equivalencia}
@@ -195,7 +188,7 @@ function bloquePedidosYa() {
         <h3>¿Buscás pan para hoy, por unidad?</h3>
         <p>
           Este sitio es para pedidos de eventos y actividades: docenas, paquetes, bandejas,
-          cajas y pasteles. El pan por pieza, la repostería individual y el café se piden en
+          cajas y panes. El pan por pieza y el café se piden en
           PedidosYa, con entrega inmediata.
         </p>
       </div>
@@ -245,7 +238,7 @@ function bloqueZonas() {
 
 function bloqueHorarios() {
   return N.horarios.map((h) =>
-    `<li><span>${ico('reloj')} ${esc(h.etiqueta)}</span><span>${esc(h.abre)} – ${esc(h.cierra)}</span></li>`).join('\n            ');
+    `<li><span>${ico('reloj')} ${esc(h.etiqueta)}</span><span>${h.cerrado ? 'Cerrado' : `${esc(h.abre)} – ${esc(h.cierra)}`}</span></li>`).join('\n            ');
 }
 
 function opcionesProducto() {
@@ -271,10 +264,9 @@ function schemaNegocio() {
     image: `${DOMINIO}/assets/img/logo-cefas.png`,
     telephone: N.telefonoE164,
     email: N.email,
-    priceRange: N.rangoPrecios,
     currenciesAccepted: N.moneda,
     paymentAccepted: 'Efectivo, Tarjeta de crédito, Transferencia bancaria',
-    servesCuisine: ['Panadería', 'Repostería', 'Café'],
+    servesCuisine: ['Panadería', 'Café'],
     hasMenu: `${DOMINIO}/menu/`,
     address: {
       '@type': 'PostalAddress',
@@ -285,7 +277,7 @@ function schemaNegocio() {
       addressCountry: N.direccion.pais
     },
     geo: { '@type': 'GeoCoordinates', latitude: N.geo.lat, longitude: N.geo.lng },
-    openingHoursSpecification: N.horarios.map((h) => ({
+    openingHoursSpecification: N.horarios.filter((h) => !h.cerrado).map((h) => ({
       '@type': 'OpeningHoursSpecification',
       dayOfWeek: h.dias.map((d) => `https://schema.org/${d}`),
       opens: h.abre,
@@ -361,16 +353,7 @@ function schemaMenu() {
       hasMenuItem: c.productos.map((p) => ({
         '@type': 'MenuItem',
         name: p.nombre,
-        description: p.descripcion,
-        ...(p.precio > 0 ? {
-          offers: {
-            '@type': 'Offer',
-            price: p.precio.toFixed(2),
-            priceCurrency: N.moneda,
-            availability: 'https://schema.org/InStock',
-            url: `${DOMINIO}/menu/#${c.id}`
-          }
-        } : {})
+        description: p.descripcion
       }))
     }))
   };
@@ -380,7 +363,7 @@ function schemaServicioEncargos() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    name: 'Pedidos de pan y pasteles por encargo',
+    name: 'Pedidos de pan y bocadillos por encargo',
     serviceType: 'Panadería por encargo para eventos y empresas',
     provider: { '@id': ID_NEGOCIO },
     areaServed: N.cobertura.map((g) => ({ '@type': 'City', name: `${g.municipio}, Guatemala` })),
@@ -496,7 +479,6 @@ function cabecera(pagina) {
     <div class="cabecera__acciones">
       <button class="btn btn--principal carrito-btn" type="button" data-carrito-abrir aria-label="Ver mi pedido">
         ${ico('canasta')}<span class="btn--texto-largo">Mi pedido</span>
-        <strong class="carrito-btn__total" data-carrito-total data-si-hay-pedido hidden>${N.simboloMoneda}0.00</strong>
         <span class="carrito-btn__contador" data-carrito-contador hidden>0</span>
       </button>
       <button class="menu-btn" type="button" data-menu-btn aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="nav-principal">
@@ -516,6 +498,8 @@ function pie(pagina) {
   if (N.redes.facebook) redes.push(enlaceRed(N.redes.facebook, 'facebook', 'Facebook'));
   if (N.redes.instagram) redes.push(enlaceRed(N.redes.instagram, 'instagram', 'Instagram'));
   if (N.redes.tiktok) redes.push(enlaceRed(N.redes.tiktok, 'tiktok', 'TikTok'));
+  if (N.redes.threads) redes.push(enlaceRed(N.redes.threads, 'chat', 'Threads'));
+  if (N.redes.youtube) redes.push(enlaceRed(N.redes.youtube, 'flecha', 'YouTube'));
   if (N.redes.pedidosya) redes.push(enlaceRed(N.redes.pedidosya, 'bolsa', 'PedidosYa', 'noopener nofollow'));
 
   return `
@@ -557,8 +541,8 @@ function pie(pagina) {
     </div>
 
     <div class="pie__legal">
-      <span>&copy; <span data-anio>2026</span> ${esc(N.nombre)}. Ciudad de Guatemala, Guatemala.</span>
-      <span>Pan francés, pan dulce, pan artesanal y pasteles por encargo.</span>
+      <span>&copy; <span data-anio>2026</span> ${esc(N.nombre)}. Guatemala zona 6.</span>
+      <span>Pan francés, pan dulce y pan artesanal por encargo.</span>
     </div>
   </div>
 </footer>
@@ -569,13 +553,11 @@ function pie(pagina) {
 </a>`;
 }
 
-/* Barra fija de pedido para móvil: mientras hay algo en el carrito, el total
-   y el botón de cerrar la compra quedan siempre a la vista. */
+/* Barra fija de pedido para móvil. */
 function barraVenta() {
   return `
 <div class="barra-venta" data-barra-venta hidden>
   <div class="barra-venta__info">
-    <strong data-carrito-total>${N.simboloMoneda}0.00</strong>
     <span><span data-carrito-unidades>0</span> en tu pedido</span>
   </div>
   <button class="btn btn--wa" type="button" data-carrito-abrir>
@@ -601,8 +583,7 @@ function panelCarrito(pagina) {
     </p>
   </div>
   <div class="panel__pie">
-    <div class="panel__total"><span>Total estimado</span><strong data-carrito-total>${N.simboloMoneda}0.00</strong></div>
-    <p class="panel__nota">Los precios son referenciales. Te confirmamos el total final y la hora de entrega por WhatsApp.</p>
+    <p class="panel__nota">Te confirmamos la cotización final y la hora de entrega por WhatsApp.</p>
     <button class="btn btn--wa btn--bloque" type="button" data-enviar-wa disabled>${ico('whatsapp')} Enviar pedido por WhatsApp</button>
     <p class="panel__vaciar"><button class="btn btn--texto" type="button" data-vaciar>Vaciar pedido</button></p>
   </div>

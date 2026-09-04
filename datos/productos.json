@@ -8,14 +8,14 @@
       "icono": "baguette",
       "productos": [
         { "id": "pan-frances-unidad", "nombre": "Pan Francés", "descripcion": "El clásico pan francés guatemalteco: corteza crujiente y miga suave. Horneado varias veces al día.", "precio": 1.25, "unidad": "unidad", "destacado": true, "minorista": true },
-        { "id": "pan-frances-docena", "nombre": "Pan Francés (docena)", "descripcion": "Docena de pan francés recién horneado, ideal para el desayuno familiar o la refacción de la oficina.", "precio": 14.00, "unidad": "docena", "destacado": true },
+        { "id": "pan-frances-docena", "nombre": "Pan Francés (docena)", "descripcion": "Docena de pan francés recién horneado, ideal para el desayuno familiar o la refacción de la oficina.", "precio": 14.00, "unidad": "docena", "destacado": true, "imagen": "pan-frances-docena.png" },
         { "id": "pan-de-agua", "nombre": "Pan de Agua", "descripcion": "Pan de agua suave y ligero, perfecto para acompañar frijoles, caldo o el café de la tarde.", "precio": 1.25, "unidad": "unidad", "destacado": false, "minorista": true },
         { "id": "pirujo", "nombre": "Pirujo", "descripcion": "Pirujo tradicional de masa firme y dorada, el favorito para hacer shucos y sándwiches.", "precio": 1.50, "unidad": "unidad", "destacado": false, "minorista": true },
         { "id": "pan-de-manteca", "nombre": "Pan de Manteca", "descripcion": "Pan de manteca de miga esponjosa y sabor ligeramente dulce, receta guatemalteca de siempre.", "precio": 1.50, "unidad": "unidad", "destacado": false, "minorista": true },
         { "id": "pan-integral-molde", "nombre": "Pan Integral de Molde", "descripcion": "Pan integral en molde con harina de trigo integral y avena. Rendidor y con más fibra.", "precio": 28.00, "unidad": "bolsa", "destacado": false, "minorista": true },
         { "id": "pan-de-molde-blanco", "nombre": "Pan de Molde Blanco", "descripcion": "Pan de caja blanco, suave y uniforme, para sándwiches y refacciones escolares.", "precio": 25.00, "unidad": "bolsa", "destacado": false, "minorista": true },
-        { "id": "pan-de-hamburguesa", "nombre": "Pan de Hamburguesa", "descripcion": "Pan de hamburguesa brioche con ajonjolí, suave y resistente. Se vende por paquete de 6.", "precio": 18.00, "unidad": "paquete de 6", "destacado": false },
-        { "id": "pan-de-hot-dog", "nombre": "Pan para Hot Dog", "descripcion": "Pan alargado para hot dog y shucos, suave por dentro y dorado por fuera. Paquete de 6.", "precio": 18.00, "unidad": "paquete de 6", "destacado": false }
+        { "id": "pan-de-hamburguesa", "nombre": "Pan de Hamburguesa", "descripcion": "Pan de hamburguesa brioche con ajonjolí, suave y resistente. Se vende por paquete de 6.", "precio": 18.00, "unidad": "paquete de 6", "destacado": false, "imagen": "pan-hamburguesa.png" },
+        { "id": "pan-de-hot-dog", "nombre": "Pan para Hot Dog", "descripcion": "Pan alargado para hot dog y shucos, suave por dentro y dorado por fuera. Paquete de 6.", "precio": 18.00, "unidad": "paquete de 6", "destacado": false, "imagen": "pan-hot-dog.png" }
       ]
     },
     {
@@ -24,61 +24,36 @@
       "descripcion": "Pan dulce guatemalteco de toda la vida: champurradas, cubiletes, magdalenas, xecas y orejas para acompañar el café.",
       "icono": "pan",
       "productos": [
-        { "id": "champurrada", "nombre": "Champurrada", "descripcion": "Champurrada crujiente con ajonjolí, la compañera obligada del café guatemalteco.", "precio": 3.50, "unidad": "unidad", "destacado": true, "minorista": true },
+        { "id": "champurrada", "nombre": "Champurrada", "descripcion": "Champurrada crujiente con ajonjolí, la compañera obligada del café guatemalteco.", "precio": 3.50, "unidad": "unidad", "destacado": true, "imagen": "champurrada.png" },
         { "id": "cubilete", "nombre": "Cubilete", "descripcion": "Cubilete de masa dulce con crema pastelera y pasas, horneado en su molde tradicional.", "precio": 4.50, "unidad": "unidad", "destacado": true, "minorista": true },
         { "id": "magdalena", "nombre": "Magdalena", "descripcion": "Magdalena esponjosa de vainilla, suave y aromática, recién salida del horno.", "precio": 3.50, "unidad": "unidad", "destacado": false, "minorista": true },
         { "id": "xeca", "nombre": "Xeca", "descripcion": "Xeca quetzalteca de panela y especias, densa y aromática. Un clásico del pan dulce de Guatemala.", "precio": 4.00, "unidad": "unidad", "destacado": false, "minorista": true },
         { "id": "oreja", "nombre": "Oreja (Palmera)", "descripcion": "Oreja de hojaldre caramelizada, crujiente y dorada capa por capa.", "precio": 5.00, "unidad": "unidad", "destacado": false, "minorista": true },
         { "id": "quesadilla", "nombre": "Quesadilla Guatemalteca", "descripcion": "Quesadilla de queso seco y arroz, húmeda por dentro con costra de ajonjolí.", "precio": 5.00, "unidad": "unidad", "destacado": false, "minorista": true },
-        { "id": "concha", "nombre": "Concha", "descripcion": "Concha de vainilla o chocolate con su costra azucarada y miga tierna.", "precio": 4.00, "unidad": "unidad", "destacado": false, "minorista": true },
+        { "id": "concha", "nombre": "Concha", "descripcion": "Concha de vainilla con su costra azucarada y miga tierna.", "precio": 4.00, "unidad": "unidad", "destacado": false, "imagen": "concha.png" },
+        { "id": "rol-canela", "nombre": "Rol de Canela", "descripcion": "Rol suave con espiral de canela y un toque de glaseado.", "precio": 8.00, "unidad": "unidad", "destacado": false, "imagen": "rol-canela.png" },
+        { "id": "pan-cocodrilo", "nombre": "Pan Cocodrilo", "descripcion": "Pan dulce artesanal con forma de cocodrilo y detalles hechos a mano.", "precio": 15.00, "unidad": "unidad", "destacado": false, "imagen": "pan-cocodrilo.png" },
+        { "id": "pan-de-yema", "nombre": "Pan de Yema", "descripcion": "Pan redondo, suave y dorado, elaborado con una miga tierna.", "precio": 0, "unidad": "unidad", "destacado": false, "imagen": "pan-de-yema.png" },
+        { "id": "pan-tortuga", "nombre": "Pan Tortuga", "descripcion": "Pan dulce artesanal con forma de tortuga y cubierta azucarada.", "precio": 0, "unidad": "unidad", "destacado": false, "imagen": "pan-tortuga.png" },
+        { "id": "dona-chocolate", "nombre": "Dona de Chocolate", "descripcion": "Dona esponjosa cubierta con glaseado de chocolate.", "precio": 0, "unidad": "unidad", "destacado": false, "imagen": "dona-chocolate.png" },
+        { "id": "milhojas", "nombre": "Milhojas", "descripcion": "Milhojas de hojaldre con crema pastelera y cubierta crujiente.", "precio": 0, "unidad": "unidad", "destacado": false, "imagen": "milhojas.png" },
         { "id": "pan-de-banano", "nombre": "Pan de Banano", "descripcion": "Pan de banano casero con nuez, húmedo y aromático. Se vende en porción individual.", "precio": 12.00, "unidad": "porción", "destacado": false, "minorista": true },
         { "id": "cachito", "nombre": "Cachito", "descripcion": "Cachito de masa dulce enrollada, ligero y perfecto para la refacción.", "precio": 3.00, "unidad": "unidad", "destacado": false, "minorista": true },
         { "id": "canillitas", "nombre": "Canillitas de Leche", "descripcion": "Canillitas suaves con sabor a leche, ideales para los niños.", "precio": 3.00, "unidad": "unidad", "destacado": false, "minorista": true },
-        { "id": "docena-pan-dulce", "nombre": "Docena Surtida de Pan Dulce", "descripcion": "Docena surtida con champurradas, cubiletes, magdalenas y conchas. La forma más fácil de llevar de todo.", "precio": 42.00, "unidad": "docena", "destacado": true }
+        { "id": "docena-pan-dulce", "nombre": "Docena Surtida de Pan Dulce", "descripcion": "Docena surtida con champurradas, cubiletes, magdalenas y conchas. La forma más fácil de llevar de todo.", "precio": 42.00, "unidad": "docena", "destacado": true, "imagen": "docena-pan-dulce.png" }
       ]
     },
     {
       "id": "artesanal",
       "nombre": "Panes Artesanales",
-      "descripcion": "Panes de fermentación larga y masa madre: baguette, ciabatta, focaccia y pan de centeno horneados en Ciudad de Guatemala.",
+      "descripcion": "Panes de fermentación larga y masa madre: baguette, ciabatta y pan de centeno horneados en Ciudad de Guatemala.",
       "icono": "trigo",
       "productos": [
         { "id": "baguette", "nombre": "Baguette Artesanal", "descripcion": "Baguette de fermentación lenta, corteza crocante y alveolado abierto. Horneada cada mañana.", "precio": 18.00, "unidad": "unidad", "destacado": true, "minorista": true },
         { "id": "ciabatta", "nombre": "Ciabatta", "descripcion": "Ciabatta italiana de alta hidratación, miga aireada y corteza fina. Excelente para paninis.", "precio": 16.00, "unidad": "unidad", "destacado": false, "minorista": true },
         { "id": "masa-madre", "nombre": "Pan de Masa Madre", "descripcion": "Hogaza de masa madre con 24 horas de fermentación. Sabor profundo y más fácil de digerir.", "precio": 45.00, "unidad": "hogaza", "destacado": true, "minorista": true },
-        { "id": "focaccia", "nombre": "Focaccia de Romero", "descripcion": "Focaccia con aceite de oliva, romero y sal en escamas. Se vende por bandeja.", "precio": 35.00, "unidad": "bandeja", "destacado": false },
         { "id": "pan-centeno", "nombre": "Pan de Centeno", "descripcion": "Pan de centeno oscuro con semillas, denso y rendidor. Ideal para desayunos con más fibra.", "precio": 38.00, "unidad": "hogaza", "destacado": false, "minorista": true },
         { "id": "pan-ajo", "nombre": "Pan de Ajo", "descripcion": "Baguette abierta con mantequilla de ajo y perejil, lista para hornear en casa.", "precio": 22.00, "unidad": "unidad", "destacado": false, "minorista": true }
-      ]
-    },
-    {
-      "id": "reposteria",
-      "nombre": "Repostería y Postres",
-      "descripcion": "Repostería fresca: croissants, donas, brownies, pie de manzana y cheesecake hechos en casa cada día.",
-      "icono": "croissant",
-      "productos": [
-        { "id": "croissant", "nombre": "Croissant de Mantequilla", "descripcion": "Croissant de hojaldre con mantequilla, capa sobre capa y horneado de la mañana.", "precio": 12.00, "unidad": "unidad", "destacado": true, "minorista": true },
-        { "id": "croissant-jamon-queso", "nombre": "Croissant de Jamón y Queso", "descripcion": "Croissant relleno de jamón y queso mozzarella, gratinado al horno.", "precio": 18.00, "unidad": "unidad", "destacado": false, "minorista": true },
-        { "id": "dona-glaseada", "nombre": "Dona Glaseada", "descripcion": "Dona esponjosa con glaseado clásico. También disponible con chocolate o azúcar y canela.", "precio": 8.00, "unidad": "unidad", "destacado": false, "minorista": true },
-        { "id": "brownie", "nombre": "Brownie de Chocolate", "descripcion": "Brownie denso de chocolate semiamargo con nuez, húmedo por dentro.", "precio": 15.00, "unidad": "porción", "destacado": false, "minorista": true },
-        { "id": "pie-manzana", "nombre": "Pie de Manzana", "descripcion": "Pie de manzana con canela y masa quebrada, hecho en casa. Por porción o entero por encargo.", "precio": 18.00, "unidad": "porción", "destacado": false, "minorista": true },
-        { "id": "cheesecake", "nombre": "Cheesecake de Fresa", "descripcion": "Cheesecake cremoso sobre base de galleta con cobertura de fresa natural.", "precio": 22.00, "unidad": "porción", "destacado": true, "minorista": true },
-        { "id": "empanada-pina", "nombre": "Empanada de Piña", "descripcion": "Empanada de hojaldre rellena de piña, espolvoreada con azúcar.", "precio": 8.00, "unidad": "unidad", "destacado": false, "minorista": true },
-        { "id": "milhojas", "nombre": "Milhojas", "descripcion": "Milhojas de hojaldre con crema pastelera y azúcar glas.", "precio": 14.00, "unidad": "unidad", "destacado": false, "minorista": true }
-      ]
-    },
-    {
-      "id": "pasteles",
-      "nombre": "Pasteles por Encargo",
-      "descripcion": "Pasteles para cumpleaños, bautizos, graduaciones y celebraciones en Guatemala. Personalizados y con anticipación.",
-      "icono": "pastel",
-      "productos": [
-        { "id": "pastel-chocolate", "nombre": "Pastel de Chocolate", "descripcion": "Pastel de chocolate con ganache y relleno a elegir. Tamaños de 10, 20 y 40 porciones.", "precio": 160.00, "unidad": "desde / 10 porciones", "destacado": true, "encargo": true },
-        { "id": "pastel-tres-leches", "nombre": "Pastel Tres Leches", "descripcion": "Tres leches clásico, bañado y coronado con crema batida y durazno.", "precio": 175.00, "unidad": "desde / 10 porciones", "destacado": true, "encargo": true },
-        { "id": "pastel-fresas-crema", "nombre": "Pastel de Fresas con Crema", "descripcion": "Bizcocho de vainilla con fresas naturales y crema chantilly.", "precio": 185.00, "unidad": "desde / 10 porciones", "destacado": false, "encargo": true },
-        { "id": "pastel-personalizado", "nombre": "Pastel Personalizado", "descripcion": "Diseño a la medida con tu tema, colores y dedicatoria. Cotización según tamaño y decoración.", "precio": 250.00, "unidad": "desde", "destacado": true, "encargo": true },
-        { "id": "cupcakes-docena", "nombre": "Cupcakes Decorados (docena)", "descripcion": "Docena de cupcakes decorados con buttercream, en los colores de tu evento.", "precio": 120.00, "unidad": "docena", "destacado": false, "encargo": true },
-        { "id": "mini-postres", "nombre": "Mesa de Mini Postres", "descripcion": "Surtido de mini postres para mesa dulce: brownies, cheesecakes, tartaletas y cupcakes.", "precio": 350.00, "unidad": "bandeja 40 piezas", "destacado": false, "encargo": true }
       ]
     },
     {
@@ -87,11 +62,11 @@
       "descripcion": "Cajas de pan, bocadillos y canastas para oficinas, reuniones, coffee breaks y eventos en Ciudad de Guatemala.",
       "icono": "caja",
       "productos": [
-        { "id": "caja-desayuno", "nombre": "Caja de Desayuno", "descripcion": "Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido.", "precio": 45.00, "unidad": "por caja", "destacado": true, "encargo": true },
-        { "id": "coffee-break", "nombre": "Coffee Break Empresarial", "descripcion": "Servicio de coffee break: pan dulce surtido, bocadillos salados, café y agua. Precio por persona.", "precio": 38.00, "unidad": "por persona", "destacado": true, "encargo": true },
-        { "id": "bandeja-bocadillos", "nombre": "Bandeja de Bocadillos Salados", "descripcion": "Bandeja de 50 bocadillos surtidos: mini sándwiches, enrollados y empanaditas.", "precio": 280.00, "unidad": "bandeja 50 piezas", "destacado": false, "encargo": true },
-        { "id": "canasta-regalo", "nombre": "Canasta de Regalo", "descripcion": "Canasta con selección de panes artesanales, repostería y café guatemalteco. Ideal para regalo corporativo.", "precio": 320.00, "unidad": "canasta", "destacado": false, "encargo": true },
-        { "id": "pan-mayoreo", "nombre": "Pan al Mayoreo", "descripcion": "Abastecemos tiendas, cafeterías, hoteles y restaurantes con entrega programada. Precio por volumen.", "precio": 0, "unidad": "cotización", "destacado": false, "encargo": true }
+        { "id": "caja-desayuno", "nombre": "Caja de Desayuno", "descripcion": "Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido.", "precio": 45.00, "unidad": "por caja", "destacado": true, "encargo": true, "imagen": "caja-desayuno.png" },
+        { "id": "coffee-break", "nombre": "Coffee Break Empresarial", "descripcion": "Servicio de coffee break: pan dulce surtido, bocadillos salados, café y agua.", "precio": 38.00, "unidad": "por persona", "destacado": true, "encargo": true, "imagen": "coffee-break.png" },
+        { "id": "bandeja-bocadillos", "nombre": "Bandeja de Bocadillos Salados", "descripcion": "Bandeja de 50 bocadillos surtidos: mini sándwiches, enrollados y empanaditas.", "precio": 280.00, "unidad": "bandeja 50 piezas", "destacado": false, "encargo": true, "imagen": "bandeja-bocadillos.png" },
+        { "id": "canasta-regalo", "nombre": "Canasta de Regalo", "descripcion": "Canasta con selección de panes artesanales y café guatemalteco. Ideal para regalo corporativo.", "precio": 320.00, "unidad": "canasta", "destacado": false, "encargo": true, "imagen": "canasta-regalo.png" },
+        { "id": "pan-mayoreo", "nombre": "Pan al Mayoreo", "descripcion": "Abastecemos tiendas, cafeterías, hoteles y restaurantes con entrega programada y condiciones por volumen.", "precio": 0, "unidad": "cotización", "destacado": false, "encargo": true, "imagen": "pan-mayoreo.png" }
       ]
     },
     {
@@ -109,14 +84,12 @@
     }
   ],
   "faq": [
-    { "p": "¿Cómo cotizo el pan para mi evento?", "r": "Agregá del menú las docenas, bandejas, cajas o pasteles que necesités y tocá «Enviar pedido por WhatsApp»: el mensaje se arma solo con las cantidades y el total estimado. Contanos la fecha, la hora y cuántas personas son, y te respondemos con el total final. También podés llenar el formulario de encargos o llamarnos." },
-    { "p": "¿Venden pan por unidad?", "r": "Por acá no. Este sitio es para pedidos de eventos y actividades: docenas, paquetes, bandejas, cajas de desayuno, coffee breaks, pasteles y mayoreo. El pan por pieza, la repostería individual y el café los vendemos por PedidosYa, con entrega inmediata." },
+    { "p": "¿Cómo cotizo el pan para mi evento?", "r": "Agregá del menú las docenas, bandejas, cajas o panes que necesités y tocá «Enviar pedido por WhatsApp». Contanos la fecha, la hora y cuántas personas son, y te respondemos con la cotización final." },
+    { "p": "¿Venden pan por unidad?", "r": "Este sitio recibe pedidos de eventos y actividades: docenas, paquetes, bandejas, cajas de desayuno, coffee breaks y mayoreo. También podés consultarnos por WhatsApp." },
     { "p": "¿Hasta dónde entregan?", "r": "Hacemos entregas programadas en zonas 1, 2, 4, 5, 9, 10, 11, 13, 14, 15 y 16 de Ciudad de Guatemala, y en San Cristóbal (Mixco zona 8) y Mixco zona 11. Si tu dirección queda fuera de esas zonas, podés pasar a recoger tu pedido por la panadería. El costo del envío depende de la zona y te lo confirmamos junto con el total, antes de agendar." },
     { "p": "¿Cuál es el pedido mínimo?", "r": "Los coffee breaks y las cajas de desayuno los servimos desde 10 personas. En el resto de productos el mínimo es la presentación que aparece en el menú: la docena, el paquete o la bandeja. Si necesitás menos de eso, pedilo por PedidosYa." },
-    { "p": "¿Con cuánta anticipación tengo que pedir?", "r": "Para docenas, paquetes y bandejas de pan pedimos al menos 24 horas. Para pasteles personalizados, de 48 a 72 horas. Para coffee breaks, cajas de desayuno y eventos con montaje, de 3 a 5 días. Si tu actividad es antes, escribinos igual por WhatsApp y vemos qué se puede." },
-    { "p": "¿Qué formas de pago aceptan?", "r": "Aceptamos efectivo, transferencia bancaria y tarjeta. En pasteles personalizados y pedidos de eventos solicitamos un anticipo del 50% para agendar la fecha." },
-    { "p": "¿Los precios del menú son los finales?", "r": "Los precios del menú son de referencia y el total que ves al armar tu pedido es un estimado. Te confirmamos el total final por WhatsApp, con el envío incluido si es a domicilio, antes de que pagues nada." },
-    { "p": "¿Puedo pedir un pastel personalizado con un diseño específico?", "r": "Claro. Mandanos por WhatsApp la foto o idea de referencia, el número de porciones, el sabor y la fecha, y te cotizamos el pastel personalizado." },
+    { "p": "¿Con cuánta anticipación tengo que pedir?", "r": "Para docenas, paquetes y bandejas de pan pedimos al menos 24 horas. Para coffee breaks, cajas de desayuno y eventos con montaje, de 3 a 5 días." },
+    { "p": "¿Qué formas de pago aceptan?", "r": "Aceptamos efectivo, transferencia bancaria y tarjeta. En pedidos de eventos podemos solicitar un anticipo para agendar la fecha." },
     { "p": "¿Atienden pedidos recurrentes para empresas?", "r": "Sí. Abastecemos oficinas, tiendas, cafeterías, hoteles y restaurantes con precio por volumen y un calendario fijo de entregas. Escribinos y armamos el calendario según los días que necesités." }
   ]
 }
