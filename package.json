@@ -1,0 +1,15 @@
+{
+  "name": "cefas-panaderia-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio estatico de Cefas Panaderia. El sitio no usa dependencias: sharp solo lo necesita la herramienta opcional que optimiza las fotos.",
+  "scripts": {
+    "generar": "node herramientas/generar.js",
+    "verificar": "node herramientas/verificar.js",
+    "imagenes": "node herramientas/optimizar-imagenes.js",
+    "imagenes:aplicar": "node herramientas/optimizar-imagenes.js --aplicar"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.4"
+  }
+}

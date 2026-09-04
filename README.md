@@ -4,6 +4,8 @@ Sitio estático para GitHub Pages, optimizado para búsquedas de pan en Guatemal
 pedidos por encargo vía WhatsApp.
 
 - **Sin dependencias**: HTML, CSS y JavaScript puros. No hay build de npm ni framework.
+  Lo único que usa npm es la herramienta opcional que optimiza las fotos (ver más abajo);
+  el sitio y `generar.js` no la necesitan.
 - **Contenido en HTML estático**: los 50 productos se sirven en el HTML, no por JavaScript.
   Esto es clave para que Google los indexe de forma fiable.
 - **Datos estructurados**: `Bakery`, `Menu`, `FAQPage`, `Service`, `BreadcrumbList`, `WebSite`.
@@ -115,6 +117,27 @@ node herramientas/verificar.js  # valida SEO, enlaces, JSON-LD y accesibilidad
 ```
 
 **Nunca edites los `.html` de la raíz a mano**: se sobrescriben. Editá `plantillas/` y `datos/`.
+
+### Optimizar las fotos — hacelo siempre que agregues una
+
+Una foto de cámara o de IA pesa 2 o 3 MB, y la tarjeta la muestra a 370 px de ancho: sin
+optimizar, el menú llegó a pesar **38 MB**, imposible de abrir en datos móviles. Después de
+copiar fotos nuevas a `assets/img/`:
+
+```bash
+npm install                                        # una sola vez, instala sharp
+node herramientas/optimizar-imagenes.js            # informe, no toca nada
+node herramientas/optimizar-imagenes.js --aplicar  # convierte de verdad
+node herramientas/generar.js                       # regenera con las medidas nuevas
+```
+
+Deja las fotos en JPEG de 800 px (suficiente incluso en pantallas retina), borra el original
+y actualiza solo las referencias en `datos/`. El original siempre se puede recuperar con git.
+El `logo-cefas.png` se queda en PNG porque el pie lo pinta con `filter: invert(1)` y necesita
+transparencia. La primera pasada dejó las 17 fotos en **38.45 MB → 1.70 MB**.
+
+Los `width`/`height` de cada `<img>` los lee `generar.js` de la cabecera del archivo, así que
+no hay que tocarlos a mano cuando cambian las fotos.
 
 ### Cambiar el menú
 

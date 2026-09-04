@@ -60,7 +60,49 @@ const ZONAS = N.cobertura.flatMap((g) => g.zonas.map((z) => ({ zona: z, municipi
    Poné el nombre del archivo en el campo "imagen" de datos/productos.json
    (categoría o producto) y se usa esa en lugar de la genérica.            */
 const IMG_GENERICA = 'pan-img-generico.jpg';
-const imagenDe = (obj) => `{{BASE}}assets/img/${esc(obj.imagen || IMG_GENERICA)}`;
+const archivoDe = (obj) => obj.imagen || IMG_GENERICA;
+const imagenDe = (obj) => `{{BASE}}assets/img/${esc(archivoDe(obj))}`;
+
+/* Dimensiones reales del archivo, leídas de la cabecera del PNG o del JPEG.
+   Van en width/height del <img> para que el navegador reserve el espacio
+   exacto y no haya salto de layout. Se leen acá y no se escriben a mano
+   porque cambian cada vez que se optimizan las fotos.                    */
+const _dimensiones = new Map();
+function dimensionesDe(archivo) {
+  if (_dimensiones.has(archivo)) return _dimensiones.get(archivo);
+  let dim = null;
+  try {
+    const b = fs.readFileSync(path.join(RAIZ, 'assets/img', archivo));
+    if (b.length > 24 && b.slice(1, 4).toString('latin1') === 'PNG') {
+      dim = { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+    } else {
+      // JPEG: buscar el marcador SOF, que trae alto y ancho
+      let i = 2;
+      while (i < b.length - 9) {
+        if (b[i] !== 0xFF) { i++; continue; }
+        const marca = b[i + 1];
+        if (marca === 0xD8 || marca === 0x01 || (marca >= 0xD0 && marca <= 0xD7)) { i += 2; continue; }
+        if (marca >= 0xC0 && marca <= 0xCF && marca !== 0xC4 && marca !== 0xC8 && marca !== 0xCC) {
+          dim = { h: b.readUInt16BE(i + 5), w: b.readUInt16BE(i + 7) };
+          break;
+        }
+        i += 2 + b.readUInt16BE(i + 2);
+      }
+    }
+  } catch (e) { /* archivo ausente: se avisa abajo */ }
+
+  if (!dim) {
+    console.warn(`  ⚠ no pude leer las dimensiones de assets/img/${archivo}`);
+    dim = { w: 800, h: 800 };
+  }
+  _dimensiones.set(archivo, dim);
+  return dim;
+}
+
+const medidasImagen = (obj) => {
+  const d = dimensionesDe(archivoDe(obj));
+  return `width="${d.w}" height="${d.h}"`;
+};
 
 /* Cuántas piezas trae una unidad de venta, cuando el texto lo dice sin
    ambigüedad ("docena", "paquete de 6", "bandeja 40 piezas"). Sirve para
@@ -97,13 +139,13 @@ const PAGINAS = [
     archivo: 'menu/index.html', ruta: '/menu/', profundidad: 1, nav: 'menu', prioridad: '0.9',
     plantilla: 'menu.html',
     titulo: 'Menú para eventos | Cefas Panadería',
-    descripcion: 'Docenas, paquetes, bandejas, cajas de desayuno y coffee breaks por encargo. Pedí tu cotización por WhatsApp.'
+    descripcion: 'Docenas, paquetes, bandejas, cajas de desayuno y coffee breaks por encargo para tu oficina o evento. Armá tu pedido y pedí la cotización por WhatsApp.'
   },
   {
     archivo: 'encargos/index.html', ruta: '/encargos/', profundidad: 1, nav: 'encargos', prioridad: '0.9',
     plantilla: 'encargos.html',
     titulo: 'Cotizar un encargo | Eventos y empresas en Guatemala',
-    descripcion: 'Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación.'
+    descripcion: 'Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregas programadas en Ciudad de Guatemala y San Cristóbal.'
   },
   {
     archivo: 'contacto/index.html', ruta: '/contacto/', profundidad: 1, nav: 'contacto', prioridad: '0.7',
@@ -125,7 +167,7 @@ function tarjetasCategorias() {
   return CATEGORIAS.map((c) => `
         <a class="categoria" href="{{BASE}}menu/#${esc(c.id)}" data-reveal>
           <div class="foto foto--16-10">
-            <img src="${imagenDe(c)}" alt="${esc(c.nombre)} en ${esc(N.nombre)}" width="554" height="554" loading="lazy" decoding="async">
+            <img src="${imagenDe(c)}" alt="${esc(c.nombre)} en ${esc(N.nombre)}" ${medidasImagen(c)} loading="lazy" decoding="async">
             <span class="categoria__icono" aria-hidden="true">${ico(c.icono, 'ico--l')}</span>
           </div>
           <div class="categoria__cuerpo">
@@ -136,16 +178,12 @@ function tarjetasCategorias() {
         </a>`).join('\n');
 }
 
-function tarjetaProducto(p, { conBoton = true, insignia = false, porPieza = false } = {}) {
+function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
   const buscar = `${p.nombre} ${p.descripcion} ${p.categoria || ''}`;
-  const piezas = piezasPorUnidad(p.unidad);
   const etiquetas = [
     p.encargo ? `<span class="etiqueta etiqueta--encargo">${ico('calendario')} Por encargo</span>` : '',
     insignia && !p.encargo ? `<span class="etiqueta etiqueta--favorito">${ico('estrella')} Favorito</span>` : ''
   ].filter(Boolean).join('');
-
-  // Precio por pieza: es división del precio real, no un descuento inventado
-  const equivalencia = '';
 
   // El contador (− 2 +) lo crea app.js la primera vez que se agrega el
   // producto: son 50 tarjetas por página y no hace falta enviarlo en el HTML.
@@ -156,7 +194,7 @@ function tarjetaProducto(p, { conBoton = true, insignia = false, porPieza = fals
   return `
           <article class="producto" data-producto data-id="${esc(p.id)}" data-nombre="${esc(p.nombre)}" data-precio="${p.precio}" data-unidad="${esc(p.unidad)}" data-buscar="${esc(buscar)}" data-reveal>
             <div class="foto foto--4-3">
-              <img src="${imagenDe(p)}" alt="${esc(p.nombre)} en ${esc(N.nombre)}" width="554" height="554" loading="lazy" decoding="async">
+              <img src="${imagenDe(p)}" alt="${esc(p.nombre)} en ${esc(N.nombre)}" ${medidasImagen(p)} loading="lazy" decoding="async">
               ${etiquetas ? `<div class="foto__etiquetas">${etiquetas}</div>` : ''}
             </div>
             <div class="producto__cuerpo">
@@ -165,7 +203,6 @@ function tarjetaProducto(p, { conBoton = true, insignia = false, porPieza = fals
                 <span class="producto__unidad">${esc(p.unidad)}</span>
               </div>
               <p class="producto__desc">${esc(p.descripcion)}</p>
-              ${equivalencia}
               <div class="producto__pie">${acciones}
               </div>
             </div>
@@ -173,7 +210,7 @@ function tarjetaProducto(p, { conBoton = true, insignia = false, porPieza = fals
 }
 
 function bloquePaquetes() {
-  return PAQUETES.map((p) => tarjetaProducto(p, { porPieza: true })).join('');
+  return PAQUETES.map((p) => tarjetaProducto(p)).join('');
 }
 
 /* Desvío al menudeo: lo que se vende por pieza no se cotiza acá, se pide en
@@ -627,7 +664,8 @@ function sustituir(html, pagina) {
     ZONAS: bloqueZonas(),
     HORARIOS: bloqueHorarios(),
     OPCIONES_PRODUCTO: opcionesProducto(),
-    IMG_GENERICA: `${base}assets/img/${IMG_GENERICA}`
+    IMG_GENERICA: `${base}assets/img/${IMG_GENERICA}`,
+    IMG_GENERICA_MEDIDAS: medidasImagen({})
   };
 
   let salida = html;
