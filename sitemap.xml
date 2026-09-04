@@ -1,25 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://willianhuit.github.io/cefas-web/</loc>
+    <loc>https://cefaspan.github.io/web/</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-img-generico.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-frances-docena.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/champurrada.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/docena-pan-dulce.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/caja-desayuno.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/coffee-break.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-hamburguesa.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-hot-dog.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/bandeja-bocadillos.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://willianhuit.github.io/cefas-web/menu/</loc>
+    <loc>https://cefaspan.github.io/web/menu/</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-frances-docena.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-hamburguesa.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-hot-dog.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/champurrada.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/concha.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/rol-canela.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-cocodrilo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-de-yema.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-tortuga.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/dona-chocolate.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/milhojas.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/docena-pan-dulce.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/caja-desayuno.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/coffee-break.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/bandeja-bocadillos.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/canasta-regalo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-mayoreo.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://willianhuit.github.io/cefas-web/encargos/</loc>
+    <loc>https://cefaspan.github.io/web/encargos/</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-img-generico.jpg</image:loc></image:image>
   </url>
   <url>
-    <loc>https://willianhuit.github.io/cefas-web/contacto/</loc>
+    <loc>https://cefaspan.github.io/web/contacto/</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-img-generico.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://cefaspan.github.io/web/coffee-break/</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/coffee-break.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/bandeja-bocadillos.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/docena-pan-dulce.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://cefaspan.github.io/web/cajas-de-desayuno/</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/caja-desayuno.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/docena-pan-dulce.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-frances-docena.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://cefaspan.github.io/web/bandejas-de-bocadillos/</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/bandeja-bocadillos.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/docena-pan-dulce.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-hamburguesa.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-hot-dog.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://cefaspan.github.io/web/pan-al-mayoreo/</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-mayoreo.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-frances-docena.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-hamburguesa.jpg</image:loc></image:image>
+    <image:image><image:loc>https://cefaspan.github.io/web/assets/img/pan-hot-dog.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://cefaspan.github.io/web/cuanto-pan/</loc>
     <lastmod>2026-09-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

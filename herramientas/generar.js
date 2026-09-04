@@ -20,16 +20,36 @@ const leerJSON = (p) => JSON.parse(fs.readFileSync(path.join(RAIZ, p), 'utf8'));
 
 const N = leerJSON('datos/negocio.json');
 const CAT = leerJSON('datos/productos.json');
+const SERV = leerJSON('datos/servicios.json');
 
 const DOMINIO = N.dominio.replace(/\/$/, '');
 const HOY = new Date().toISOString().slice(0, 10);
+
+/* Fecha del último cambio real del contenido, para el <lastmod> del sitemap.
+   Antes era siempre "hoy": un lastmod que cambia sin que cambie nada es un
+   lastmod que Google aprende a ignorar. Se toma del último commit que tocó
+   lo que produce el sitio. Si hay cambios sin commitear —o no hay git— se
+   usa hoy, que es cuando de verdad está cambiando.                      */
+const FUENTES_DEL_SITIO = ['datos', 'plantillas', 'herramientas', 'assets'];
+function fechaUltimoCambio() {
+  try {
+    const { execFileSync } = require('child_process');
+    const opts = { cwd: RAIZ, stdio: ['ignore', 'pipe', 'ignore'], encoding: 'utf8' };
+    const sucio = execFileSync('git', ['status', '--porcelain', '--', ...FUENTES_DEL_SITIO], opts).trim();
+    if (sucio) return HOY;
+    const fecha = execFileSync('git', ['log', '-1', '--format=%cs', '--', ...FUENTES_DEL_SITIO], opts).trim();
+    return /^\d{4}-\d{2}-\d{2}$/.test(fecha) ? fecha : HOY;
+  } catch (e) {
+    return HOY;
+  }
+}
+const LASTMOD = fechaUltimoCambio();
 
 /* --- Helpers -------------------------------------------------------------- */
 const esc = (s) => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
-const money = (n) => `${N.simboloMoneda}${Number(n).toFixed(2)}`;
 const jsonld = (obj) => JSON.stringify(obj, null, 2).replace(/</g, '\\u003c');
 
 const DIRECCION_UNA_LINEA = N.direccion.calle;
@@ -53,13 +73,57 @@ const CATEGORIAS_VACIAS = CAT.categorias
   .filter((c) => !c.productos.some(esDeEventos))
   .map((c) => c.nombre);
 
+/* El horario en una sola cadena para el <body>, con el día de la semana en
+   el número que devuelve Date.getDay() (0 = domingo):
+   "1-5:06:00-20:00;6:06:00-12:00;0:cerrado". app.js lo usa para no aceptar
+   entregas en día cerrado ni fuera de hora.                            */
+const DIA_NUM = {
+  Sunday: 0, Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6
+};
+const HORARIOS_DATA = N.horarios.flatMap((h) => {
+  const nums = h.dias.map((d) => DIA_NUM[d]).filter((d) => d !== undefined).sort((a, b) => a - b);
+  if (!nums.length) return [];
+  const valor = h.cerrado ? 'cerrado' : `${h.abre}-${h.cierra}`;
+  const contiguo = nums.length > 1 && nums[nums.length - 1] - nums[0] === nums.length - 1;
+  return contiguo ? [`${nums[0]}-${nums[nums.length - 1]}:${valor}`] : nums.map((d) => `${d}:${valor}`);
+}).join(';');
+
 /* Todas las zonas donde se entrega, con su municipio */
 const ZONAS = N.cobertura.flatMap((g) => g.zonas.map((z) => ({ zona: z, municipio: g.municipio })));
+
+/* Las mismas zonas en prosa ("zonas 1, 2 y 4 de Ciudad de Guatemala, y en
+   zonas 8 y 11 de Mixco"). Las preguntas frecuentes escriben {zonas} y acá se
+   rellena desde cobertura: antes la lista estaba copiada a mano en
+   datos/productos.json y se desincronizaba al cambiar la cobertura.      */
+const ZONAS_TEXTO = N.cobertura.map((g) => {
+  const nums = g.zonas.map((z) => z.replace(/^zona\s+/i, ''));
+  const lista = nums.length > 1
+    ? `${nums.slice(0, -1).join(', ')} y ${nums[nums.length - 1]}`
+    : nums[0];
+  return `${nums.length > 1 ? 'zonas' : 'zona'} ${lista} de ${g.municipio}`;
+}).join(', y en ');
+
+/* La FAQ ya resuelta, para que el texto visible y el JSON-LD digan lo mismo */
+const resolverFAQ = (lista) => (lista || []).map((f) => ({ p: f.p, r: f.r.replace(/\{zonas\}/g, ZONAS_TEXTO) }));
+const FAQ = resolverFAQ(CAT.faq);
 
 /* Foto de relleno mientras no haya fotos reales de cada producto.
    Poné el nombre del archivo en el campo "imagen" de datos/productos.json
    (categoría o producto) y se usa esa en lugar de la genérica.            */
 const IMG_GENERICA = 'pan-img-generico.jpg';
+
+/* Imagen de 1200×630 para compartir el enlace en WhatsApp y redes.
+   La genera herramientas/optimizar-imagenes.js. */
+const OG_IMAGEN = 'og-cefas.jpg';
+
+/* El logo de 512 px pesa 50 KB y en la interfaz se pinta a 44–56 px. Para
+   cabecera, pie y favicon se usa la variante de 192 px si existe (la deja
+   optimizar-imagenes.js); el de 512 queda para el manifest y el JSON-LD.
+   La maskable lleva el logo al 80 % sobre fondo opaco: Android recorta el
+   borde en círculo y, sin margen, el logo salía cortado.               */
+const LOGO = 'logo-cefas.png';
+const LOGO_UI = fs.existsSync(path.join(RAIZ, 'assets/img/logo-cefas-192.png')) ? 'logo-cefas-192.png' : LOGO;
+const LOGO_MASKABLE = fs.existsSync(path.join(RAIZ, 'assets/img/logo-cefas-maskable.png')) ? 'logo-cefas-maskable.png' : LOGO;
 const archivoDe = (obj) => obj.imagen || IMG_GENERICA;
 const imagenDe = (obj) => `{{BASE}}assets/img/${esc(archivoDe(obj))}`;
 
@@ -104,10 +168,55 @@ const medidasImagen = (obj) => {
   return `width="${d.w}" height="${d.h}"`;
 };
 
+/* --- Fotos responsivas ----------------------------------------------------
+   Las tarjetas se pintan a unos 300 px de ancho pero las fotos son de 800:
+   servir el original a todo el mundo era mandar 3 veces los pixeles que se
+   ven. herramientas/optimizar-imagenes.js deja, al lado de foo.jpg, las
+   variantes foo-400.jpg, foo.webp y foo-400.webp; acá se referencia sólo lo
+   que existe en disco, así que el sitio funciona igual si el optimizador no
+   se ha pasado todavía.                                                  */
+const existeImg = (archivo) => fs.existsSync(path.join(RAIZ, 'assets/img', archivo));
+
+/* Cuánto ancho ocupa la foto en cada sitio donde se usa. Sin esto el
+   navegador supone 100vw y vuelve a bajar la versión grande.            */
+const SIZES = {
+  hero: '(max-width: 900px) 92vw, 554px',
+  tarjeta: '(max-width: 560px) 92vw, (max-width: 1000px) 45vw, 300px',
+  ancha: '(max-width: 900px) 92vw, 560px'
+};
+
+function foto(archivo, contexto, alt, { prioridad = false } = {}) {
+  const d = dimensionesDe(archivo);
+  const sizes = SIZES[contexto] || SIZES.tarjeta;
+  const url = (a) => `{{BASE}}assets/img/${esc(a)}`;
+  const ext = (archivo.match(/\.(?:jpe?g|png)$/i) || ['.jpg'])[0];
+  const raiz = archivo.slice(0, archivo.length - ext.length);
+
+  const juego = (extension) => [
+    existeImg(`${raiz}-400${extension}`) ? `${url(`${raiz}-400${extension}`)} 400w` : '',
+    existeImg(`${raiz}${extension}`) ? `${url(`${raiz}${extension}`)} ${d.w}w` : ''
+  ].filter(Boolean);
+
+  const webp = juego('.webp');
+  const nativo = juego(ext);
+
+  const img = '<img ' + [
+    `src="${url(archivo)}"`,
+    nativo.length > 1 ? `srcset="${nativo.join(', ')}" sizes="${sizes}"` : '',
+    `alt="${esc(alt)}"`,
+    `width="${d.w}" height="${d.h}"`,
+    prioridad ? 'fetchpriority="high"' : 'loading="lazy"',
+    'decoding="async"'
+  ].filter(Boolean).join(' ') + '>';
+
+  if (!webp.length) return img;
+  return `<picture><source type="image/webp" srcset="${webp.join(', ')}" sizes="${sizes}">${img}</picture>`;
+}
+
 /* Cuántas piezas trae una unidad de venta, cuando el texto lo dice sin
    ambigüedad ("docena", "paquete de 6", "bandeja 40 piezas"). Sirve para
-   mostrar a cuánto sale cada pieza, que es el argumento de venta de los
-   paquetes. Si no se puede deducir, devuelve 0 y no se muestra nada.   */
+   ordenar la sección de paquetes de la presentación más chica a la más
+   grande. Si no se puede deducir, devuelve 0.                          */
 function piezasPorUnidad(unidad) {
   const u = String(unidad || '').toLowerCase();
   if (/docena/.test(u)) return 12;
@@ -122,10 +231,11 @@ function piezasPorUnidad(unidad) {
 const todosLosProductos = CATEGORIAS.flatMap((c) =>
   c.productos.map((p) => ({ ...p, categoria: c.nombre, categoriaId: c.id })));
 
-/* Productos que se venden por paquete y cuyo precio por pieza es calculable */
+/* Presentaciones que traen varias piezas: la sección «Docenas, paquetes y
+   bandejas» del inicio, de la más chica a la más grande.               */
 const PAQUETES = todosLosProductos
-  .filter((p) => p.precio > 0 && piezasPorUnidad(p.unidad) > 1)
-  .sort((a, b) => a.precio - b.precio);
+  .filter((p) => piezasPorUnidad(p.unidad) > 1)
+  .sort((a, b) => piezasPorUnidad(a.unidad) - piezasPorUnidad(b.unidad));
 
 /* --- Páginas -------------------------------------------------------------- */
 const PAGINAS = [
@@ -138,7 +248,7 @@ const PAGINAS = [
   {
     archivo: 'menu/index.html', ruta: '/menu/', profundidad: 1, nav: 'menu', prioridad: '0.9',
     plantilla: 'menu.html',
-    titulo: 'Menú para eventos | Cefas Panadería',
+    titulo: 'Menú para eventos y coffee breaks | Cefas Panadería Guatemala',
     descripcion: 'Docenas, paquetes, bandejas, cajas de desayuno y coffee breaks por encargo para tu oficina o evento. Armá tu pedido y pedí la cotización por WhatsApp.'
   },
   {
@@ -161,13 +271,29 @@ const PAGINAS = [
   }
 ];
 
+/* Una página por servicio (datos/servicios.json). Cada una es una búsqueda
+   real —"coffee break empresas Guatemala", "cajas de desayuno oficina"— que
+   antes sólo tenía la portada genérica para competir. Y la calculadora de
+   cantidades, que responde a "cuánto pan para 50 personas".             */
+const PAGINAS_SERVICIO = SERV.servicios.map((s) => ({
+  archivo: `${s.id}/index.html`, ruta: `/${s.id}/`, profundidad: 1, nav: 'servicio', prioridad: '0.8',
+  plantilla: 'servicio.html', titulo: s.titulo, descripcion: s.descripcion, miga: s.nombre, servicio: s
+}));
+const PAGINA_CALCULADORA = {
+  archivo: 'cuanto-pan/index.html', ruta: '/cuanto-pan/', profundidad: 1, nav: 'calculadora', prioridad: '0.7',
+  plantilla: 'cuanto-pan.html', titulo: SERV.calculadora.titulo, descripcion: SERV.calculadora.descripcion,
+  miga: 'Cuánto pan necesito', calculadora: true
+};
+// Antes de la 404, que no va al sitemap
+PAGINAS.splice(PAGINAS.length - 1, 0, ...PAGINAS_SERVICIO, PAGINA_CALCULADORA);
+
 /* --- Bloques generados ---------------------------------------------------- */
 
 function tarjetasCategorias() {
   return CATEGORIAS.map((c) => `
         <a class="categoria" href="{{BASE}}menu/#${esc(c.id)}" data-reveal>
           <div class="foto foto--16-10">
-            <img src="${imagenDe(c)}" alt="${esc(c.nombre)} en ${esc(N.nombre)}" ${medidasImagen(c)} loading="lazy" decoding="async">
+            ${foto(archivoDe(c), 'tarjeta', `${c.nombre} en ${N.nombre}`)}
             <span class="categoria__icono" aria-hidden="true">${ico(c.icono, 'ico--l')}</span>
           </div>
           <div class="categoria__cuerpo">
@@ -186,15 +312,17 @@ function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
   ].filter(Boolean).join('');
 
   // El contador (− 2 +) lo crea app.js la primera vez que se agrega el
-  // producto: son 50 tarjetas por página y no hace falta enviarlo en el HTML.
-  const acciones = p.precio > 0 && conBoton
-    ? `<button class="btn btn--principal btn--compacto" type="button" data-agregar>${ico('mas')} Agregar al pedido</button>`
+  // producto: son decenas de tarjetas por página y no hace falta enviarlo en
+  // el HTML. Todos los productos van a la cotización: en este sitio no hay
+  // precios, así que no hay nada que distinga «comprable» de «cotizable».
+  const acciones = conBoton
+    ? `<button class="btn btn--principal btn--compacto" type="button" data-agregar>${ico('mas')} Agregar a mi cotización</button>`
     : `<a class="btn btn--secundario btn--compacto" href="{{BASE}}encargos/#formulario">${ico('chat')} Pedir cotización</a>`;
 
   return `
-          <article class="producto" data-producto data-id="${esc(p.id)}" data-nombre="${esc(p.nombre)}" data-precio="${p.precio}" data-unidad="${esc(p.unidad)}" data-buscar="${esc(buscar)}" data-reveal>
+          <article class="producto" data-producto data-id="${esc(p.id)}" data-nombre="${esc(p.nombre)}" data-unidad="${esc(p.unidad)}" data-buscar="${esc(buscar)}" data-reveal>
             <div class="foto foto--4-3">
-              <img src="${imagenDe(p)}" alt="${esc(p.nombre)} en ${esc(N.nombre)}" ${medidasImagen(p)} loading="lazy" decoding="async">
+              ${foto(archivoDe(p), 'tarjeta', `${p.nombre} en ${N.nombre}`)}
               ${etiquetas ? `<div class="foto__etiquetas">${etiquetas}</div>` : ''}
             </div>
             <div class="producto__cuerpo">
@@ -257,8 +385,8 @@ function destacados() {
     .map((p) => tarjetaProducto(p, { insignia: true })).join('');
 }
 
-function bloqueFAQ() {
-  return CAT.faq.map((f) => `
+function bloqueFAQ(lista = FAQ) {
+  return lista.map((f) => `
           <details data-reveal>
             <summary>${esc(f.p)}<span class="faq__signo" aria-hidden="true">${ico('chevron')}</span></summary>
             <div>${esc(f.r)}</div>
@@ -284,6 +412,17 @@ function opcionesProducto() {
   ).join('\n              ');
 }
 
+/* Zonas de entrega para el <select> del formulario: la cobertura es una lista
+   cerrada, así que el cliente elige en vez de escribir una zona a la que no se
+   llega. El valor lleva el municipio para que el mensaje de WhatsApp no sea
+   ambiguo ("Zona 11" existe en la capital y en Mixco).                  */
+function opcionesZona() {
+  return N.cobertura.map((g) =>
+    `<optgroup label="${esc(g.municipio)}">${g.zonas.map((z) =>
+      `<option value="${esc(`${z}, ${g.municipio}`)}">${esc(z)}</option>`).join('')}</optgroup>`
+  ).join('\n              ');
+}
+
 /* --- Datos estructurados -------------------------------------------------- */
 
 const ID_NEGOCIO = `${DOMINIO}/#panaderia`;
@@ -301,7 +440,6 @@ function schemaNegocio() {
     image: `${DOMINIO}/assets/img/logo-cefas.png`,
     telephone: N.telefonoE164,
     email: N.email,
-    currenciesAccepted: N.moneda,
     paymentAccepted: 'Efectivo, Tarjeta de crédito, Transferencia bancaria',
     servesCuisine: ['Panadería', 'Café'],
     hasMenu: `${DOMINIO}/menu/`,
@@ -356,18 +494,18 @@ function schemaMigas(pagina) {
   if (pagina.ruta !== '/') {
     items.push({
       '@type': 'ListItem', position: 2,
-      name: pagina.nav === 'menu' ? 'Menú' : pagina.nav === 'encargos' ? 'Encargos' : 'Contacto',
+      name: pagina.miga || (pagina.nav === 'menu' ? 'Menú' : pagina.nav === 'encargos' ? 'Encargos' : 'Contacto'),
       item: `${DOMINIO}${pagina.ruta}`
     });
   }
   return { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items };
 }
 
-function schemaFAQ() {
+function schemaFAQ(lista = FAQ) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: CAT.faq.map((f) => ({
+    mainEntity: lista.map((f) => ({
       '@type': 'Question',
       name: f.p,
       acceptedAnswer: { '@type': 'Answer', text: f.r }
@@ -408,8 +546,7 @@ function schemaServicioEncargos() {
       '@type': 'ServiceChannel',
       serviceUrl: `${DOMINIO}/encargos/`,
       servicePhone: N.telefonoE164
-    },
-    offers: { '@type': 'Offer', priceCurrency: N.moneda, priceRange: N.rangoPrecios }
+    }
   };
 }
 
@@ -418,6 +555,11 @@ function schemasDe(pagina) {
   if (pagina.nav === 'inicio') lista.push(schemaFAQ());
   if (pagina.nav === 'menu') lista.push(schemaMenu());
   if (pagina.nav === 'encargos') lista.push(schemaServicioEncargos());
+  if (pagina.servicio) {
+    lista.push(schemaServicio(pagina.servicio));
+    lista.push(schemaFAQ(resolverFAQ(pagina.servicio.faq)));
+  }
+  if (pagina.calculadora) lista.push(schemaFAQ(resolverFAQ(SERV.calculadora.faq)));
   if (pagina.nav === 'contacto') {
     lista.push({
       '@context': 'https://schema.org', '@type': 'ContactPage',
@@ -429,10 +571,32 @@ function schemasDe(pagina) {
 
 /* --- Layout --------------------------------------------------------------- */
 
+/* Precarga la foto grande del hero: es el LCP del inicio. Se precarga la
+   variante que el navegador va a elegir de verdad, no el original. */
+function preloadHero(base) {
+  const ext = path.extname(IMG_GENERICA);
+  const raiz = IMG_GENERICA.slice(0, IMG_GENERICA.length - ext.length);
+  const webp = `${raiz}.webp`;
+  const usa = existeImg(webp) ? webp : IMG_GENERICA;
+  const tipo = usa.endsWith('.webp') ? 'image/webp' : 'image/jpeg';
+  const chica = `${raiz}-400${usa.endsWith('.webp') ? '.webp' : ext}`;
+  // Las dimensiones se leen del JPEG: dimensionesDe() sabe de PNG y JPEG, y
+  // el .webp sale del mismo original, así que mide lo mismo.
+  const ancho = dimensionesDe(IMG_GENERICA).w;
+  const srcset = existeImg(chica)
+    ? ` imagesrcset="${base}assets/img/${chica} 400w, ${base}assets/img/${usa} ${ancho}w" imagesizes="${SIZES.hero}"`
+    : '';
+  return `<link rel="preload" as="image" type="${tipo}" href="${base}assets/img/${usa}"${srcset} fetchpriority="high">`;
+}
+
 function cabeza(pagina) {
   const base = '../'.repeat(pagina.profundidad);
   const url = `${DOMINIO}${pagina.ruta}`;
-  const og = `${DOMINIO}/assets/img/logo-cefas.png`;
+  // Imagen para compartir: 1200×630, la medida que esperan WhatsApp, Facebook
+  // y X. Antes iba el logo cuadrado con transparencia y salía recortado sobre
+  // fondo negro justo en el enlace que más se pega por WhatsApp.
+  const og = `${DOMINIO}/assets/img/${existeImg(OG_IMAGEN) ? OG_IMAGEN : 'logo-cefas.png'}`;
+  const ogAlto = existeImg(OG_IMAGEN) ? dimensionesDe(OG_IMAGEN) : null;
   const enlaces = schemasDe(pagina)
     .map((s) => `<script type="application/ld+json">\n${jsonld(s)}\n</script>`).join('\n');
 
@@ -462,7 +626,10 @@ ${pagina.noindex ? '<meta name="robots" content="noindex, follow">' : '<meta nam
 <meta property="og:description" content="${esc(pagina.descripcion)}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${og}">
-<meta property="og:image:alt" content="Logo de ${esc(N.nombre)}">
+${ogAlto ? `<meta property="og:image:width" content="${ogAlto.w}">
+<meta property="og:image:height" content="${ogAlto.h}">
+<meta property="og:image:type" content="image/jpeg">` : ''}
+<meta property="og:image:alt" content="Pan y bocadillos para eventos de ${esc(N.nombre)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(pagina.titulo)}">
 <meta name="twitter:description" content="${esc(pagina.descripcion)}">
@@ -471,15 +638,18 @@ ${pagina.noindex ? '<meta name="robots" content="noindex, follow">' : '<meta nam
 <link rel="alternate" hreflang="es-gt" href="${url}">
 <link rel="alternate" hreflang="x-default" href="${url}">
 
-<link rel="icon" type="image/png" href="${base}assets/img/logo-cefas.png">
-<link rel="apple-touch-icon" href="${base}assets/img/logo-cefas.png">
+<link rel="icon" type="image/png" sizes="192x192" href="${base}assets/img/${LOGO_UI}">
+<link rel="apple-touch-icon" href="${base}assets/img/${LOGO_UI}">
 <link rel="manifest" href="${base}manifest.webmanifest">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<!-- Tipografías autohospedadas: las declara assets/css/estilos.css. Antes
+     venían de fonts.googleapis.com, que añadía dos conexiones TLS al camino
+     crítico. Se precargan los dos subconjuntos latinos, los únicos que usa
+     el español. -->
+<link rel="preload" as="font" type="font/woff2" href="${base}assets/fonts/fraunces-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="${base}assets/fonts/inter-latin.woff2" crossorigin>
 <link rel="stylesheet" href="${base}assets/css/estilos.css">
-${pagina.nav === 'inicio' ? `<link rel="preload" as="image" href="${base}assets/img/${IMG_GENERICA}" fetchpriority="high">` : ''}
+${pagina.nav === 'inicio' ? preloadHero(base) : ''}
 
 <!-- Marca .js para que las animaciones de entrada sólo se apliquen si hay
      JavaScript; sin él el contenido se ve de una vez. -->
@@ -499,7 +669,7 @@ function cabecera(pagina) {
 <header class="cabecera">
   <div class="contenedor cabecera__inner">
     <a class="marca" href="${base}index.html" aria-label="${esc(N.nombre)} — inicio">
-      <img src="${base}assets/img/logo-cefas.png" alt="Logo de ${esc(N.nombre)}" width="44" height="44">
+      <img src="${base}assets/img/${LOGO_UI}" alt="Logo de ${esc(N.nombre)}" width="44" height="44">
       <span class="marca__texto">
         <span class="marca__nombre">Cefas</span>
         <span class="marca__sub">Panadería</span>
@@ -544,7 +714,7 @@ function pie(pagina) {
   <div class="contenedor">
     <div class="pie__grid">
       <div class="pie__marca">
-        <img src="${base}assets/img/logo-cefas.png" alt="Logo de ${esc(N.nombre)}" width="56" height="56" loading="lazy">
+        <img src="${base}assets/img/${LOGO_UI}" alt="Logo de ${esc(N.nombre)}" width="56" height="56" loading="lazy">
         <p>${esc(N.descripcionCorta)}</p>
       </div>
 
@@ -560,7 +730,8 @@ function pie(pagina) {
         <h3>Pedidos</h3>
         <ul>
           <li><a href="${base}encargos/">${ico('caja')} Pedidos por encargo</a></li>
-          <li><a href="${base}encargos/#eventos">${ico('usuarios')} Eventos y empresas</a></li>
+          ${enlacesServicios(base)}
+          <li><a href="${base}cuanto-pan/">${ico('check')} ¿Cuánto pan necesito?</a></li>
           <li><a href="${base}contacto/">${ico('reloj')} Contacto y horarios</a></li>
           ${redes.join('\n          ')}
         </ul>
@@ -579,26 +750,26 @@ function pie(pagina) {
 
     <div class="pie__legal">
       <span>&copy; <span data-anio>2026</span> ${esc(N.nombre)}. Guatemala zona 6.</span>
-      <span>Pan francés, pan dulce y pan artesanal por encargo.</span>
+      <span>Pan y bocadillos por encargo para eventos y empresas.</span>
     </div>
   </div>
 </footer>
 
-<a class="wa-flotante" href="https://wa.me/${esc(N.whatsapp)}?text=${encodeURIComponent('¡Hola Cefas Panadería! Quiero hacer un pedido.')}" rel="noopener" aria-label="Escribinos por WhatsApp">
+<a class="wa-flotante" href="https://wa.me/${esc(N.whatsapp)}?text=${encodeURIComponent('¡Hola Cefas Panadería! Quiero cotizar un encargo.')}" rel="noopener" aria-label="Escribinos por WhatsApp">
   ${ico('whatsapp')}
   <span class="wa-flotante__texto">Pedir por WhatsApp</span>
 </a>`;
 }
 
-/* Barra fija de pedido para móvil. */
+/* Barra fija de cotización para móvil. */
 function barraVenta() {
   return `
 <div class="barra-venta" data-barra-venta hidden>
   <div class="barra-venta__info">
-    <span><span data-carrito-unidades>0</span> en tu pedido</span>
+    <span><span data-carrito-unidades>0</span> en tu cotización</span>
   </div>
   <button class="btn btn--wa" type="button" data-carrito-abrir>
-    ${ico('canasta')} Ver mi pedido
+    ${ico('canasta')} Ver mi cotización
   </button>
 </div>`;
 }
@@ -607,24 +778,117 @@ function panelCarrito(pagina) {
   const base = '../'.repeat(pagina.profundidad);
   return `
 <div class="velo" data-velo hidden></div>
-<aside class="panel" data-panel hidden aria-label="Mi pedido">
+<aside class="panel" data-panel hidden role="dialog" aria-modal="true" aria-label="Mi cotización">
   <div class="panel__cabecera">
-    <h2>${ico('canasta')} Mi pedido</h2>
-    <button class="panel__cerrar" type="button" data-panel-cerrar aria-label="Cerrar el panel de pedido">${ico('cerrar')}</button>
+    <h2>${ico('canasta')} Mi cotización</h2>
+    <button class="panel__cerrar" type="button" data-panel-cerrar aria-label="Cerrar el panel de cotización">${ico('cerrar')}</button>
   </div>
   <div class="panel__cuerpo" data-carrito-cuerpo>
     <p class="carrito-vacio" data-carrito-vacio>
       <span class="carrito-vacio__ico" aria-hidden="true">${ico('canasta', 'ico--xl')}</span>
       Todavía no agregaste nada.<br>
-      <a href="${base}menu/">Explorá el menú</a> y armá tu encargo.
+      <a href="${base}menu/">Explorá el menú</a> y armá tu cotización.
     </p>
   </div>
   <div class="panel__pie">
     <p class="panel__nota">Te confirmamos la cotización final y la hora de entrega por WhatsApp.</p>
-    <button class="btn btn--wa btn--bloque" type="button" data-enviar-wa disabled>${ico('whatsapp')} Enviar pedido por WhatsApp</button>
-    <p class="panel__vaciar"><button class="btn btn--texto" type="button" data-vaciar>Vaciar pedido</button></p>
+    <p class="panel__nota panel__enviado" data-enviado hidden>${ico('check')} Se abrió WhatsApp con tu lista. Cuando la hayas enviado, podés vaciarla para empezar otra.</p>
+    <button class="btn btn--wa btn--bloque" type="button" data-enviar-wa disabled>${ico('whatsapp')} Pedir cotización por WhatsApp</button>
+    <p class="panel__vaciar"><button class="btn btn--texto" type="button" data-vaciar>Vaciar la cotización</button></p>
   </div>
 </aside>`;
+}
+
+/* --- Páginas de servicio y calculadora ------------------------------------ */
+
+const PRODUCTO_POR_ID = new Map(todosLosProductos.map((p) => [p.id, p]));
+
+function productosDe(ids, contexto) {
+  return ids.map((id) => {
+    const p = PRODUCTO_POR_ID.get(id);
+    if (!p) console.warn(`  ⚠ ${contexto}: el producto "${id}" no existe o es de menudeo`);
+    return p;
+  }).filter(Boolean);
+}
+
+function schemaServicio(s) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: s.h1,
+    serviceType: s.nombre,
+    description: s.descripcion,
+    url: `${DOMINIO}/${s.id}/`,
+    image: `${DOMINIO}/assets/img/${archivoDe(s)}`,
+    provider: { '@id': ID_NEGOCIO },
+    areaServed: N.cobertura.map((g) => ({ '@type': 'City', name: `${g.municipio}, Guatemala` })),
+    availableChannel: {
+      '@type': 'ServiceChannel',
+      serviceUrl: `${DOMINIO}/encargos/`,
+      servicePhone: N.telefonoE164
+    }
+  };
+}
+
+function varsServicio(s) {
+  const productos = productosDe(s.productos, s.id);
+  return {
+    SERVICIO_NOMBRE: esc(s.nombre),
+    SERVICIO_NOMBRE_MIN: esc(s.nombre.charAt(0).toLowerCase() + s.nombre.slice(1)),
+    SERVICIO_EYEBROW: esc(s.eyebrow),
+    SERVICIO_ICONO: `{{ico:${s.icono}}}`,          // lo resuelve la segunda pasada
+    SERVICIO_H1: esc(s.h1),
+    SERVICIO_INTRO: esc(s.intro),
+    SERVICIO_PARA_QUIEN: esc(s.paraQuien),
+    SERVICIO_INCLUYE: s.incluye.map((t) => `<li>{{ico:check}} <span>${esc(t)}</span></li>`).join('\n          '),
+    SERVICIO_DATOS: s.datos.map((d) =>
+      `<div><span class="confianza__ico" aria-hidden="true">{{ico:${d.icono}}}</span><strong>${esc(d.valor)}</strong><span>${esc(d.etiqueta)}</span></div>`
+    ).join('\n    '),
+    SERVICIO_PRODUCTOS: productos.map((p) => tarjetaProducto(p)).join(''),
+    SERVICIO_FAQ: bloqueFAQ(resolverFAQ(s.faq)),
+    SERVICIO_FOTO: foto(archivoDe(s), 'ancha', s.alt || s.nombre, { prioridad: true }),
+    SERVICIO_WA: `https://wa.me/${esc(N.whatsapp)}?text=${encodeURIComponent(s.whatsapp)}`
+  };
+}
+
+/* La calculadora recibe las reglas ya cruzadas con el catálogo: nombre,
+   unidad, piezas por unidad y foto de cada producto, para que app.js pueda
+   sugerir cantidades y pasarlas a la cotización sin volver a consultar. */
+function varsCalculadora(base) {
+  const C = SERV.calculadora;
+  const tipos = C.tipos.map((t) => ({
+    id: t.id,
+    nombre: t.nombre,
+    minimo: t.minimo || 1,
+    lineas: productosDe(t.lineas.map((l) => l.producto), `calculadora/${t.id}`).map((p) => {
+      const regla = t.lineas.find((l) => l.producto === p.id);
+      return {
+        id: p.id, nombre: p.nombre, unidad: p.unidad,
+        piezas: piezasPorUnidad(p.unidad) || 1,
+        porPersona: regla.porPersona,
+        img: `${base}assets/img/${archivoDe(p)}`
+      };
+    })
+  }));
+  return {
+    CALC_H1: esc(C.h1),
+    CALC_DATOS: jsonld(tipos),
+    CALC_OPCIONES: C.tipos.map((t) => `<option value="${esc(t.id)}">${esc(t.nombre)}</option>`).join('\n            '),
+    CALC_REGLAS: C.tipos.map((t) => `<li>{{ico:check}} <span><strong>${esc(t.nombre)}:</strong> ${esc(t.descripcion)}</span></li>`).join('\n        '),
+    CALC_FAQ: bloqueFAQ(resolverFAQ(C.faq))
+  };
+}
+
+function varsExtra(pagina, base) {
+  if (pagina.servicio) return varsServicio(pagina.servicio);
+  if (pagina.calculadora) return varsCalculadora(base);
+  return {};
+}
+
+/* Enlaces a los servicios para el pie */
+function enlacesServicios(base) {
+  return SERV.servicios.map((s) =>
+    `<li><a href="${base}${esc(s.id)}/">${ico(s.icono)} ${esc(s.nombre)}</a></li>`).join('\n          ');
 }
 
 /* --- Sustitución de variables --------------------------------------------- */
@@ -645,12 +909,10 @@ function sustituir(html, pagina) {
     DOMINIO,
     PEDIDOSYA: N.redes.pedidosya || '',
     MAPA_EMBED: N.redes.googleMapsEmbed || '',
-    MAPA_ENLACE: N.redes.googleMaps || `https://www.google.com/maps/search/${encodeURIComponent(N.nombre + ' ' + DIRECCION_UNA_LINEA)}`,
     ANTICIPACION: String(N.anticipacionEncargoHoras),
     ENTREGA_SOLO: esc(N.entregaSolo),
     COBERTURA_RESUMEN: esc(N.coberturaResumen),
     TOTAL_MUNICIPIOS: String(N.cobertura.length),
-    PRECIO_DESDE: money(Math.min(...todosLosProductos.filter((p) => p.precio > 0).map((p) => p.precio))),
     TOTAL_PRODUCTOS: String(todosLosProductos.length),
     TOTAL_CATEGORIAS: String(CATEGORIAS.length),
     TOTAL_ZONAS: String(ZONAS.length),
@@ -662,10 +924,13 @@ function sustituir(html, pagina) {
     PEDIDOSYA_BLOQUE: bloquePedidosYa(),
     FAQ: bloqueFAQ(),
     ZONAS: bloqueZonas(),
+    ZONAS_TEXTO: esc(ZONAS_TEXTO),
     HORARIOS: bloqueHorarios(),
     OPCIONES_PRODUCTO: opcionesProducto(),
-    IMG_GENERICA: `${base}assets/img/${IMG_GENERICA}`,
-    IMG_GENERICA_MEDIDAS: medidasImagen({})
+    OPCIONES_ZONA: opcionesZona(),
+    LOGO_UI: `${base}assets/img/${LOGO_UI}`,
+    ...varsExtra(pagina, base),
+    IMG_GENERICA: `${base}assets/img/${IMG_GENERICA}`
   };
 
   let salida = html;
@@ -673,6 +938,11 @@ function sustituir(html, pagina) {
   for (let i = 0; i < 2; i++) {
     // {{ico:nombre}} → <svg><use href="#i-nombre"></svg>
     salida = salida.replace(/\{\{ico:([\w-]+)(?::([\w -]+))?\}\}/g, (_, nombre, clase) => ico(nombre, clase));
+    // {{foto:archivo.jpg|contexto|texto alternativo}} (|alta para el LCP)
+    salida = salida.replace(
+      /\{\{foto:([^|}]+)\|([^|}]+)\|([^|}]+?)(?:\|(alta))?\}\}/g,
+      (_, archivo, contexto, alt, alta) => foto(archivo.trim(), contexto.trim(), alt.trim(), { prioridad: !!alta })
+    );
     salida = salida.replace(/\{\{(\w+)\}\}/g, (coincidencia, clave) =>
       Object.prototype.hasOwnProperty.call(mapa, clave) ? mapa[clave] : coincidencia);
   }
@@ -694,21 +964,48 @@ function escribir(rutaRelativa, contenido) {
   console.log(`  ✓ ${rutaRelativa.padEnd(24)} ${kb.padStart(7)} KB`);
 }
 
+/* Sin JavaScript no hay lista de cotización: los botones de las tarjetas no
+   hacen nada. Se avisa arriba y se manda directo a WhatsApp.            */
+function noscript() {
+  return `<noscript><p class="aviso-noscript">Esta página arma tu cotización con JavaScript. Si lo tenés desactivado, escribinos directo por <a href="https://wa.me/${esc(N.whatsapp)}" rel="noopener">WhatsApp</a> al ${esc(N.telefono)}.</p></noscript>`;
+}
+
+/* Fotos que muestra una página, para el sitemap de imágenes: los JPEG
+   grandes, sin variantes de 400, sin la OG y sin el logo. */
+function fotosDe(html) {
+  const vistas = new Set();
+  for (const m of html.matchAll(/src="(?:\.\.\/)*assets\/img\/([\w-]+\.jpg)"/g)) {
+    if (!/-400\.jpg$/.test(m[1]) && m[1] !== OG_IMAGEN) vistas.add(m[1]);
+  }
+  return [...vistas];
+}
+
+/* Devuelve las fotos de la página, que el sitemap necesita después. */
 function construirPagina(pagina) {
   const cuerpo = fs.readFileSync(path.join(RAIZ, 'plantillas', pagina.plantilla), 'utf8');
   const base = '../'.repeat(pagina.profundidad);
 
-  const html = [
-    cabeza(pagina),
-    `<body data-whatsapp="${esc(N.whatsapp)}" data-moneda="${esc(N.simboloMoneda)}">`,
-    sprite(),
+  const contenido = [
     cabecera(pagina),
     '<main id="contenido">',
     sustituir(cuerpo, pagina).trim(),
     '</main>',
     pie(pagina),
     barraVenta(),
-    panelCarrito(pagina),
+    panelCarrito(pagina)
+  ].join('\n');
+
+  // Sólo los iconos que esta página usa de verdad. "mas" y "menos" van
+  // siempre: los pone app.js al crear el contador (− n +) de cada tarjeta.
+  const iconos = new Set(['mas', 'menos']);
+  for (const m of contenido.matchAll(/href="#i-([\w-]+)"/g)) iconos.add(m[1]);
+
+  const html = [
+    cabeza(pagina),
+    `<body data-whatsapp="${esc(N.whatsapp)}" data-anticipacion="${esc(N.anticipacionEncargoHoras)}" data-horarios="${esc(HORARIOS_DATA)}">`,
+    sprite([...iconos]),
+    noscript(),
+    contenido,
     `<script src="${base}assets/js/app.js" defer></script>`,
     '</body>',
     '</html>',
@@ -716,18 +1013,26 @@ function construirPagina(pagina) {
   ].join('\n');
 
   escribir(pagina.archivo, html);
+  return fotosDe(html);
 }
 
-function construirSitemap() {
-  const urls = PAGINAS.filter((p) => p.prioridad).map((p) => `  <url>
+/* El sitemap lleva también las fotos de cada página (extensión de imágenes
+   de Google): para una panadería, Google Imágenes es un canal real. */
+function construirSitemap(fotosPorPagina) {
+  const urls = PAGINAS.filter((p) => p.prioridad).map((p) => {
+    const fotos = (fotosPorPagina.get(p.archivo) || []).map((f) => `
+    <image:image><image:loc>${DOMINIO}/assets/img/${f}</image:loc></image:image>`).join('');
+    return `  <url>
     <loc>${DOMINIO}${p.ruta}</loc>
-    <lastmod>${HOY}</lastmod>
+    <lastmod>${LASTMOD}</lastmod>
     <changefreq>${p.nav === 'menu' ? 'weekly' : 'monthly'}</changefreq>
-    <priority>${p.prioridad}</priority>
-  </url>`).join('\n');
+    <priority>${p.prioridad}</priority>${fotos}
+  </url>`;
+  }).join('\n');
 
   escribir('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 ${urls}
 </urlset>
 `);
@@ -754,8 +1059,8 @@ function construirManifest() {
     background_color: '#FDF8F1',
     theme_color: '#171310',
     icons: [
-      { src: 'assets/img/logo-cefas.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-      { src: 'assets/img/logo-cefas.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+      { src: `assets/img/${LOGO}`, sizes: '512x512', type: 'image/png', purpose: 'any' },
+      { src: `assets/img/${LOGO_MASKABLE}`, sizes: '512x512', type: 'image/png', purpose: 'maskable' }
     ]
   }, null, 2) + '\n');
 }
@@ -763,8 +1068,9 @@ function construirManifest() {
 /* --- Main ----------------------------------------------------------------- */
 
 console.log(`\nGenerando ${N.nombre} → ${DOMINIO}\n`);
-PAGINAS.forEach(construirPagina);
-construirSitemap();
+const fotosPorPagina = new Map();
+PAGINAS.forEach((p) => fotosPorPagina.set(p.archivo, construirPagina(p)));
+construirSitemap(fotosPorPagina);
 construirRobots();
 construirManifest();
 escribir('.nojekyll', '');

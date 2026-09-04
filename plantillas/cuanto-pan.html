@@ -1,0 +1,105 @@
+<!-- ===================== CALCULADORA =====================
+     Responde a búsquedas reales ("cuánto pan para 50 personas", "cuántos
+     bocadillos por persona coffee break") y convierte: el resultado se
+     agrega a la cotización con un botón. Las reglas viven en
+     datos/servicios.json → calculadora, y llegan al navegador en el
+     <script type="application/json"> de abajo. Sin JavaScript queda la
+     lista de reglas rápidas, que es el contenido que indexa Google. -->
+<section class="seccion seccion--corta">
+  <div class="contenedor">
+    <nav class="migas" aria-label="Estás en">
+      <a href="{{BASE}}index.html">Inicio</a> <span aria-hidden="true">›</span>
+      <a href="{{BASE}}encargos/">Encargos</a> <span aria-hidden="true">›</span>
+      <span aria-current="page">Cuánto pan necesito</span>
+    </nav>
+
+    <div class="cabecera-seccion" data-reveal>
+      <span class="eyebrow eyebrow--ico">{{ico:usuarios}} Calculadora de cantidades</span>
+      <h1>{{CALC_H1}}</h1>
+      <p class="entradilla">
+        Decinos cuántas personas son y qué tipo de actividad es. Te sugerimos las bandejas,
+        docenas o cajas que suelen alcanzar, con un botón para pasarlo directo a tu cotización.
+      </p>
+    </div>
+
+    <form class="formulario calculadora" data-calculadora novalidate data-reveal>
+      <div class="campos">
+        <div class="campo">
+          <label for="personas">¿Cuántas personas?</label>
+          <input type="number" id="personas" name="personas" min="1" max="2000" inputmode="numeric" placeholder="Ej: 35" required>
+        </div>
+        <div class="campo">
+          <label for="tipo-actividad">¿Qué tipo de actividad?</label>
+          <select id="tipo-actividad" name="tipo">
+            {{CALC_OPCIONES}}
+          </select>
+        </div>
+      </div>
+
+      <div class="calculadora__resultado" data-calc-resultado hidden aria-live="polite">
+        <h2 class="calculadora__titulo" data-calc-nota></h2>
+        <ul class="lista-ico" data-calc-lineas></ul>
+        <p class="calculadora__pie" data-calc-aviso hidden></p>
+        <div class="grupo-btn">
+          <button class="btn btn--principal" type="button" data-calc-agregar>{{ico:mas}} Agregar todo a mi cotización</button>
+          <a class="btn btn--secundario" href="{{BASE}}menu/">Ajustar en el menú {{ico:flecha:ico--desliza}}</a>
+        </div>
+      </div>
+
+      <p class="panel__nota centro">
+        Es una sugerencia basada en lo que pedimos para eventos parecidos. En la cotización lo revisamos con vos.
+      </p>
+    </form>
+
+    <script type="application/json" data-calc-datos>{{CALC_DATOS}}</script>
+  </div>
+</section>
+
+<!-- ===================== REGLAS RÁPIDAS ===================== -->
+<section class="seccion seccion--crema" aria-labelledby="t-reglas">
+  <div class="contenedor">
+    <div class="cabecera-seccion" data-reveal>
+      <span class="eyebrow eyebrow--ico">{{ico:check}} Reglas rápidas</span>
+      <h2 id="t-reglas">Cuánto pan por persona, según la actividad</h2>
+      <p class="entradilla">
+        Son las proporciones con las que calculamos en la panadería. La calculadora de arriba las
+        aplica y redondea a la presentación completa: docena, paquete o bandeja.
+      </p>
+    </div>
+
+    <div class="tarjeta-info" data-reveal>
+      <ul class="lista-ico lista-ico--espaciada">
+        {{CALC_REGLAS}}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="seccion" aria-labelledby="t-faq">
+  <div class="contenedor">
+    <div class="cabecera-seccion centro" data-reveal>
+      <span class="eyebrow">Dudas frecuentes</span>
+      <h2 id="t-faq">Sobre las cantidades</h2>
+    </div>
+
+    <div class="faq">
+      {{CALC_FAQ}}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="seccion seccion--crema">
+  <div class="contenedor">
+    <div class="cta-final" data-reveal>
+      <span class="cta-final__ico" aria-hidden="true">{{ico:chat:ico--xl}}</span>
+      <h2>¿Preferís que lo calculemos con vos?</h2>
+      <p>Escribinos cuántas personas son, la hora y si hay otra comida, y te proponemos la cantidad.</p>
+      <div class="grupo-btn grupo-btn--centro">
+        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20que%20me%20ayuden%20a%20calcular%20cu%C3%A1nto%20pan%20necesito%20para%20una%20actividad." rel="noopener">{{ico:whatsapp}} Calcular por WhatsApp</a>
+        <a class="btn btn--secundario btn--grande" href="{{BASE}}encargos/#formulario">{{ico:calendario}} Cotizar un encargo</a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,46 @@
+name: Verificar el sitio
+
+# El README dice «nunca edites los .html de la raíz a mano», pero hasta ahora
+# nada lo impedía. Este flujo regenera el sitio y falla si lo que hay en el
+# repositorio no coincide, así que también avisa cuando alguien cambió
+# datos/ o plantillas/ y se olvidó de regenerar.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # generar.js y verificar.js no tienen dependencias: sharp sólo lo usa el
+      # optimizador de fotos, que se corre a mano al agregar imágenes.
+      - name: Regenerar el sitio
+        run: node herramientas/generar.js
+
+      - name: Comprobar que el HTML publicado está regenerado
+        # sitemap.xml queda fuera: su <lastmod> sale del último commit que
+        # tocó el contenido (o de hoy, si hay cambios sin commitear), y en el
+        # runner el checkout es superficial, así que puede no coincidir.
+        run: |
+          if ! git diff --quiet -- . ':(exclude)sitemap.xml'; then
+            echo "::error::El HTML del repositorio no coincide con el que produce generar.js. Corré 'node herramientas/generar.js' y commiteá el resultado. Nunca edites los .html de la raíz a mano: se sobrescriben."
+            git diff --stat -- . ':(exclude)sitemap.xml'
+            git diff -- . ':(exclude)sitemap.xml'
+            exit 1
+          fi
+          echo "El HTML publicado coincide con el generado."
+
+      - name: Verificar SEO, enlaces, accesibilidad y datos estructurados
+        run: node herramientas/verificar.js

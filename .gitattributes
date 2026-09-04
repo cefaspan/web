@@ -1,0 +1,10 @@
+# Todo el texto en LF, también en Windows. generar.js escribe LF y el CI
+# compara byte a byte el HTML del repositorio con el regenerado: con finales
+# de línea mixtos (había archivos en CRLF y otros en LF) eso se rompe.
+* text=auto eol=lf
+
+# Binarios: ni normalizar ni mostrar diff
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary

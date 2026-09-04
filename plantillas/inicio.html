@@ -7,7 +7,7 @@
       <h1>Pan y bocadillos para <em>tu evento</em>, horneados ese día</h1>
       <p>
         Coffee breaks, cajas de desayuno, bandejas de bocadillos y docenas de pan por
-        encargo. Armá tu cotización acá y enviala por WhatsApp: te respondemos con el total
+        encargo. Armá tu cotización acá y enviala por WhatsApp: te respondemos con la cotización
         y la hora de entrega.
       </p>
 
@@ -31,14 +31,14 @@
 
     <div class="hero__collage">
       <figure class="hero__foto hero__foto--grande foto">
-        <img src="{{IMG_GENERICA}}" alt="Bandeja de pan y bocadillos de Cefas Panadería para un evento en Ciudad de Guatemala" {{IMG_GENERICA_MEDIDAS}} fetchpriority="high" decoding="async">
+        {{foto:pan-img-generico.jpg|hero|Pan recién horneado de Cefas Panadería en Ciudad de Guatemala|alta}}
       </figure>
       <figure class="hero__foto hero__foto--chica foto">
-        <img src="{{IMG_GENERICA}}" alt="Pan dulce para coffee break de Cefas Panadería" {{IMG_GENERICA_MEDIDAS}} loading="lazy" decoding="async">
+        {{foto:pan-img-generico.jpg|hero|Pan dulce surtido de Cefas Panadería}}
       </figure>
 
       <div class="hero__chapa">
-        <img src="{{BASE}}assets/img/logo-cefas.png" alt="Logo de Cefas Panadería" width="46" height="46" loading="lazy">
+        <img src="{{LOGO_UI}}" alt="Logo de Cefas Panadería" width="46" height="46" loading="lazy">
         <span><strong>Horneado ese día</strong>en nuestro propio horno</span>
       </div>
 
@@ -61,7 +61,7 @@
   <div class="contenedor">
     <div class="cabecera-seccion" data-reveal>
       <span class="eyebrow eyebrow--ico">{{ico:calendario}} Para qué lo necesitás</span>
-      <h2 id="t-ocasiones">Nos encargamos del pan de tu actividad</h2>
+      <h2 id="t-ocasiones">Pan para eventos, oficinas y actividades en Guatemala</h2>
       <p class="entradilla">
         Capacitaciones, juntas, celebraciones de oficina, graduaciones, bautizos y cumpleaños.
         Vos poné la fecha y el número de personas; nosotros lo horneamos ese día y lo entregamos
@@ -77,6 +77,7 @@
           Pan dulce surtido, bocadillos salados, café y jugos para juntas, capacitaciones y
           convivios. Servimos desde 10 personas, con entrega a la hora exacta.
         </p>
+        <p class="tarjeta-info__nota"><a href="{{BASE}}coffee-break/">Cómo funciona el coffee break {{ico:flecha:ico--desliza}}</a></p>
       </div>
       <div class="tarjeta-info" data-reveal>
         <span class="chapa" aria-hidden="true">{{ico:caja:ico--l}}</span>
@@ -85,6 +86,7 @@
           Caja individual con pan dulce, croissant, jugo y café, lista para repartir en el
           escritorio de cada persona. Mínimo 10 cajas.
         </p>
+        <p class="tarjeta-info__nota"><a href="{{BASE}}cajas-de-desayuno/">Ver las cajas de desayuno {{ico:flecha:ico--desliza}}</a></p>
       </div>
       <div class="tarjeta-info" data-reveal>
         <span class="chapa" aria-hidden="true">{{ico:usuarios:ico--l}}</span>
@@ -93,6 +95,7 @@
           Bandejas de bocadillos salados, docenas surtidas de pan dulce y paquetes de pan para
           hamburguesa y hot dog: lo que se sirve solo en una actividad.
         </p>
+        <p class="tarjeta-info__nota"><a href="{{BASE}}bandejas-de-bocadillos/">Ver las bandejas {{ico:flecha:ico--desliza}}</a></p>
       </div>
       <div class="tarjeta-info" data-reveal>
         <span class="chapa" aria-hidden="true">{{ico:bolsa:ico--l}}</span>
@@ -101,6 +104,7 @@
           Abastecemos tiendas, cafeterías, hoteles y restaurantes con entrega programada y
           condiciones especiales por volumen. Pedidos recurrentes con calendario fijo.
         </p>
+        <p class="tarjeta-info__nota"><a href="{{BASE}}pan-al-mayoreo/">Cómo funciona el mayoreo {{ico:flecha:ico--desliza}}</a></p>
       </div>
       <div class="tarjeta-info" data-reveal>
         <span class="chapa" aria-hidden="true">{{ico:estrella:ico--l}}</span>
@@ -124,9 +128,9 @@
   <div class="contenedor">
     <div class="cabecera-seccion" data-reveal>
       <span class="eyebrow eyebrow--ico">{{ico:estrella}} Lo más pedido</span>
-      <h2 id="t-destacados">Los que más se van para actividades</h2>
+      <h2 id="t-destacados">Lo más pedido para eventos y coffee breaks</h2>
       <p class="entradilla">
-        Tocá <strong>Agregar al pedido</strong> en lo que te sirve. Cuando termines, el mensaje
+        Tocá <strong>Agregar a mi cotización</strong> en lo que te sirve. Cuando termines, el mensaje
         de WhatsApp se arma solo con las cantidades seleccionadas.
       </p>
     </div>
@@ -155,6 +159,10 @@
     <div class="rejilla rejilla--4">
       {{PAQUETES}}
     </div>
+
+    <div class="grupo-btn grupo-btn--suelto" data-reveal>
+      <a class="btn btn--secundario" href="{{BASE}}cuanto-pan/">{{ico:usuarios}} ¿No sabés cuánto pedir? Calculá cuánto pan necesitás</a>
+    </div>
   </div>
 </section>
 
@@ -171,7 +179,7 @@
   <div class="contenedor">
     <div class="cabecera-seccion centro" data-reveal>
       <span class="eyebrow">Cotizar es así de rápido</span>
-      <h2 id="t-como">De la idea al pedido confirmado</h2>
+      <h2 id="t-como">Cómo cotizar pan para tu evento</h2>
     </div>
 
     <ol class="pasos">
@@ -208,10 +216,10 @@
   <div class="contenedor">
     <div class="cabecera-seccion" data-reveal>
       <span class="eyebrow eyebrow--ico">{{ico:camion}} Entregas programadas</span>
-      <h2 id="t-cobertura">Dónde entregamos</h2>
+      <h2 id="t-cobertura">Entregas programadas en {{COBERTURA_RESUMEN}}</h2>
       <p class="entradilla">
         Llevamos tu pedido a estas {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}. El costo del
-        envío depende de la zona y te lo confirmamos junto con el total, antes de agendar.
+        envío depende de la zona y lo confirmamos en la cotización, antes de agendar.
       </p>
     </div>
 
@@ -247,7 +255,7 @@
     <div class="dos-columnas">
       <div class="dos-columnas__medios" data-reveal>
         <figure class="foto foto--16-10 foto--marco">
-          <img src="{{IMG_GENERICA}}" alt="Panaderos de Cefas amasando pan artesanal en Ciudad de Guatemala" {{IMG_GENERICA_MEDIDAS}} loading="lazy" decoding="async">
+          {{foto:pan-img-generico.jpg|ancha|Pan artesanal horneado en Cefas Panadería}}
         </figure>
         <div class="dato-flotante">
           <span class="dato-flotante__ico" aria-hidden="true">{{ico:trigo}}</span>

@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://willianhuit.github.io/cefas-web/sitemap.xml
+Sitemap: https://cefaspan.github.io/web/sitemap.xml

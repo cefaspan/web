@@ -68,32 +68,36 @@
   </div>
 </section>
 
-<!-- ===================== MAPA ===================== -->
-<section class="seccion seccion--crema" aria-labelledby="t-mapa">
+<!-- ===================== RECOGER EL PEDIDO =====================
+     No hay local a la calle: horneamos en una cocina de producción en la
+     zona 6, así que no se publica dirección exacta ni mapa. El punto de
+     recogida se coordina por WhatsApp al confirmar el encargo. -->
+<section class="seccion seccion--crema" aria-labelledby="t-recoger">
   <div class="contenedor">
     <div class="dos-columnas">
       <div class="dos-columnas__medios" data-reveal>
         <figure class="foto foto--16-10 foto--marco">
-          <img src="{{IMG_GENERICA}}" alt="Fachada de Cefas Panadería en Ciudad de Guatemala" {{IMG_GENERICA_MEDIDAS}} loading="lazy" decoding="async">
+          {{foto:pan-img-generico.jpg|ancha|Pan recién salido del horno en Cefas Panadería}}
         </figure>
       </div>
 
       <div class="dos-columnas__texto" data-reveal>
-        <h2 id="t-mapa">Cómo llegar a Cefas Panadería</h2>
+        <h2 id="t-recoger">Recoger tu pedido</h2>
         <p class="entradilla">
-          Estamos en {{DIRECCION}}. Abrí la ruta en Google Maps y te guiamos hasta la puerta.
+          Horneamos en {{DIRECCION}}. No es un local de mostrador: trabajamos por
+          encargo, así que la recogida se agenda a una hora concreta.
+        </p>
+
+        <p>
+          Al confirmar tu cotización te pasamos por WhatsApp el punto exacto y la hora
+          en que tu pedido está listo. Si preferís que llegue, entregamos en
+          {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}.
         </p>
 
         <div class="grupo-btn">
-          <a class="btn btn--principal" href="{{MAPA_ENLACE}}" rel="noopener">{{ico:pin}} Abrir en Google Maps</a>
+          <a class="btn btn--wa" href="https://wa.me/{{WHATSAPP}}" rel="noopener">{{ico:whatsapp}} Coordinar por WhatsApp</a>
+          <a class="btn btn--secundario" href="{{BASE}}encargos/#formulario">{{ico:caja}} Cotizar un encargo</a>
         </div>
-
-        <p class="nota-suelta">
-          <!-- Para incrustar el mapa: pegá la URL de "Insertar un mapa" de Google Maps
-               en datos/negocio.json → redes.googleMapsEmbed y volvé a generar el sitio. -->
-          Si venís en carro, escribinos por <a href="https://wa.me/{{WHATSAPP}}" rel="noopener">WhatsApp</a>
-          y te indicamos dónde parquear.
-        </p>
       </div>
     </div>
   </div>
@@ -108,7 +112,7 @@
       <p class="entradilla">
         Hacemos entregas programadas en estas {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}. Si tu
         dirección queda fuera, podés pasar a recoger tu pedido por la panadería. El costo del
-        envío depende de la zona y te lo confirmamos junto con el total, antes de agendar.
+        envío depende de la zona y lo confirmamos en la cotización, antes de agendar.
       </p>
     </div>
     <ul class="zonas zonas--agrupadas" data-reveal>

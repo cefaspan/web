@@ -1,18 +1,18 @@
 {
   "nombre": "Cefas Panadería",
   "nombreLegal": "Cefas Panadería",
-  "eslogan": "Pan fresco, horneado cada día en Guatemala zona 6",
-  "descripcionCorta": "Panadería artesanal en Guatemala zona 6. Pan francés, pan dulce tradicional y panes artesanales por encargo.",
-  "dominio": "https://willianhuit.github.io/cefas-web",
-  "rutaBase": "/cefas-web",
+  "eslogan": "Pan y bocadillos para eventos, horneados el mismo día en Ciudad de Guatemala",
+  "descripcionCorta": "Panadería por encargo para eventos, oficinas y actividades en Ciudad de Guatemala: coffee breaks, cajas de desayuno, bandejas de bocadillos y docenas de pan. Cotización por WhatsApp.",
+  "dominio": "https://cefaspan.github.io/web",
+  "rutaBase": "/web",
   "telefono": "+502 4637-9417",
   "telefonoE164": "+50246379417",
   "whatsapp": "50246379417",
   "email": "correocefas.panaderia@gmail.com",
   "direccion": {
-    "calle": "Guatemala zona 6 (Dark kitchen)",
+    "calle": "Zona 6, Ciudad de Guatemala (dark kitchen)",
     "zona": "",
-    "ciudad": "",
+    "ciudad": "Ciudad de Guatemala",
     "departamento": "Guatemala",
     "codigoPostal": "01001",
     "pais": "GT"
@@ -32,11 +32,7 @@
     "pedidosya": "https://www.pedidosya.com.gt/restaurantes/ciudad-de-guatemala/cefas-panaderia-6374a132-54b4-4157-8e55-ebbc0e6cf786-menu",
     "googleMaps": "",
     "googleMapsEmbed": ""
-  },
-  "moneda": "GTQ",
-  "simboloMoneda": "Q",
-  "rangoPrecios": "Q",
-  "anticipacionEncargoHoras": 24,
+  },  "anticipacionEncargoHoras": 24,
 
   "_notaCobertura": "Solo se entrega en las zonas listadas aca. Todo lo que se agregue se publica como promesa de entrega en la pagina y en el areaServed de los datos estructurados, asi que no agregues una zona a la que no se llega. Cada municipio va en su propio grupo: el nombre del municipio se usa tal cual en los datos estructurados.",
   "entregaSolo": "Entregamos solo en las zonas de esta lista",

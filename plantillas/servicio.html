@@ -1,0 +1,118 @@
+<!-- ===================== SERVICIO: CABECERA =====================
+     Una página por servicio (datos/servicios.json). El H1 es la búsqueda
+     tal cual la escribe la gente; el resto responde a qué incluye, para
+     quién, cuánto antes y dónde, que es lo que decide la cotización. -->
+<section class="seccion seccion--corta">
+  <div class="contenedor">
+    <nav class="migas" aria-label="Estás en">
+      <a href="{{BASE}}index.html">Inicio</a> <span aria-hidden="true">›</span>
+      <a href="{{BASE}}encargos/">Encargos</a> <span aria-hidden="true">›</span>
+      <span aria-current="page">{{SERVICIO_NOMBRE}}</span>
+    </nav>
+
+    <div class="dos-columnas">
+      <div class="dos-columnas__texto" data-reveal>
+        <span class="eyebrow eyebrow--ico">{{SERVICIO_ICONO}} {{SERVICIO_EYEBROW}}</span>
+        <h1>{{SERVICIO_H1}}</h1>
+        <p class="entradilla">{{SERVICIO_INTRO}}</p>
+
+        <div class="grupo-btn">
+          <a class="btn btn--wa btn--grande" href="{{SERVICIO_WA}}" rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+          <a class="btn btn--secundario btn--grande" href="{{BASE}}encargos/#formulario">{{ico:calendario}} Cotizar con el formulario</a>
+        </div>
+
+        <p class="nota-suelta">
+          {{ico:camion}} Entregamos en {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}; fuera de ellas, el pedido se recoge.
+          Sin precios en la web: <strong>todo se cotiza</strong> según personas, fecha y zona.
+        </p>
+      </div>
+
+      <div class="dos-columnas__medios" data-reveal>
+        <figure class="foto foto--4-3 foto--marco">
+          {{SERVICIO_FOTO}}
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DATOS RÁPIDOS ===================== -->
+<section class="confianza" aria-label="Datos del servicio">
+  <div class="contenedor confianza__grid confianza__grid--3">
+    {{SERVICIO_DATOS}}
+  </div>
+</section>
+
+<!-- ===================== QUÉ INCLUYE Y PARA QUIÉN ===================== -->
+<section class="seccion" aria-labelledby="t-incluye">
+  <div class="contenedor">
+    <div class="rejilla rejilla--2">
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:check:ico--l}}</span>
+        <h2 id="t-incluye">Qué incluye</h2>
+        <ul class="lista-ico">
+          {{SERVICIO_INCLUYE}}
+        </ul>
+      </div>
+      <div class="tarjeta-info" data-reveal>
+        <span class="chapa" aria-hidden="true">{{ico:usuarios:ico--l}}</span>
+        <h2>Para qué actividades</h2>
+        <p>{{SERVICIO_PARA_QUIEN}}</p>
+        <p class="tarjeta-info__nota">
+          ¿No sabés cuánto pedir? <a href="{{BASE}}cuanto-pan/">Calculá cuánto pan necesitás {{ico:flecha:ico--desliza}}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRODUCTOS DEL SERVICIO ===================== -->
+<section class="seccion seccion--crema" aria-labelledby="t-productos">
+  <div class="contenedor">
+    <div class="cabecera-seccion" data-reveal>
+      <span class="eyebrow eyebrow--ico">{{ico:canasta}} Del menú</span>
+      <h2 id="t-productos">Lo que se pide para este servicio</h2>
+      <p class="entradilla">
+        Tocá <strong>Agregar a mi cotización</strong>, ajustá las cantidades y enviala por WhatsApp
+        en un clic. Te respondemos con la cotización y la hora de entrega.
+      </p>
+    </div>
+
+    <div class="rejilla rejilla--3">
+      {{SERVICIO_PRODUCTOS}}
+    </div>
+
+    <div class="grupo-btn grupo-btn--suelto" data-reveal>
+      <a class="btn btn--secundario" href="{{BASE}}menu/">Ver el menú completo {{ico:flecha:ico--desliza}}</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ DEL SERVICIO ===================== -->
+<section class="seccion" aria-labelledby="t-faq">
+  <div class="contenedor">
+    <div class="cabecera-seccion centro" data-reveal>
+      <span class="eyebrow">Antes de cotizar</span>
+      <h2 id="t-faq">Preguntas sobre {{SERVICIO_NOMBRE_MIN}}</h2>
+    </div>
+
+    <div class="faq">
+      {{SERVICIO_FAQ}}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section class="seccion seccion--crema">
+  <div class="contenedor">
+    <div class="cta-final" data-reveal>
+      <span class="cta-final__ico" aria-hidden="true">{{ico:chat:ico--xl}}</span>
+      <h2>Contanos fecha, hora y cuántas personas</h2>
+      <p>Con eso te mandamos la cotización el mismo día. Horneamos para tu fecha, no antes.</p>
+      <div class="grupo-btn grupo-btn--centro">
+        <a class="btn btn--wa btn--grande" href="{{SERVICIO_WA}}" rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+        <a class="btn btn--secundario btn--grande" href="{{BASE}}encargos/#formulario">{{ico:calendario}} Usar el formulario</a>
+      </div>
+    </div>
+  </div>
+</section>

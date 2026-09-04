@@ -26,7 +26,7 @@
 
       <div class="dos-columnas__medios" data-reveal>
         <figure class="foto foto--4-3 foto--marco">
-          <img src="{{IMG_GENERICA}}" alt="Caja de pan lista para entregar de Cefas Panadería" {{IMG_GENERICA_MEDIDAS}} loading="lazy" decoding="async">
+          {{foto:pan-img-generico.jpg|ancha|Pan de Cefas Panadería listo para entregar}}
         </figure>
         <div class="dato-flotante">
           <span class="dato-flotante__ico" aria-hidden="true">{{ico:reloj}}</span>
@@ -52,7 +52,7 @@
       <li data-reveal>
         <span class="pasos__ico" aria-hidden="true">{{ico:check}}</span>
         <h3>Te confirmamos el pedido</h3>
-        <p>Revisamos disponibilidad y te pasamos el total, el tiempo de entrega y la forma de pago.</p>
+        <p>Revisamos disponibilidad y te pasamos la cotización, el tiempo de entrega y la forma de pago.</p>
       </li>
       <li data-reveal>
         <span class="pasos__ico" aria-hidden="true">{{ico:calendario}}</span>
@@ -165,9 +165,13 @@
         </div>
 
         <div class="campo">
-          <label for="zona">Zona de la capital <span class="ayuda">(si es a domicilio)</span></label>
-          <input type="text" id="zona" name="zona" placeholder="Zona 10, Zona 14, Zona 15…" aria-describedby="ayuda-zona">
-          <span class="ayuda" id="ayuda-zona">Entregamos en {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}.</span>
+          <label for="zona">Zona de entrega</label>
+          <select id="zona" name="zona" aria-describedby="ayuda-zona">
+            <option value="">— Elegí la zona —</option>
+              {{OPCIONES_ZONA}}
+            <option value="Otra zona (fuera de cobertura): paso a recoger">Otra zona: paso a recoger</option>
+          </select>
+          <span class="ayuda" id="ayuda-zona">Entregamos en {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}. Fuera de ellas, el pedido se recoge.</span>
         </div>
 
         <div class="campo campo--ancho">
@@ -188,9 +192,12 @@
       <div class="aviso aviso--ok" data-form-ok hidden>
         <span class="aviso__ico" aria-hidden="true">{{ico:check}}</span>
         <p>
-          <strong>Se abrió WhatsApp con tu pedido.</strong> Si no se abrió, revisá que tu navegador
+          <strong>Se abrió WhatsApp con tu cotización.</strong> Si no se abrió, revisá que tu navegador
           permita ventanas emergentes o escribinos directo al
           <a href="https://wa.me/{{WHATSAPP}}" rel="noopener">{{TELEFONO}}</a>.
+        </p>
+        <p class="aviso__accion" hidden data-si-enviado>
+          Cuando la hayas enviado: <button class="btn btn--texto" type="button" data-vaciar>Vaciar mi cotización</button>
         </p>
       </div>
     </form>
@@ -231,6 +238,15 @@
         </ul>
       </div>
     </div>
+
+    <p class="nota-suelta" data-reveal>
+      Cada servicio con su detalle:
+      <a href="{{BASE}}coffee-break/">coffee break</a> ·
+      <a href="{{BASE}}cajas-de-desayuno/">cajas de desayuno</a> ·
+      <a href="{{BASE}}bandejas-de-bocadillos/">bandejas de bocadillos</a> ·
+      <a href="{{BASE}}pan-al-mayoreo/">pan al mayoreo</a>.
+      ¿No sabés cuánto pedir? <a href="{{BASE}}cuanto-pan/">Calculá cuánto pan necesitás</a>.
+    </p>
   </div>
 </section>
 

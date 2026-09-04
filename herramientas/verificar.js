@@ -7,7 +7,13 @@ const fs = require('fs');
 const path = require('path');
 
 const RAIZ = path.resolve(__dirname, '..');
-const PAGINAS = ['index.html', 'menu/index.html', 'encargos/index.html', 'contacto/index.html', '404.html'];
+const SERV = JSON.parse(fs.readFileSync(path.join(RAIZ, 'datos/servicios.json'), 'utf8'));
+const PAGINAS = [
+  'index.html', 'menu/index.html', 'encargos/index.html', 'contacto/index.html',
+  ...SERV.servicios.map((s) => `${s.id}/index.html`),
+  'cuanto-pan/index.html',
+  '404.html'
+];
 
 let errores = 0;
 let avisos = 0;
@@ -65,19 +71,27 @@ function comprobarPagina(rel) {
   });
   if (tipos.length) ok(`JSON-LD válido: ${tipos.join(', ')}`);
 
-  // 6. Enlaces internos que resuelven
-  const hrefs = [...html.matchAll(/href="([^"#][^"]*)"/g)].map((m) => m[1])
-    .filter((h) => !/^(https?:|mailto:|tel:|#)/.test(h));
+  // 6. Todo recurso local existe: enlaces, imágenes, srcset, CSS y fuentes.
+  //    Un nombre mal escrito dentro de un srcset no da ningún error visible,
+  //    así que se comprueban también las variantes de cada foto.
+  const referencias = new Set();
+  for (const m of html.matchAll(/\s(?:src|href)="([^"]+)"/g)) referencias.add(m[1]);
+  for (const m of html.matchAll(/\s(?:srcset|imagesrcset)="([^"]+)"/g)) {
+    for (const parte of m[1].split(',')) referencias.add(parte.trim().split(/\s+/)[0]);
+  }
+  const locales = [...referencias]
+    .filter((r) => r && !/^(https?:|mailto:|tel:|data:|#)/.test(r));
+
   const dirPagina = path.dirname(path.join(RAIZ, rel));
-  const rotos = hrefs.filter((h) => {
-    const limpio = h.split('#')[0];
+  const rotos = locales.filter((h) => {
+    const limpio = h.split('#')[0].split('?')[0];
     if (!limpio) return false;
     let destino = path.resolve(dirPagina, limpio);
     if (limpio.endsWith('/')) destino = path.join(destino, 'index.html');
     return !fs.existsSync(destino);
   });
-  if (rotos.length) fallo(`enlaces internos rotos: ${[...new Set(rotos)].join(', ')}`);
-  else ok(`${new Set(hrefs).size} enlaces internos, todos resuelven`);
+  if (rotos.length) fallo(`recursos locales que no existen: ${[...new Set(rotos)].join(', ')}`);
+  else ok(`${locales.length} recursos locales, todos resuelven`);
 
   // 7. Anclas de categoría existentes (enlaces #id dentro del propio sitio)
   const anclasMenu = [...html.matchAll(/href="[^"]*menu\/#([\w-]+)"/g)].map((m) => m[1]);
@@ -88,7 +102,36 @@ function comprobarPagina(rel) {
     else ok(`${new Set(anclasMenu).size} anclas del menú válidas`);
   }
 
-  // 8. Peso
+  // 8. Ningún precio publicado
+  /* En este sitio todo se cotiza. Los precios no sólo no se pintan: no deben
+     salir tampoco en atributos data-*, en el JSON-LD ni en el texto, porque
+     ahí los lee Google y los ve cualquiera en el inspector.              */
+  const rastrosDePrecio = [
+    [/data-precio=/, 'atributo data-precio en una tarjeta'],
+    [/data-moneda=/, 'atributo data-moneda en el <body>'],
+    [/"price(?:Currency|Range|)"\s*:/, 'price / priceCurrency / priceRange en el JSON-LD'],
+    [/"currenciesAccepted"\s*:/, 'currenciesAccepted en el JSON-LD'],
+    [/\bQ\s?\d/, 'un precio en quetzales en el texto'],
+    [/class="[^"]*(?:producto__precio|panel__total|carrito-btn__total)/, 'marcado de precio heredado']
+  ];
+  const conPrecio = rastrosDePrecio.filter(([re]) => re.test(html));
+  if (conPrecio.length) conPrecio.forEach(([, que]) => fallo(`precio publicado: ${que}`));
+  else ok('sin precios publicados');
+
+  // 9. Fotos responsivas y tipografías propias
+  const conSrcset = (html.match(/<img\b[^>]*\bsrcset=/g) || []).length;
+  const fotos = (html.match(/<img\b[^>]*assets\/img\/[^>]*>/g) || [])
+    .filter((i) => !/logo-cefas/.test(i)).length;   // cualquier variante del logo
+  if (fotos && !conSrcset) aviso(`${fotos} fotos sin srcset (pasá node herramientas/optimizar-imagenes.js --aplicar)`);
+  else if (fotos) ok(`${conSrcset} de ${fotos} fotos con srcset`);
+
+  // Se busca una referencia de recurso, no la simple mención del dominio: el
+  // comentario de la cabecera lo nombra para explicar por qué ya no se usa.
+  if (/(?:href|src)="https?:\/\/fonts\.(?:googleapis|gstatic)\.com/.test(html)) {
+    fallo('la página sigue pidiendo tipografías a Google Fonts');
+  }
+
+  // 10. Peso
   const kb = Buffer.byteLength(html, 'utf8') / 1024;
   if (kb > 150) aviso(`página de ${kb.toFixed(0)} KB (considerá aligerarla)`);
 }
@@ -99,14 +142,24 @@ PAGINAS.forEach(comprobarPagina);
 // --- Archivos de soporte ---------------------------------------------------
 console.log('\n── archivos de soporte');
 ['sitemap.xml', 'robots.txt', 'manifest.webmanifest', '.nojekyll', 'assets/css/estilos.css',
- 'assets/js/app.js', 'assets/img/logo-cefas.png'].forEach((f) => {
+ 'assets/js/app.js', 'assets/img/logo-cefas.png', 'assets/img/logo-cefas-192.png',
+ 'assets/img/logo-cefas-maskable.png', 'assets/img/og-cefas.jpg',
+ 'assets/fonts/fraunces-latin.woff2', 'assets/fonts/inter-latin.woff2',
+ 'assets/fonts/fraunces-latin-ext.woff2', 'assets/fonts/inter-latin-ext.woff2'].forEach((f) => {
   if (fs.existsSync(path.join(RAIZ, f))) ok(f);
   else fallo(`falta ${f}`);
 });
 
 const sitemap = fs.readFileSync(path.join(RAIZ, 'sitemap.xml'), 'utf8');
 const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-ok(`sitemap con ${locs.length} URLs`);
+const fotosSitemap = [...sitemap.matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].map((m) => m[1]);
+ok(`sitemap con ${locs.length} URLs y ${fotosSitemap.length} imágenes`);
+if (!fotosSitemap.length) aviso('el sitemap no lleva imágenes: ¿las páginas no tienen fotos?');
+// Las fotos del sitemap tienen que existir: Google penaliza los 404 en el sitemap
+const fotosRotas = fotosSitemap.filter((u) => !fs.existsSync(path.join(RAIZ, u.replace(/^https?:\/\/[^/]+\/[^/]+\//, ''))));
+if (fotosRotas.length) fallo(`imágenes del sitemap que no existen: ${fotosRotas.join(', ')}`);
+const lastmods = [...sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]);
+if (lastmods.some((d) => !/^\d{4}-\d{2}-\d{2}$/.test(d))) fallo('lastmod con formato inválido en el sitemap');
 try { JSON.parse(fs.readFileSync(path.join(RAIZ, 'manifest.webmanifest'), 'utf8')); ok('manifest válido'); }
 catch (e) { fallo(`manifest inválido: ${e.message}`); }
 
@@ -115,9 +168,32 @@ console.log('\n── datos del negocio pendientes');
 const N = JSON.parse(fs.readFileSync(path.join(RAIZ, 'datos/negocio.json'), 'utf8'));
 if (/0000/.test(N.telefono) || /0000/.test(N.whatsapp)) aviso('teléfono / WhatsApp sigue siendo un valor de ejemplo');
 if (/PENDIENTE/i.test(N.direccion.calle)) aviso('la dirección exacta sigue pendiente');
-if (!N.redes.googleMaps) aviso('falta el enlace de Google Maps del negocio');
+if (!N.direccion.ciudad) fallo('datos/negocio.json → direccion.ciudad vacío: addressLocality sale en blanco');
+// No se comprueba redes.googleMaps: el negocio es una cocina de producción sin
+// local a la calle, así que a propósito no se publica dirección exacta ni mapa.
+for (const clave of ['moneda', 'simboloMoneda', 'rangoPrecios']) {
+  if (N[clave] !== undefined) fallo(`datos/negocio.json → sobra "${clave}": en este sitio no hay precios`);
+}
+
 const P = JSON.parse(fs.readFileSync(path.join(RAIZ, 'datos/productos.json'), 'utf8'));
-if (P._nota && /PLACEHOLDER/i.test(P._nota)) aviso('el catálogo sigue marcado como PLACEHOLDER (precios de ejemplo)');
+if (P._nota && /PLACEHOLDER/i.test(P._nota)) aviso('el catálogo sigue marcado como PLACEHOLDER (nombres y descripciones de ejemplo)');
+
+const conPrecio = P.categorias.flatMap((c) => c.productos).filter((p) => p.precio !== undefined);
+if (conPrecio.length) fallo(`${conPrecio.length} producto(s) con campo "precio" en datos/productos.json: acá no se publican precios`);
+else ok('ningún producto trae precio');
+
+// La lista de zonas de la FAQ se rellena desde cobertura con {zonas}. Si
+// alguien la vuelve a escribir a mano, se desincroniza sin avisar.
+const zonasSueltas = (P.faq || []).filter((f) => /\bzonas?\s+\d/i.test(f.r) && !/\{zonas\}/.test(f.r));
+if (zonasSueltas.length) {
+  aviso(`${zonasSueltas.length} respuesta(s) de la FAQ enumeran zonas a mano: usá {zonas} y se rellena desde cobertura`);
+} else ok('la FAQ toma las zonas de cobertura');
+
+const sinResolver = (P.faq || []).some((f) => /\{zonas\}/.test(f.r));
+if (sinResolver) {
+  const html = fs.readFileSync(path.join(RAIZ, 'index.html'), 'utf8');
+  if (html.includes('{zonas}')) fallo('quedó un {zonas} sin resolver en index.html');
+}
 
 console.log(`\n${errores === 0 ? '✓ Sin errores' : `✗ ${errores} error(es)`} · ${avisos} aviso(s)\n`);
 process.exit(errores ? 1 : 0);

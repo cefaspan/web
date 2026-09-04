@@ -1,7 +1,7 @@
 {
   "name": "Cefas Panadería",
   "short_name": "Cefas",
-  "description": "Panadería artesanal en Guatemala zona 6. Pan francés, pan dulce tradicional y panes artesanales por encargo.",
+  "description": "Panadería por encargo para eventos, oficinas y actividades en Ciudad de Guatemala: coffee breaks, cajas de desayuno, bandejas de bocadillos y docenas de pan. Cotización por WhatsApp.",
   "lang": "es-GT",
   "start_url": "./",
   "scope": "./",
@@ -16,7 +16,7 @@
       "purpose": "any"
     },
     {
-      "src": "assets/img/logo-cefas.png",
+      "src": "assets/img/logo-cefas-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

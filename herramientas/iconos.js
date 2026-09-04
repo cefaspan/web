@@ -61,8 +61,11 @@ const ICONOS = {
 };
 
 /* Sprite: un solo bloque oculto por página. */
-function sprite() {
-  const simbolos = Object.keys(ICONOS).map((nombre) => {
+/* Sin argumento inyecta el set completo; con una lista de nombres, sólo
+   esos. generar.js le pasa los que aparecen de verdad en cada página. */
+function sprite(nombres) {
+  const lista = Array.isArray(nombres) ? nombres.filter((n) => ICONOS[n]) : Object.keys(ICONOS);
+  const simbolos = lista.map((nombre) => {
     const valor = ICONOS[nombre];
     const macizo = typeof valor === 'object';
     const cuerpo = macizo ? valor.d : valor;

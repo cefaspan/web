@@ -1,0 +1,155 @@
+{
+  "_nota": "Una pagina por servicio (coffee-break/, cajas-de-desayuno/, ...) y la calculadora de cantidades (cuanto-pan/). Cada servicio es una busqueda real que antes solo tenia la portada generica. 'productos' son ids de datos/productos.json; en 'faq' se puede escribir {zonas} y se rellena desde cobertura. El titulo debe tener 62 caracteres o menos y la descripcion entre 120 y 160. Sin precios: aca todo se cotiza. Tras editar: node herramientas/generar.js",
+  "servicios": [
+    {
+      "id": "coffee-break",
+      "nombre": "Coffee break",
+      "titulo": "Coffee break para empresas en Guatemala | Cefas Panadería",
+      "descripcion": "Coffee break para capacitaciones, juntas y eventos en Ciudad de Guatemala: pan dulce, bocadillos salados y café, montado a la hora. Cotizá por WhatsApp.",
+      "h1": "Coffee break para empresas y capacitaciones en Ciudad de Guatemala",
+      "eyebrow": "Coffee break",
+      "icono": "cafe",
+      "imagen": "coffee-break.jpg",
+      "alt": "Coffee break de Cefas Panadería con pan dulce, bocadillos y café",
+      "intro": "Pan dulce surtido, bocadillos salados, café y agua, servidos a la hora exacta en tu oficina, salón o centro de capacitación. Vos nos decís cuántas personas son y a qué hora arranca el receso; nosotros horneamos ese mismo día y lo dejamos montado.",
+      "incluye": [
+        "Pan dulce surtido horneado el mismo día",
+        "Bocadillos salados: mini sándwiches, enrollados y empanaditas",
+        "Café guatemalteco y agua pura",
+        "Montaje a la hora del receso, en tu oficina o salón"
+      ],
+      "datos": [
+        { "icono": "usuarios", "valor": "Desde 10", "etiqueta": "personas" },
+        { "icono": "reloj", "valor": "3 a 5 días", "etiqueta": "de anticipación" },
+        { "icono": "camion", "valor": "A la hora", "etiqueta": "montado donde sea el receso" }
+      ],
+      "paraQuien": "Capacitaciones, juntas de dirección, talleres, lanzamientos, reuniones mensuales de equipo y convivios de oficina. También colegios, iglesias y actividades comunitarias que necesitan una refacción bien servida.",
+      "productos": ["coffee-break", "bandeja-bocadillos", "docena-pan-dulce"],
+      "faq": [
+        { "p": "¿Cuántos bocadillos por persona calculan para un coffee break?", "r": "Para un receso de media mañana o media tarde calculamos 3 a 4 bocadillos salados y 2 piezas de pan dulce por persona. Si el coffee break sustituye una comida, subimos a 5 o 6 bocadillos. En la cotización te proponemos la cantidad y la ajustamos a tu grupo." },
+        { "p": "¿Con cuánta anticipación tengo que pedir un coffee break?", "r": "De 3 a 5 días, porque lleva montaje. Con menos tiempo escribinos igual: si hay capacidad ese día, lo armamos." },
+        { "p": "¿Lo entregan montado o solo lo dejan?", "r": "Lo dejamos montado y listo para servir a la hora que nos indiques, en oficinas y salones de {zonas}. Fuera de esas zonas podés pasar a recogerlo." },
+        { "p": "¿Emiten factura?", "r": "Sí. Indicanos el NIT y el nombre al confirmar la cotización y la factura va con la entrega." }
+      ],
+      "whatsapp": "¡Hola Cefas Panadería! Quiero cotizar un coffee break para una actividad."
+    },
+    {
+      "id": "cajas-de-desayuno",
+      "nombre": "Cajas de desayuno",
+      "titulo": "Cajas de desayuno para empresas | Cefas Panadería Guatemala",
+      "descripcion": "Cajas de desayuno individuales con pan dulce, croissant, jugo y café para oficinas y eventos en Ciudad de Guatemala. Desde 10 cajas, entregadas a la hora.",
+      "h1": "Cajas de desayuno individuales para oficinas y eventos en Guatemala",
+      "eyebrow": "Cajas de desayuno",
+      "icono": "caja",
+      "imagen": "caja-desayuno.jpg",
+      "alt": "Caja de desayuno individual de Cefas Panadería",
+      "intro": "Una caja por persona, con pan dulce, croissant, jugo y café, lista para repartir en cada escritorio o en la entrada del evento. Es la opción más ordenada cuando el grupo no come al mismo tiempo o cada quien está en su puesto.",
+      "incluye": [
+        "Pan dulce y croissant horneados ese día",
+        "Jugo y café por persona",
+        "Caja individual cerrada, fácil de repartir",
+        "Entrega a la hora del desayuno"
+      ],
+      "datos": [
+        { "icono": "caja", "valor": "Desde 10", "etiqueta": "cajas por pedido" },
+        { "icono": "reloj", "valor": "3 a 5 días", "etiqueta": "de anticipación" },
+        { "icono": "usuarios", "valor": "Una por persona", "etiqueta": "sin filas ni bandejas" }
+      ],
+      "paraQuien": "Desayunos de trabajo, arranques de jornada, capacitaciones de mañana, brigadas, colegios y eventos donde cada asistente recibe lo suyo sin hacer fila.",
+      "productos": ["caja-desayuno", "docena-pan-dulce", "pan-frances-docena"],
+      "faq": [
+        { "p": "¿Cuál es el mínimo de cajas de desayuno?", "r": "Diez cajas por pedido. Para grupos más chicos, las docenas de pan dulce y de pan francés del menú no tienen mínimo." },
+        { "p": "¿Puedo cambiar lo que trae la caja?", "r": "Sí. Contanos alergias, preferencias o si querés una versión sin café, y lo ajustamos en la cotización." },
+        { "p": "¿A qué hora pueden entregar?", "r": "Desde las 06:00 de lunes a sábado; el domingo no horneamos. Entregamos en {zonas}; fuera de esas zonas, el pedido se recoge." }
+      ],
+      "whatsapp": "¡Hola Cefas Panadería! Quiero cotizar cajas de desayuno para mi equipo."
+    },
+    {
+      "id": "bandejas-de-bocadillos",
+      "nombre": "Bandejas de bocadillos",
+      "titulo": "Bandejas de bocadillos para eventos | Cefas Panadería",
+      "descripcion": "Bandejas de 50 bocadillos salados —mini sándwiches, enrollados y empanaditas— y docenas de pan dulce para eventos en Ciudad de Guatemala. Cotizá por WhatsApp.",
+      "h1": "Bandejas de bocadillos salados y pan dulce para eventos en Guatemala",
+      "eyebrow": "Bandejas para compartir",
+      "icono": "usuarios",
+      "imagen": "bandeja-bocadillos.jpg",
+      "alt": "Bandeja de bocadillos salados surtidos de Cefas Panadería",
+      "intro": "Bandejas de 50 bocadillos surtidos y docenas de pan dulce para poner en la mesa y que cada quien se sirva. Es lo que se lleva para cumpleaños, graduaciones, bautizos, convivios y cualquier actividad donde la comida se comparte.",
+      "incluye": [
+        "Bandeja de 50 bocadillos surtidos: mini sándwiches, enrollados y empanaditas",
+        "Docena surtida de pan dulce: champurradas, cubiletes, magdalenas y conchas",
+        "Paquetes de pan para hamburguesa y hot dog si hay parrillada",
+        "Todo horneado el mismo día del evento"
+      ],
+      "datos": [
+        { "icono": "usuarios", "valor": "50 piezas", "etiqueta": "por bandeja" },
+        { "icono": "reloj", "valor": "24 horas", "etiqueta": "de anticipación" },
+        { "icono": "check", "valor": "Del día", "etiqueta": "horneado para tu fecha" }
+      ],
+      "paraQuien": "Celebraciones familiares, graduaciones, bautizos, cumpleaños de oficina, reuniones de iglesia, kermeses y actividades de colegio.",
+      "productos": ["bandeja-bocadillos", "docena-pan-dulce", "pan-de-hamburguesa", "pan-de-hot-dog"],
+      "faq": [
+        { "p": "¿Cuántas bandejas necesito para 50 personas?", "r": "Si los bocadillos acompañan, una bandeja de 50 rinde para 12 a 15 personas (3 a 4 por persona): para 50 personas calculá 4 bandejas. Si son lo principal, 6. La calculadora de la web te lo saca al momento con tu número exacto." },
+        { "p": "¿Con cuánta anticipación pido una bandeja?", "r": "Con 24 horas alcanza para bandejas, docenas y paquetes. Para eventos con montaje pedimos de 3 a 5 días." },
+        { "p": "¿La bandeja va surtida o de un solo tipo?", "r": "Va surtida: mini sándwiches, enrollados y empanaditas. Si preferís una sola variedad, decilo al cotizar." }
+      ],
+      "whatsapp": "¡Hola Cefas Panadería! Quiero cotizar bandejas de bocadillos para un evento."
+    },
+    {
+      "id": "pan-al-mayoreo",
+      "nombre": "Pan al mayoreo",
+      "titulo": "Pan al mayoreo para negocios | Cefas Panadería Guatemala",
+      "descripcion": "Pan francés y pan dulce al mayoreo para tiendas, cafeterías, hoteles y restaurantes en Ciudad de Guatemala, con entrega programada y calendario fijo.",
+      "h1": "Pan al mayoreo para tiendas, cafeterías, hoteles y restaurantes",
+      "eyebrow": "Mayoreo y abastecimiento",
+      "icono": "bolsa",
+      "imagen": "pan-mayoreo.jpg",
+      "alt": "Pan francés al mayoreo de Cefas Panadería listo para entregar",
+      "intro": "Abastecemos negocios con pan horneado el mismo día, en un calendario fijo de entregas que se ajusta a tu venta. Sin intermediarios: horno propio en la zona 6 y condiciones por volumen que se definen una vez y se respetan.",
+      "incluye": [
+        "Pan francés, pan dulce tradicional y pan para hamburguesa y hot dog",
+        "Calendario fijo de entregas: los días y la hora que vende tu negocio",
+        "Condiciones por volumen acordadas al inicio",
+        "Factura por cada entrega"
+      ],
+      "datos": [
+        { "icono": "trigo", "valor": "Horno propio", "etiqueta": "sin intermediarios" },
+        { "icono": "calendario", "valor": "Calendario fijo", "etiqueta": "de entregas" },
+        { "icono": "check", "valor": "Factura", "etiqueta": "en cada entrega" }
+      ],
+      "paraQuien": "Tiendas de barrio, cafeterías, hoteles, restaurantes, comedores de empresa, colegios y cualquier negocio que venda o sirva pan a diario.",
+      "productos": ["pan-mayoreo", "pan-frances-docena", "pan-de-hamburguesa", "pan-de-hot-dog"],
+      "faq": [
+        { "p": "¿Cuál es el mínimo para mayoreo?", "r": "No hay una cifra fija: depende del producto y de la frecuencia. Contanos qué vendés y cuánto a la semana, y te proponemos una condición." },
+        { "p": "¿Entregan todos los días?", "r": "De lunes a sábado, en el horario que necesite tu negocio dentro del nuestro. Fijamos los días una vez y se respetan." },
+        { "p": "¿Puedo probar antes de comprometerme?", "r": "Sí. Coordinamos una primera entrega de prueba y, si te sirve, a partir de ahí fijamos el calendario." }
+      ],
+      "whatsapp": "¡Hola Cefas Panadería! Tengo un negocio y quiero cotizar pan al mayoreo."
+    }
+  ],
+  "calculadora": {
+    "titulo": "¿Cuánto pan necesito para mi evento? | Cefas Panadería",
+    "descripcion": "Calculá cuántas bandejas de bocadillos, docenas de pan dulce o cajas de desayuno necesitás según las personas y el tipo de actividad, y cotizalo por WhatsApp.",
+    "h1": "¿Cuánto pan necesito para mi evento?",
+    "_nota": "porPersona son piezas por persona; las piezas por unidad de venta (docena = 12, bandeja 50 piezas = 50) salen del campo unidad del producto. minimo es el numero de personas desde el que se sirve ese tipo.",
+    "tipos": [
+      { "id": "coffee-break", "nombre": "Coffee break de media mañana o tarde", "descripcion": "3 a 4 bocadillos salados y 2 piezas de pan dulce por persona.", "minimo": 10,
+        "lineas": [ { "producto": "bandeja-bocadillos", "porPersona": 3.5 }, { "producto": "docena-pan-dulce", "porPersona": 2 } ] },
+      { "id": "desayuno", "nombre": "Desayuno en la oficina (cajas individuales)", "descripcion": "Una caja de desayuno por persona; se sirven desde 10.", "minimo": 10,
+        "lineas": [ { "producto": "caja-desayuno", "porPersona": 1 } ] },
+      { "id": "refaccion", "nombre": "Refacción o convivio con pan dulce", "descripcion": "2 a 3 piezas de pan dulce por persona; más si no hay otra comida.", "minimo": 1,
+        "lineas": [ { "producto": "docena-pan-dulce", "porPersona": 2.5 } ] },
+      { "id": "comida", "nombre": "Pan para acompañar una comida", "descripcion": "2 panes franceses por persona; 3 si hay caldo o frijoles.", "minimo": 1,
+        "lineas": [ { "producto": "pan-frances-docena", "porPersona": 2 } ] },
+      { "id": "hamburguesas", "nombre": "Hamburguesas", "descripcion": "Un pan por persona y un 20 % extra para quien repite.", "minimo": 1,
+        "lineas": [ { "producto": "pan-de-hamburguesa", "porPersona": 1.2 } ] },
+      { "id": "hot-dogs", "nombre": "Hot dogs o shucos", "descripcion": "Un pan por persona y un 20 % extra para quien repite.", "minimo": 1,
+        "lineas": [ { "producto": "pan-de-hot-dog", "porPersona": 1.2 } ] }
+    ],
+    "faq": [
+      { "p": "¿Cuánto pan necesito para 50 personas?", "r": "Depende de la actividad. Para un coffee break de 50 personas: 4 bandejas de bocadillos y 9 docenas de pan dulce. Para acompañar una comida: 9 docenas de pan francés. Usá la calculadora de arriba con tu número exacto y el tipo de actividad." },
+      { "p": "¿La cantidad que sugiere la calculadora es la definitiva?", "r": "Es un punto de partida, basado en lo que pedimos para eventos parecidos. En la cotización lo revisamos con vos según la hora, la duración y si hay otra comida." },
+      { "p": "¿Puedo pedir menos del mínimo?", "r": "Los coffee breaks y las cajas de desayuno van desde 10 personas. Para grupos más chicos, las docenas, paquetes y bandejas del menú no tienen mínimo." }
+    ]
+  }
+}
