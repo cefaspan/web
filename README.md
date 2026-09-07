@@ -13,20 +13,25 @@ pedidos por encargo vía WhatsApp.
 
 ---
 
-## En este sitio no hay precios
+## En este sitio no hay precios de producto
 
-**Todo se cotiza.** No es sólo que no se pinten: el precio no existe en el proyecto.
-Los productos de `datos/productos.json` **no llevan campo `precio`**, y `negocio.json` no
-lleva `moneda`, `simboloMoneda` ni `rangoPrecios`.
+**Todo se cotiza.** No es sólo que no se pinten: el precio de un producto no existe en el
+proyecto. Los productos de `datos/productos.json` **no llevan campo `precio`**, y
+`negocio.json` no lleva `moneda` ni `simboloMoneda`.
 
-Antes los precios seguían viajando en el HTML aunque no se vieran —en `data-precio` de cada
-tarjeta y en `priceCurrency`/`priceRange` del JSON-LD—, donde los lee Google y los ve
-cualquiera abriendo el inspector. `verificar.js` ahora **falla** si reaparece cualquiera de
-estas cosas:
+La única cifra publicada es `rangoPrecios` de `negocio.json` (`"Q100 - Q300"`), que sale como
+`priceRange` en el JSON-LD del negocio: es la horquilla de una cotización típica, no el precio
+de nada en concreto, y Search Console la pide para completar la ficha del negocio.
+
+Antes los precios de cada producto seguían viajando en el HTML aunque no se vieran —en
+`data-precio` de cada tarjeta y en `priceCurrency` del JSON-LD—, donde los lee Google y los ve
+cualquiera abriendo el inspector. `verificar.js` **falla** si reaparece cualquiera de estas
+cosas:
 
 - `data-precio` o `data-moneda` en el HTML,
-- `price`, `priceCurrency`, `priceRange` o `currenciesAccepted` en el JSON-LD,
-- un importe en quetzales (`Q` seguido de dígito) en el texto,
+- `price` o `priceCurrency` en el JSON-LD,
+- un importe en quetzales (`Q` seguido de dígito) en el texto —el `priceRange` del negocio se
+  descuenta antes de mirar—,
 - las clases de precio que había en el CSS (`producto__precio`, `panel__total`…),
 - un campo `precio` en `datos/productos.json`.
 

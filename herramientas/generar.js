@@ -441,6 +441,8 @@ function schemaNegocio() {
     telephone: N.telefonoE164,
     email: N.email,
     paymentAccepted: 'Efectivo, Tarjeta de crédito, Transferencia bancaria',
+    priceRange: N.rangoPrecios,
+    currenciesAccepted: 'GTQ',
     servesCuisine: ['Panadería', 'Café'],
     hasMenu: `${DOMINIO}/menu/`,
     address: {

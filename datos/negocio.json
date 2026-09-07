@@ -9,6 +9,7 @@
   "telefonoE164": "+50246379417",
   "whatsapp": "50246379417",
   "email": "correocefas.panaderia@gmail.com",
+  "rangoPrecios": "Q100 - Q300",
   "direccion": {
     "calle": "Zona 6, Ciudad de Guatemala (dark kitchen)",
     "zona": "",
@@ -32,7 +33,8 @@
     "pedidosya": "https://www.pedidosya.com.gt/restaurantes/ciudad-de-guatemala/cefas-panaderia-6374a132-54b4-4157-8e55-ebbc0e6cf786-menu",
     "googleMaps": "",
     "googleMapsEmbed": ""
-  },  "anticipacionEncargoHoras": 24,
+  },
+  "anticipacionEncargoHoras": 24,
 
   "_notaCobertura": "Solo se entrega en las zonas listadas aca. Todo lo que se agregue se publica como promesa de entrega en la pagina y en el areaServed de los datos estructurados, asi que no agregues una zona a la que no se llega. Cada municipio va en su propio grupo: el nombre del municipio se usa tal cual en los datos estructurados.",
   "entregaSolo": "Entregamos solo en las zonas de esta lista",

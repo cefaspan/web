@@ -102,19 +102,21 @@ function comprobarPagina(rel) {
     else ok(`${new Set(anclasMenu).size} anclas del menú válidas`);
   }
 
-  // 8. Ningún precio publicado
-  /* En este sitio todo se cotiza. Los precios no sólo no se pintan: no deben
-     salir tampoco en atributos data-*, en el JSON-LD ni en el texto, porque
-     ahí los lee Google y los ve cualquiera en el inspector.              */
+  // 8. Ningún precio de producto publicado
+  /* En este sitio todo se cotiza: ni las tarjetas, ni los atributos data-*, ni
+     el JSON-LD, ni el texto llevan el precio de un producto, porque ahí los lee
+     Google y los ve cualquiera en el inspector. La única excepción es el
+     priceRange del negocio —la horquilla de una cotización típica, que Search
+     Console pide para la ficha—, así que se descuenta antes de rastrear.  */
+  const sinRango = html.replace(/"(?:priceRange|currenciesAccepted)"\s*:\s*"[^"]*"/g, '');
   const rastrosDePrecio = [
     [/data-precio=/, 'atributo data-precio en una tarjeta'],
     [/data-moneda=/, 'atributo data-moneda en el <body>'],
-    [/"price(?:Currency|Range|)"\s*:/, 'price / priceCurrency / priceRange en el JSON-LD'],
-    [/"currenciesAccepted"\s*:/, 'currenciesAccepted en el JSON-LD'],
+    [/"price(?:Currency)?"\s*:/, 'price / priceCurrency en el JSON-LD'],
     [/\bQ\s?\d/, 'un precio en quetzales en el texto'],
     [/class="[^"]*(?:producto__precio|panel__total|carrito-btn__total)/, 'marcado de precio heredado']
   ];
-  const conPrecio = rastrosDePrecio.filter(([re]) => re.test(html));
+  const conPrecio = rastrosDePrecio.filter(([re]) => re.test(sinRango));
   if (conPrecio.length) conPrecio.forEach(([, que]) => fallo(`precio publicado: ${que}`));
   else ok('sin precios publicados');
 
@@ -171,7 +173,7 @@ if (/PENDIENTE/i.test(N.direccion.calle)) aviso('la dirección exacta sigue pend
 if (!N.direccion.ciudad) fallo('datos/negocio.json → direccion.ciudad vacío: addressLocality sale en blanco');
 // No se comprueba redes.googleMaps: el negocio es una cocina de producción sin
 // local a la calle, así que a propósito no se publica dirección exacta ni mapa.
-for (const clave of ['moneda', 'simboloMoneda', 'rangoPrecios']) {
+for (const clave of ['moneda', 'simboloMoneda']) {
   if (N[clave] !== undefined) fallo(`datos/negocio.json → sobra "${clave}": en este sitio no hay precios`);
 }
 
