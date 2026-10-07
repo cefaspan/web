@@ -159,9 +159,7 @@
   var velo = $('[data-velo]');
   var cuerpo = $('[data-carrito-cuerpo]');
   var vacio = $('[data-carrito-vacio]');
-  var unidadesEls = $$('[data-carrito-unidades]');
   var contadores = $$('[data-carrito-contador]');
-  var barraVenta = $('[data-barra-venta]');
   var notaEnviado = $('[data-enviado]');
   var trasEnviar = $$('[data-si-enviado]');
   var ultimoFoco = null;
@@ -184,12 +182,6 @@
       el.textContent = n;
       el.hidden = !hay;
     });
-    unidadesEls.forEach(function (el) {
-      el.textContent = n + (n === 1 ? ' unidad' : ' unidades');
-    });
-    // La barra fija sólo aparece cuando hay algo que cotizar
-    if (barraVenta) barraVenta.hidden = !hay;
-    document.body.classList.toggle('con-barra-venta', hay);
     // Tras abrir WhatsApp con la lista, se ofrece vaciarla; si no queda
     // nada o el cliente sigue editando, el ofrecimiento se retira.
     var ofrecerVaciar = recienEnviado && hay;

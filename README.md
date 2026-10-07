@@ -84,14 +84,18 @@ fuera de la lista, la alternativa que ofrece el sitio es recoger en la panaderí
 
 El inicio dice una sola cosa por bloque y cada dato de compra **una sola vez**. Antes eran
 11 secciones con el mínimo, las 24 h y las zonas repetidos en cuatro sitios, y quien entraba
-no sabía qué era la página. Ahora son cinco:
+no sabía qué era la página. Ahora es así (las fichas y «Lo más pedido» se tomaron de la
+tienda de San Martín, sin precios):
 
 1. **Portada**: marca, qué es (`Pan y bocadillos para tus eventos`), una frase y un solo botón
    principal (`Cotizar por WhatsApp`) más `Ver el menú`.
-2. **Lo que preparamos**: los cuatro servicios en mosaico de fotos, cada uno enlazado a su página.
-3. **Cómo pedir**: mínimo, anticipación y zonas, y los tres pasos.
-4. **Preguntas frecuentes** (son las que alimentan el JSON-LD `FAQPage`: no quitarlas).
-5. **Cierre**: una pregunta y el mismo botón.
+2. **Fichas de categoría**: una por categoría publicada; abren el menú ya filtrado (`menu/#id`).
+3. **Lo que preparamos**: los cuatro servicios en mosaico de fotos, cada uno enlazado a su página.
+4. **Lo más pedido**: los productos con `"destacado": true` (máximo 4) con «Agregar a mi
+   cotización».
+5. **Cómo pedir**: mínimo, anticipación y zonas, y los tres pasos.
+6. **Preguntas frecuentes** (son las que alimentan el JSON-LD `FAQPage`: no quitarlas).
+7. **Cierre**: una pregunta y el mismo botón.
 
 Los productos, la lista de zonas y el desvío a PedidosYa viven en el menú y en contacto, no
 en el inicio. Si se agrega algo al inicio, que sea reemplazando, no sumando.
@@ -113,8 +117,10 @@ Piezas de conversión que conviene no quitar:
 
 - **Contador en cada tarjeta** (menú y servicios): al agregar, el botón se convierte en
   `− 2 +`. Lo crea `app.js` al vuelo (son 50 tarjetas: mandarlo en el HTML sumaba ~20 KB).
-- **Total en el botón de la cabecera** y **barra fija de pedido en móvil** con el total y
-  "Ver mi pedido".
+- **Contador en el botón «Mi cotización»** de la cabecera (escritorio).
+- **Barra inferior en móvil**, siempre visible, tipo app: Inicio, Menú, Mi cotización (con
+  contador; abre el panel) y WhatsApp. En el teléfono reemplaza al flotante de WhatsApp y al
+  botón de la cabecera.
 
 ### Estilo visual
 

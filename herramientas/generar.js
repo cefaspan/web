@@ -300,6 +300,18 @@ PAGINAS.splice(PAGINAS.length - 1, 0, ...PAGINAS_SERVICIO, PAGINA_CALCULADORA);
 
 /* --- Bloques generados ---------------------------------------------------- */
 
+/* Inicio: fichas que abren el menú ya filtrado (el filtro vive en el hash) */
+function fichasCategorias() {
+  return CATEGORIAS.map((c) =>
+    `<a href="{{BASE}}menu/#${esc(c.id)}">${ico(c.icono)} ${esc(c.nombre)}</a>`).join('\n      ');
+}
+
+/* Inicio: los destacados publicados, con «Agregar a mi cotización» a la vista */
+function destacados() {
+  return todosLosProductos.filter((p) => p.destacado).slice(0, 4)
+    .map((p) => tarjetaProducto(p)).join('');
+}
+
 function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
   const buscar = `${p.nombre} ${p.descripcion} ${p.categoria || ''}`;
   const etiquetas = [
@@ -748,17 +760,22 @@ function pie(pagina) {
 </a>`;
 }
 
-/* Barra fija de cotización para móvil. */
-function barraVenta() {
+/* Barra inferior tipo app, sólo en móvil y siempre visible: inicio, menú,
+   la cotización (con su contador) y WhatsApp a un toque. Reemplaza a la
+   barra de venta que sólo aparecía con productos y al flotante de WhatsApp. */
+function barraApp(pagina) {
+  const base = baseDe(pagina);
+  const actual = (nav) => (pagina.nav === nav ? ' aria-current="page"' : '');
   return `
-<div class="barra-venta" data-barra-venta hidden>
-  <div class="barra-venta__info">
-    <span><span data-carrito-unidades>0</span> en tu cotización</span>
-  </div>
-  <button class="btn btn--wa" type="button" data-carrito-abrir>
-    ${ico('canasta')} Ver mi cotización
+<nav class="barra-app" aria-label="Accesos rápidos">
+  <a href="${base}index.html"${actual('inicio')}>${ico('casa')}<span>Inicio</span></a>
+  <a href="${base}menu/"${actual('menu')}>${ico('pan')}<span>Menú</span></a>
+  <button type="button" data-carrito-abrir>
+    <span class="barra-app__ico">${ico('canasta')}<span class="barra-app__contador" data-carrito-contador hidden>0</span></span>
+    <span>Mi cotización</span>
   </button>
-</div>`;
+  <a class="barra-app__wa" href="https://wa.me/${esc(N.whatsapp)}?text=${encodeURIComponent('¡Hola Cefas Panadería! Quiero cotizar un encargo.')}" rel="noopener">${ico('whatsapp')}<span>WhatsApp</span></a>
+</nav>`;
 }
 
 function panelCarrito(pagina) {
@@ -907,6 +924,8 @@ function sustituir(html, pagina) {
     MENU_COMPLETO: menuCompleto(),
     FILTROS: botonesFiltro(),
     PEDIDOSYA_BLOQUE: bloquePedidosYa(),
+    CATEGORIAS_FICHAS: fichasCategorias(),
+    DESTACADOS: destacados(),
     FAQ: bloqueFAQ(),
     ZONAS: bloqueZonas(),
     HORARIOS: bloqueHorarios(),
@@ -975,7 +994,7 @@ function construirPagina(pagina) {
     sustituir(cuerpo, pagina).trim(),
     '</main>',
     pie(pagina),
-    barraVenta(),
+    barraApp(pagina),
     panelCarrito(pagina)
   ].join('\n');
 

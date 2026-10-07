@@ -22,6 +22,16 @@
   </div>
 </section>
 
+<!-- ===================== CATEGORÍAS =====================
+     Como en las tiendas de panadería grandes: el menú a un toque, ya filtrado. -->
+<nav class="fichas-categorias" aria-label="Categorías del menú">
+  <div class="contenedor">
+    <div class="fichas-categorias__lista">
+      {{CATEGORIAS_FICHAS}}
+    </div>
+  </div>
+</nav>
+
 <!-- ===================== QUÉ PREPARAMOS ===================== -->
 <section class="seccion" id="ocasiones" aria-labelledby="t-ocasiones">
   <div class="contenedor">
@@ -50,6 +60,16 @@
       </a>
     </div>
 
+  </div>
+</section>
+
+<!-- ===================== LO MÁS PEDIDO ===================== -->
+<section class="seccion seccion--sin-arriba" id="destacados" aria-labelledby="t-destacados">
+  <div class="contenedor">
+    <h2 id="t-destacados" class="titulo-seccion">Lo más pedido</h2>
+    <div class="rejilla rejilla--4">
+      {{DESTACADOS}}
+    </div>
     <p class="enlaces-suaves">
       <a href="{{BASE}}menu/">Ver el menú completo {{ico:flecha:ico--desliza}}</a>
       <a href="{{BASE}}cuanto-pan/">¿Cuánto pan necesito? {{ico:flecha:ico--desliza}}</a>

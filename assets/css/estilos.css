@@ -549,6 +549,29 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 .datos-clave .dato { display: flex; flex-direction: column-reverse; }
 .entradilla--corta { margin: -12px 0 clamp(24px, 3vw, 36px); }
 
+/* Fichas de categoría del inicio: deslizan en horizontal en el teléfono */
+/* Pegadas a la portada: son la entrada rápida al menú, no una sección aparte */
+.portada:has(+ .fichas-categorias) { padding-bottom: clamp(20px, 3vw, 36px); }
+.fichas-categorias { padding-bottom: 0; }
+.fichas-categorias + .seccion { padding-top: clamp(40px, 5.5vw, 72px); }
+.fichas-categorias__lista {
+  display: flex; gap: 10px; overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: none; padding: 4px 2px 8px; scroll-snap-type: x proximity;
+}
+.fichas-categorias__lista::-webkit-scrollbar { display: none; }
+.fichas-categorias__lista a {
+  flex: none; display: inline-flex; align-items: center; gap: .5em; scroll-snap-align: start;
+  background: var(--masa); color: var(--carbon); text-decoration: none; font-weight: 600; font-size: .95rem;
+  padding: .7em 1.2em; border-radius: 999px; box-shadow: var(--sombra);
+  transition: box-shadow .2s ease, transform .1s ease, color .15s ease;
+}
+.fichas-categorias__lista a .ico { color: var(--corteza); }
+.fichas-categorias__lista a:active { transform: scale(.95); }
+@media (hover: hover) and (pointer: fine) {
+  .fichas-categorias__lista a:hover { box-shadow: var(--sombra-alta); color: var(--corteza-oscura); }
+}
+.rejilla--4 { grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
+
 /* Cierre: una pregunta, un botón */
 .cierre { padding: clamp(64px, 9vw, 120px) 0; text-align: center; }
 .cierre h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); margin-bottom: .35em; }
@@ -969,33 +992,39 @@ html.js .linea-carrito--nueva { animation: surgir .25s var(--salida); }
 }
 .wa-flotante:focus-visible .wa-flotante__texto { max-width: 220px; }
 
-/* --- Barra fija de pedido (móvil) ---------------------------------------- */
-/* En móvil la cabecera esconde el texto del botón del carrito, así que el
-   resumen y el paso a pedir la cotización viven acá abajo, siempre visibles. */
-.barra-venta {
-  display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 95;
-  align-items: center; justify-content: space-between; gap: 14px;
-  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-  background: rgba(253, 248, 241, .96); backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--linea);
-  box-shadow: 0 -8px 28px -18px rgba(23, 19, 16, .6);
-  animation: surgir .3s var(--salida);
-}
-.barra-venta[hidden] { display: none; }
-.barra-venta__info { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
-.barra-venta__info strong {
-  font-family: var(--f-titulo); font-size: 1.3rem; color: var(--carbon);
-  font-variant-numeric: tabular-nums;
-}
-.barra-venta__info span { font-size: .8rem; color: var(--tinta-suave); }
-.barra-venta .btn { flex: none; }
+/* --- Barra inferior tipo app (móvil) -------------------------------------
+   Siempre visible en el teléfono: inicio, menú, la cotización con su
+   contador y WhatsApp. En móvil reemplaza al flotante de WhatsApp. */
+.barra-app { display: none; }
 @media (max-width: 900px) {
-  .barra-venta:not([hidden]) { display: flex; }
-  /* El flotante de WhatsApp se sube para no quedar debajo de la barra */
-  body.con-barra-venta .wa-flotante { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); gap: 0; }
-  /* Con la barra de pedido el flotante vuelve a ser sólo el icono: el botón
-     principal ya está en la barra y no deben competir. */
-  body.con-barra-venta .wa-flotante__texto { max-width: 0; }
+  .barra-app {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 95;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
+    background: rgba(255, 255, 255, .97); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 -1px 3px rgba(42, 26, 18, .08), 0 -2px 8px rgba(42, 26, 18, .06);
+  }
+  .barra-app > a, .barra-app > button {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+    min-height: 52px; padding: 4px 2px; border: 0; background: none; border-radius: var(--radio-s);
+    font-size: .72rem; font-weight: 600; color: var(--tinta-suave); text-decoration: none; cursor: pointer;
+    transition: transform .1s ease, color .15s ease;
+  }
+  .barra-app > :active { transform: scale(.95); }
+  .barra-app .ico { width: 1.45rem; height: 1.45rem; vertical-align: 0; }
+  .barra-app [aria-current="page"] { color: var(--corteza-oscura); }
+  .barra-app__wa .ico { color: var(--verde); }
+  .barra-app__ico { position: relative; display: inline-flex; }
+  .barra-app__contador {
+    position: absolute; top: -6px; right: -12px; min-width: 18px; height: 18px; padding: 0 4px;
+    border-radius: 999px; background: var(--corteza); color: #fff; font-size: .66rem; font-weight: 700;
+    display: grid; place-items: center; border: 2px solid #fff;
+  }
+  .barra-app__contador[hidden] { display: none; }
+  /* La cotización ya está en la barra: la cabecera no la repite */
+  .cabecera .carrito-btn { display: none; }
+  .wa-flotante { display: none; }
+  body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* --- 17. Migas, 404, impresión y accesibilidad -------------------------- */
@@ -1019,7 +1048,7 @@ html.js .linea-carrito--nueva { animation: surgir .25s var(--salida); }
 }
 @media print {
   .cabecera, .pie, .wa-flotante, .filtros, .panel, .velo, .btn, .foto,
-  .barra-venta, .contador { display: none !important; }
+  .barra-app, .contador { display: none !important; }
   body { background: #fff; font-size: 12pt; }
   html.js [data-reveal] { opacity: 1; transform: none; }
 }
