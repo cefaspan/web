@@ -308,6 +308,16 @@ function fichasCategorias() {
 }
 
 /* Inicio: los destacados publicados, con «Agregar a mi cotización» a la vista */
+/* Inicio: reseñas reales de clientes (datos/negocio.json). Sin estrellas ni
+   puntuaciones inventadas: sólo lo que dijeron, con su nombre de pila. */
+function resenas() {
+  return (N.resenas || []).map((r) => `
+      <figure class="resena" data-reveal>
+        <blockquote>«${esc(r.texto)}»</blockquote>
+        <figcaption><strong>${esc(r.nombre)}</strong>${r.pidio ? `<span>Pidió: ${esc(r.pidio)}</span>` : ''}</figcaption>
+      </figure>`).join('');
+}
+
 function destacados() {
   return todosLosProductos.filter((p) => p.destacado).slice(0, 4)
     .map((p) => tarjetaProducto(p, { insignia: true })).join('');
@@ -965,6 +975,7 @@ function sustituir(html, pagina) {
     PEDIDOSYA_BLOQUE: bloquePedidosYa(),
     CATEGORIAS_FICHAS: fichasCategorias(),
     DESTACADOS: destacados(),
+    RESENAS: resenas(),
     FAQ: bloqueFAQ(FAQ_INICIO),
     ZONAS: bloqueZonas(),
     HORARIOS: bloqueHorarios(),

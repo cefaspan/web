@@ -39,6 +39,23 @@
   "_notaCobertura": "Solo se entrega en las zonas listadas aca. Todo lo que se agregue se publica como promesa de entrega en la pagina y en el areaServed de los datos estructurados, asi que no agregues una zona a la que no se llega. Cada municipio va en su propio grupo: el nombre del municipio se usa tal cual en los datos estructurados.",
   "entregaSolo": "Entregamos solo en las zonas de esta lista",
   "coberturaResumen": "Ciudad de Guatemala y Mixco",
+  "resenas": [
+    {
+      "nombre": "Rudy",
+      "texto": "Excelente producto, mis felicitaciones, especialmente son geniales las tortugas.",
+      "pidio": "Panes varios para actividades, conchas, gusanos, tortugas y lagartos"
+    },
+    {
+      "nombre": "Carlos",
+      "texto": "Me gustaron las iguanas, muy buenas.",
+      "pidio": "Lagartos"
+    },
+    {
+      "nombre": "Sergio",
+      "texto": "Muchas gracias por el pan, muy bueno.",
+      "pidio": ""
+    }
+  ],
   "cobertura": [
     {
       "municipio": "Ciudad de Guatemala",
