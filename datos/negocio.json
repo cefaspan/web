@@ -42,18 +42,43 @@
   "resenas": [
     {
       "nombre": "Rudy",
-      "texto": "Excelente producto, mis felicitaciones, especialmente son geniales las tortugas.",
-      "pidio": "Panes varios para actividades, conchas, gusanos, tortugas y lagartos"
+      "detalle": "Pedido para una actividad",
+      "texto": "Excelente producto. Pedimos pan surtido para una actividad y fue todo un éxito; las tortugas fueron las favoritas de todos. ¡Felicitaciones al equipo!",
+      "pedido": [
+        {
+          "nombre": "Pan Tortuga",
+          "img": "pan-tortuga"
+        },
+        {
+          "nombre": "Pan Cocodrilo",
+          "img": "pan-cocodrilo"
+        },
+        {
+          "nombre": "Conchas",
+          "img": "concha"
+        },
+        {
+          "nombre": "Pan dulce surtido",
+          "img": "docena-pan-dulce"
+        }
+      ]
     },
     {
       "nombre": "Carlos",
-      "texto": "Me gustaron las iguanas, muy buenas.",
-      "pidio": "Lagartos"
+      "detalle": "Pan dulce de figuras",
+      "texto": "Los panes en forma de cocodrilo estuvieron buenísimos: suaves, frescos y muy bien hechos.",
+      "pedido": [
+        {
+          "nombre": "Pan Cocodrilo",
+          "img": "pan-cocodrilo"
+        }
+      ]
     },
     {
       "nombre": "Sergio",
-      "texto": "Muchas gracias por el pan, muy bueno.",
-      "pidio": ""
+      "detalle": "Cliente de Cefas",
+      "texto": "Muy buen pan. Muchas gracias por la atención y por cumplir con el pedido.",
+      "pedido": []
     }
   ],
   "cobertura": [
