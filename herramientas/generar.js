@@ -368,7 +368,7 @@ function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
             <div class="producto__cuerpo">
               <div class="producto__cabecera">
                 <h3 class="producto__nombre">${esc(p.nombre)}</h3>
-                <span class="producto__unidad">${esc(p.unidad)}</span>
+                <span class="producto__unidad">${esc(p.unidad)}${p.minimo > 1 ? `<br>mín. ${p.minimo}` : ''}</span>
               </div>
               <p class="producto__desc">${esc(p.descripcion)}</p>
               <div class="producto__pie">${acciones}
@@ -612,6 +612,15 @@ function baseDe(pagina) {
 /* Precarga la foto grande del hero: es el LCP del inicio. Sale de las mismas
    variantes que el <picture>, así que precarga el candidato que el navegador
    va a elegir de verdad: si difieren, se baja la foto dos veces.          */
+/* Medición de visitas y clics con GoatCounter: gratis, sin cookies y sin
+   aviso de consentimiento. Apagada mientras datos/negocio.json no tenga el
+   código de la cuenta (analitica.goatcounter). Los clics los cuenta app.js. */
+function scriptAnalitica() {
+  const codigo = (N.analitica && N.analitica.goatcounter || '').trim();
+  if (!/^[a-z0-9-]+$/i.test(codigo)) return '';
+  return `<script data-goatcounter="https://${codigo}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>`;
+}
+
 function preloadHero(base) {
   const { url, nativo, webp } = variantesDe(IMG_PORTADA);
   const juego = webp.length ? webp : nativo;
@@ -686,6 +695,7 @@ ${pagina.nav === 'inicio' ? preloadHero(base) : ''}
 <!-- Marca .js para que las animaciones de entrada sólo se apliquen si hay
      JavaScript; sin él el contenido se ve de una vez. -->
 <script>document.documentElement.classList.add('js');</script>
+${scriptAnalitica()}
 
 ${enlaces}
 </head>`;
@@ -745,7 +755,7 @@ function cajaBusqueda(pagina) {
   };
   const productos = todosLosProductos.map((p) => ({
     id: p.id, nombre: p.nombre, unidad: p.unidad, categoria: p.categoria,
-    desc: p.descripcion || '', img: miniatura(p)
+    desc: p.descripcion || '', img: miniatura(p), minimo: p.minimo || 1
   }));
   return `
   <div class="busqueda" id="busqueda" data-busqueda hidden>

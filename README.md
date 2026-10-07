@@ -287,6 +287,8 @@ Campos de un producto:
                                 // de paquetes del inicio, ordenada por piezas
   "destacado": true,            // marca el producto como destacado
   "encargo": true,              // muestra la etiqueta "Por encargo"
+  "minimo": 10,                 // cantidad mínima: al agregar arranca ahí y el −
+                                // en el mínimo lo quita de la cotización
   "minorista": true,            // NO se publica: se vende por pieza en PedidosYa
   "imagen": "pan-frances.jpg"   // opcional: archivo dentro de assets/img/
 }
@@ -460,8 +462,19 @@ Por orden de impacto:
 
 ### Medición
 
-Cuando quieras analítica, agregá el script de Google Analytics 4 o Plausible en
-`herramientas/generar.js`, dentro de la función `cabeza()`, antes de `</head>`.
+El sitio usa [GoatCounter](https://www.goatcounter.com) (gratis, sin cookies, sin aviso de
+consentimiento). Está **apagado** hasta poner el código de la cuenta en `datos/negocio.json`:
+
+```json
+"analitica": { "goatcounter": "cefas" }
+```
+
+(si el panel es `cefas.goatcounter.com`, el código es `cefas`). Además de las visitas, `app.js`
+cuenta estos clics como eventos, con la página donde ocurrieron:
+
+- `whatsapp-<página>`: cualquier botón o enlace de WhatsApp (`whatsapp-prueba-<página>` si es para pedir una prueba)
+- `llamada-<página>` y `pedidosya-<página>`
+- `cotizacion-panel` y `cotizacion-formulario`: cotizaciones enviadas
 
 ---
 

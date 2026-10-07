@@ -62,8 +62,8 @@
       "descripcion": "Cajas de pan, bocadillos y canastas para oficinas, reuniones, coffee breaks y eventos en Ciudad de Guatemala.",
       "icono": "caja",
       "productos": [
-        { "id": "caja-desayuno", "nombre": "Caja de Desayuno", "descripcion": "Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido.", "unidad": "por caja", "destacado": true, "encargo": true, "imagen": "caja-desayuno.jpg" },
-        { "id": "coffee-break", "nombre": "Coffee Break Empresarial", "descripcion": "Servicio de coffee break: pan dulce surtido, bocadillos salados, café y agua.", "unidad": "por persona", "destacado": true, "encargo": true, "imagen": "coffee-break.jpg" },
+        { "id": "caja-desayuno", "nombre": "Caja de Desayuno", "descripcion": "Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido.", "unidad": "por caja", "minimo": 10, "destacado": true, "encargo": true, "imagen": "caja-desayuno.jpg" },
+        { "id": "coffee-break", "nombre": "Coffee Break Empresarial", "descripcion": "Servicio de coffee break: pan dulce surtido, bocadillos salados, café y agua.", "unidad": "por persona", "minimo": 10, "destacado": true, "encargo": true, "imagen": "coffee-break.jpg" },
         { "id": "bandeja-bocadillos", "nombre": "Bandeja de Bocadillos Salados", "descripcion": "Bandeja de 50 bocadillos surtidos: mini sándwiches, enrollados y empanaditas.", "unidad": "bandeja 50 piezas", "destacado": false, "encargo": true, "imagen": "bandeja-bocadillos.jpg" },
         { "id": "canasta-regalo", "nombre": "Canasta de Regalo", "descripcion": "Canasta con selección de panes artesanales y café guatemalteco. Ideal para regalo corporativo.", "unidad": "canasta", "destacado": false, "encargo": true, "imagen": "canasta-regalo.jpg" },
         { "id": "pan-mayoreo", "nombre": "Pan al Mayoreo", "descripcion": "Abastecemos tiendas, cafeterías, hoteles y restaurantes con entrega programada y condiciones por volumen.", "unidad": "cotización", "destacado": false, "encargo": true, "imagen": "pan-mayoreo.jpg" }

@@ -44,6 +44,24 @@
 
   var pedido = leerPedido();
 
+  /* Mínimos por producto (coffee break y cajas de desayuno, desde 10). Vienen
+     en el JSON de productos de la página; sin él, todo arranca en 1. */
+  var MINIMOS = {};
+  try {
+    var datosMin = document.querySelector('[data-productos-datos]');
+    JSON.parse(datosMin ? datosMin.textContent : '[]').forEach(function (p) {
+      if (p.minimo > 1) MINIMOS[p.id] = p.minimo;
+    });
+  } catch (e) { /* sin mínimos */ }
+  function minimoDe(id) { return MINIMOS[id] || 1; }
+  // Un pedido guardado antes de existir el mínimo se sube al mínimo
+  var subido = false;
+  pedido.forEach(function (l) {
+    var m = minimoDe(l.id);
+    if (l.cantidad < m) { l.cantidad = m; subido = true; }
+  });
+  if (subido) { try { localStorage.setItem(CLAVE, JSON.stringify(pedido)); } catch (e) { /* modo privado */ } }
+
   /* --- Menú de navegación en móvil ---------------------------------------- */
   var btnMenu = $('[data-menu-btn]');
   var nav = $('[data-nav]');
@@ -164,10 +182,6 @@
   var trasEnviar = $$('[data-si-enviado]');
   var ultimoFoco = null;
 
-  function unidadesPedido() {
-    return pedido.reduce(function (s, l) { return s + l.cantidad; }, 0);
-  }
-
   function cantidadDe(id) {
     for (var i = 0; i < pedido.length; i++) {
       if (pedido[i].id === id) return pedido[i].cantidad;
@@ -176,7 +190,7 @@
   }
 
   function pintarContador() {
-    var n = unidadesPedido();
+    var n = pedido.length;
     var hay = n > 0;
     contadores.forEach(function (el) {
       el.textContent = n;
@@ -285,7 +299,8 @@
       nombre.textContent = linea.nombre;
       var det = document.createElement('span');
       det.className = 'linea-carrito__unidad';
-      det.textContent = linea.unidad || '';
+      var minLinea = minimoDe(linea.id);
+      det.textContent = (linea.unidad || '') + (minLinea > 1 ? ' · mínimo ' + minLinea : '');
       info.appendChild(nombre);
       info.appendChild(det);
 
@@ -294,7 +309,8 @@
       var menos = document.createElement('button');
       menos.type = 'button';
       menos.innerHTML = iconoHTML('menos');
-      menos.setAttribute('aria-label', 'Quitar uno de ' + linea.nombre);
+      menos.setAttribute('aria-label', linea.cantidad <= minLinea
+        ? 'Quitar ' + linea.nombre + ' de la cotización' : 'Quitar uno de ' + linea.nombre);
       menos.dataset.accion = 'menos'; menos.dataset.id = linea.id;
       menos.addEventListener('click', function () { cambiarCantidad(i, -1); });
       var cant = document.createElement('span');
@@ -331,7 +347,7 @@
   function cambiarCantidad(i, delta) {
     if (!pedido[i]) return;
     pedido[i].cantidad += delta;
-    if (pedido[i].cantidad < 1) pedido.splice(i, 1);
+    if (pedido[i].cantidad < minimoDe(pedido[i].id)) pedido.splice(i, 1);
     guardarPedido(pedido);
     pintarCarrito();
   }
@@ -341,16 +357,17 @@
      "Agregar todo" dos veces no duplique la sugerencia.                 */
   function agregar(datos, cantidad, fijar) {
     var n = Math.max(1, parseInt(cantidad, 10) || 1);
+    var min = minimoDe(datos.id);
     var existente = null;
     for (var i = 0; i < pedido.length; i++) {
       if (pedido[i].id === datos.id) { existente = pedido[i]; break; }
     }
-    if (existente) existente.cantidad = fijar ? n : existente.cantidad + n;
+    if (existente) existente.cantidad = Math.max(min, fijar ? n : existente.cantidad + n);
     else {
       idNuevo = datos.id;
       pedido.push({
       id: datos.id, nombre: datos.nombre,
-        unidad: datos.unidad, img: datos.img || '', cantidad: n
+        unidad: datos.unidad, img: datos.img || '', cantidad: Math.max(n, min)
       });
     }
     guardarPedido(pedido);
@@ -476,6 +493,32 @@
     }
   });
 
+  /* --- Medición (GoatCounter) ---------------------------------------------
+     Cuenta como eventos los clics que importan: WhatsApp (por página y si es
+     para pedir una prueba), llamadas, y las cotizaciones enviadas desde el
+     panel o el formulario. Sin GoatCounter configurado no hace nada.      */
+  var PAGINA = (window.location.pathname.replace(/\/index\.html$/, '/').split('/').filter(Boolean).pop()) || 'inicio';
+  if (PAGINA === 'web') PAGINA = 'inicio';
+  function medir(nombre) {
+    try {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: nombre, title: nombre, event: true });
+      }
+    } catch (e) { /* la medición nunca debe romper la venta */ }
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (href.indexOf('wa.me/') !== -1) {
+      medir('whatsapp-' + (href.indexOf('prueba') !== -1 ? 'prueba-' : '') + PAGINA);
+    } else if (href.indexOf('tel:') === 0) {
+      medir('llamada-' + PAGINA);
+    } else if (href.indexOf('pedidosya') !== -1) {
+      medir('pedidosya-' + PAGINA);
+    }
+  }, true);
+
   /* --- Mensaje de WhatsApp ------------------------------------------------ */
   function resumenPedido() {
     if (!pedido.length) return '';
@@ -501,6 +544,7 @@
         '¡Hola Cefas Panadería! Quiero cotizar este encargo:\n\n' + resumenPedido() +
         '\n\n¿Me pasan la cotización y la hora de entrega, por favor?'
       );
+      medir('cotizacion-panel');
       recienEnviado = true;
       pintarContador();
     });
@@ -733,6 +777,7 @@
       if (v('detalle')) partes.push('', '*Detalle del pedido:*', v('detalle'));
 
       abrirWhatsApp(partes.join('\n'));
+      medir('cotizacion-formulario');
 
       var ok = $('[data-form-ok]', form.parentNode) || $('[data-form-ok]');
       if (ok) ok.hidden = false;
