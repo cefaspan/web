@@ -84,7 +84,7 @@
     "streetAddress": "Zona 6, Ciudad de Guatemala",
     "addressLocality": "Ciudad de Guatemala",
     "addressRegion": "Guatemala",
-    "postalCode": "01001",
+    "postalCode": "01006",
     "addressCountry": "GT"
   },
   "geo": {
@@ -138,6 +138,10 @@
     {
       "@type": "Place",
       "name": "Zona 5, Ciudad de Guatemala"
+    },
+    {
+      "@type": "Place",
+      "name": "Zona 6, Ciudad de Guatemala"
     },
     {
       "@type": "Place",
@@ -289,7 +293,7 @@
       "name": "¿Lo entregan montado o solo lo dejan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Lo dejamos montado y listo para servir a la hora que nos indiques, en oficinas y salones de zonas 1, 2, 4, 5, 9, 10, 11, 13, 14, 15 y 16 de Ciudad de Guatemala, y en zonas 8 (San Cristóbal) y 11 de Mixco. Fuera de esas zonas podés pasar a recogerlo."
+        "text": "Lo dejamos montado y listo para servir a la hora que nos indiques, en oficinas y salones de zonas 1, 2, 4, 5, 6, 9, 10, 11, 13, 14, 15 y 16 de Ciudad de Guatemala, y en zonas 8 (San Cristóbal) y 11 de Mixco. Fuera de esas zonas podés pasar a recogerlo."
       }
     },
     {
@@ -393,13 +397,23 @@
     "minimo": 1
   },
   {
+    "id": "pan-figuras-docena",
+    "nombre": "Pan de Figuras (docena)",
+    "unidad": "docena",
+    "categoria": "Pan Dulce Tradicional",
+    "desc": "Docena de pan dulce con forma de tortuga y cocodrilo, hecho a mano. El favorito de las actividades con niños.",
+    "img": "../assets/img/pan-tortuga-400.jpg",
+    "minimo": 1
+  },
+  {
     "id": "caja-desayuno",
     "nombre": "Caja de Desayuno",
     "unidad": "por caja",
     "categoria": "Encargos para Eventos y Empresas",
-    "desc": "Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido.",
+    "desc": "Caja individual con pan dulce, croissant, jugo y café.",
     "img": "../assets/img/caja-desayuno-400.jpg",
-    "minimo": 10
+    "minimo": 10,
+    "anticipacionDias": 3
   },
   {
     "id": "coffee-break",
@@ -408,7 +422,8 @@
     "categoria": "Encargos para Eventos y Empresas",
     "desc": "Servicio de coffee break: pan dulce surtido, bocadillos salados, café y agua.",
     "img": "../assets/img/coffee-break-400.jpg",
-    "minimo": 10
+    "minimo": 10,
+    "anticipacionDias": 3
   },
   {
     "id": "bandeja-bocadillos",
@@ -500,7 +515,7 @@
         <div class="dato"><dt>personas</dt><dd>Desde 10</dd></div>
     <div class="dato"><dt>de anticipación</dt><dd>3 a 5 días</dd></div>
     <div class="dato"><dt>montado donde sea el receso</dt><dd>A la hora</dd></div>
-        <div class="dato"><dt>con entrega en Ciudad de Guatemala y Mixco</dt><dd>13 zonas</dd></div>
+        <div class="dato"><dt>con entrega en Ciudad de Guatemala y Mixco</dt><dd>14 zonas</dd></div>
       </dl>
     </div>
 
@@ -521,7 +536,7 @@
       </ol>
       <div class="grupo-btn">
         <a class="btn btn--claro" href="https://wa.me/50246379417?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20un%20coffee%20break%20para%20una%20actividad." rel="noopener"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> Cotizar por WhatsApp</a>
-        <a class="btn btn--contorno-claro" href="../encargos/#formulario">Usar el formulario</a>
+        <a class="btn btn--contorno-claro" href="../encargos/?tipo=Coffee%20break%20%2F%20desayunos#formulario">Usar el formulario</a>
       </div>
     </div>
   </div>
@@ -607,7 +622,7 @@
           </details>
           <details data-reveal>
             <summary>¿Lo entregan montado o solo lo dejan?<span class="faq__signo" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></span></summary>
-            <div>Lo dejamos montado y listo para servir a la hora que nos indiques, en oficinas y salones de zonas 1, 2, 4, 5, 9, 10, 11, 13, 14, 15 y 16 de Ciudad de Guatemala, y en zonas 8 (San Cristóbal) y 11 de Mixco. Fuera de esas zonas podés pasar a recogerlo.</div>
+            <div>Lo dejamos montado y listo para servir a la hora que nos indiques, en oficinas y salones de zonas 1, 2, 4, 5, 6, 9, 10, 11, 13, 14, 15 y 16 de Ciudad de Guatemala, y en zonas 8 (San Cristóbal) y 11 de Mixco. Fuera de esas zonas podés pasar a recogerlo.</div>
           </details>
           <details data-reveal>
             <summary>¿Emiten factura?<span class="faq__signo" aria-hidden="true"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></span></summary>
@@ -625,7 +640,7 @@
     <div class="grupo-btn grupo-btn--centro">
       <a class="btn btn--claro btn--grande" href="https://wa.me/50246379417?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20un%20coffee%20break%20para%20una%20actividad." rel="noopener"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-whatsapp"/></svg> Cotizar por WhatsApp</a>
     </div>
-    <p class="cierre__alt">¿Preferís un formulario? <a href="../encargos/#formulario">Cotizar con el formulario</a></p>
+    <p class="cierre__alt">¿Preferís un formulario? <a href="../encargos/?tipo=Coffee%20break%20%2F%20desayunos#formulario">Cotizar con el formulario</a></p>
   </div>
 </section>
 </main>

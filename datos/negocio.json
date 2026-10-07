@@ -15,7 +15,7 @@
     "zona": "",
     "ciudad": "Ciudad de Guatemala",
     "departamento": "Guatemala",
-    "codigoPostal": "01001",
+    "codigoPostal": "01006",
     "pais": "GT"
   },
   "geo": { "lat": "14.628434", "lng": "-90.522713" },
@@ -42,6 +42,7 @@
   "analitica": {
     "goatcounter": ""
   },
+  "_notaResenas": "Solo reseñas de clientes reales, con sus palabras. Se publica sólo el nombre de pila, sin apellido ni datos que identifiquen a la persona. Nada inventado ni de ejemplo.",
   "resenas": [
     {
       "nombre": "Rudy",
@@ -49,19 +50,11 @@
       "texto": "Excelente producto. Pedimos pan surtido para una actividad y fue todo un éxito; las tortugas fueron las favoritas de todos. ¡Felicitaciones al equipo!",
       "pedido": [
         {
-          "nombre": "Pan Tortuga",
+          "nombre": "Pan de Figuras (docena)",
           "img": "pan-tortuga"
         },
         {
-          "nombre": "Pan Cocodrilo",
-          "img": "pan-cocodrilo"
-        },
-        {
-          "nombre": "Conchas",
-          "img": "concha"
-        },
-        {
-          "nombre": "Pan dulce surtido",
+          "nombre": "Docena Surtida de Pan Dulce",
           "img": "docena-pan-dulce"
         }
       ]
@@ -72,7 +65,7 @@
       "texto": "Los panes en forma de cocodrilo estuvieron buenísimos: suaves, frescos y muy bien hechos.",
       "pedido": [
         {
-          "nombre": "Pan Cocodrilo",
+          "nombre": "Pan de Figuras (docena)",
           "img": "pan-cocodrilo"
         }
       ]
@@ -88,7 +81,7 @@
     {
       "municipio": "Ciudad de Guatemala",
       "zonas": [
-        "Zona 1", "Zona 2", "Zona 4", "Zona 5", "Zona 9", "Zona 10",
+        "Zona 1", "Zona 2", "Zona 4", "Zona 5", "Zona 6", "Zona 9", "Zona 10",
         "Zona 11", "Zona 13", "Zona 14", "Zona 15", "Zona 16"
       ]
     },

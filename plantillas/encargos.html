@@ -52,7 +52,7 @@
           <label for="tipo">Tipo de pedido</label>
           <select id="tipo" name="tipo" required>
             <option value="Pan dulce y salado">Pan dulce y salado</option>
-            <option value="Coffee break / desayunos">Coffee break / desayunos</option>
+            <option value="Coffee break / desayunos" data-anticipacion-dias="3">Coffee break / desayunos</option>
             <option value="Bocadillos para evento">Bocadillos para evento</option>
             <option value="Pan al mayoreo">Pan al mayoreo</option>
             <option value="Otro">Otro</option>
@@ -70,6 +70,7 @@
         <div class="campo">
           <label for="fecha">Fecha de entrega</label>
           <input type="date" id="fecha" name="fecha" required>
+          <span class="ayuda" id="aviso-fecha" data-aviso-anticipacion hidden>Esa fecha queda antes de lo que pedimos para coffee breaks y cajas. Envialo igual y te confirmamos si hay capacidad.</span>
         </div>
 
         <div class="campo">

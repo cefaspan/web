@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cotizar un encargo | Eventos y empresas en Guatemala</title>
-<meta name="description" content="Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregas programadas en Ciudad de Guatemala y San Cristóbal.">
+<meta name="description" content="Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregas programadas en Ciudad de Guatemala y Mixco.">
 <link rel="canonical" href="https://cefaspan.github.io/web/encargos/">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Cefas Panadería">
@@ -21,7 +21,7 @@
 <meta property="og:site_name" content="Cefas Panadería">
 <meta property="og:locale" content="es_GT">
 <meta property="og:title" content="Cotizar un encargo | Eventos y empresas en Guatemala">
-<meta property="og:description" content="Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregas programadas en Ciudad de Guatemala y San Cristóbal.">
+<meta property="og:description" content="Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregas programadas en Ciudad de Guatemala y Mixco.">
 <meta property="og:url" content="https://cefaspan.github.io/web/encargos/">
 <meta property="og:image" content="https://cefaspan.github.io/web/assets/img/og-cefas.jpg">
 <meta property="og:image:width" content="1200">
@@ -30,7 +30,7 @@
 <meta property="og:image:alt" content="Pan y bocadillos para eventos de Cefas Panadería">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Cotizar un encargo | Eventos y empresas en Guatemala">
-<meta name="twitter:description" content="Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregas programadas en Ciudad de Guatemala y San Cristóbal.">
+<meta name="twitter:description" content="Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregas programadas en Ciudad de Guatemala y Mixco.">
 <meta name="twitter:image" content="https://cefaspan.github.io/web/assets/img/og-cefas.jpg">
 
 <link rel="alternate" hreflang="es-gt" href="https://cefaspan.github.io/web/encargos/">
@@ -84,7 +84,7 @@
     "streetAddress": "Zona 6, Ciudad de Guatemala",
     "addressLocality": "Ciudad de Guatemala",
     "addressRegion": "Guatemala",
-    "postalCode": "01001",
+    "postalCode": "01006",
     "addressCountry": "GT"
   },
   "geo": {
@@ -138,6 +138,10 @@
     {
       "@type": "Place",
       "name": "Zona 5, Ciudad de Guatemala"
+    },
+    {
+      "@type": "Place",
+      "name": "Zona 6, Ciudad de Guatemala"
     },
     {
       "@type": "Place",
@@ -350,13 +354,23 @@
     "minimo": 1
   },
   {
+    "id": "pan-figuras-docena",
+    "nombre": "Pan de Figuras (docena)",
+    "unidad": "docena",
+    "categoria": "Pan Dulce Tradicional",
+    "desc": "Docena de pan dulce con forma de tortuga y cocodrilo, hecho a mano. El favorito de las actividades con niños.",
+    "img": "../assets/img/pan-tortuga-400.jpg",
+    "minimo": 1
+  },
+  {
     "id": "caja-desayuno",
     "nombre": "Caja de Desayuno",
     "unidad": "por caja",
     "categoria": "Encargos para Eventos y Empresas",
-    "desc": "Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido.",
+    "desc": "Caja individual con pan dulce, croissant, jugo y café.",
     "img": "../assets/img/caja-desayuno-400.jpg",
-    "minimo": 10
+    "minimo": 10,
+    "anticipacionDias": 3
   },
   {
     "id": "coffee-break",
@@ -365,7 +379,8 @@
     "categoria": "Encargos para Eventos y Empresas",
     "desc": "Servicio de coffee break: pan dulce surtido, bocadillos salados, café y agua.",
     "img": "../assets/img/coffee-break-400.jpg",
-    "minimo": 10
+    "minimo": 10,
+    "anticipacionDias": 3
   },
   {
     "id": "bandeja-bocadillos",
@@ -452,7 +467,7 @@
           <label for="tipo">Tipo de pedido</label>
           <select id="tipo" name="tipo" required>
             <option value="Pan dulce y salado">Pan dulce y salado</option>
-            <option value="Coffee break / desayunos">Coffee break / desayunos</option>
+            <option value="Coffee break / desayunos" data-anticipacion-dias="3">Coffee break / desayunos</option>
             <option value="Bocadillos para evento">Bocadillos para evento</option>
             <option value="Pan al mayoreo">Pan al mayoreo</option>
             <option value="Otro">Otro</option>
@@ -464,7 +479,7 @@
           <select id="producto" name="producto">
             <option value="">— Elegir del menú —</option>
               <optgroup label="Pan Francés y Pan Salado"><option value="Pan Francés (docena)">Pan Francés (docena)</option><option value="Pan de Hamburguesa">Pan de Hamburguesa</option><option value="Pan para Hot Dog">Pan para Hot Dog</option></optgroup>
-              <optgroup label="Pan Dulce Tradicional"><option value="Docena Surtida de Pan Dulce">Docena Surtida de Pan Dulce</option></optgroup>
+              <optgroup label="Pan Dulce Tradicional"><option value="Docena Surtida de Pan Dulce">Docena Surtida de Pan Dulce</option><option value="Pan de Figuras (docena)">Pan de Figuras (docena)</option></optgroup>
               <optgroup label="Encargos para Eventos y Empresas"><option value="Caja de Desayuno">Caja de Desayuno</option><option value="Coffee Break Empresarial">Coffee Break Empresarial</option><option value="Bandeja de Bocadillos Salados">Bandeja de Bocadillos Salados</option><option value="Canasta de Regalo">Canasta de Regalo</option><option value="Pan al Mayoreo">Pan al Mayoreo</option></optgroup>
           </select>
         </div>
@@ -472,6 +487,7 @@
         <div class="campo">
           <label for="fecha">Fecha de entrega</label>
           <input type="date" id="fecha" name="fecha" required>
+          <span class="ayuda" id="aviso-fecha" data-aviso-anticipacion hidden>Esa fecha queda antes de lo que pedimos para coffee breaks y cajas. Envialo igual y te confirmamos si hay capacidad.</span>
         </div>
 
         <div class="campo">
@@ -491,11 +507,11 @@
           <label for="zona">Zona de entrega</label>
           <select id="zona" name="zona" aria-describedby="ayuda-zona">
             <option value="">— Elegí la zona —</option>
-              <optgroup label="Ciudad de Guatemala"><option value="Zona 1, Ciudad de Guatemala">Zona 1</option><option value="Zona 2, Ciudad de Guatemala">Zona 2</option><option value="Zona 4, Ciudad de Guatemala">Zona 4</option><option value="Zona 5, Ciudad de Guatemala">Zona 5</option><option value="Zona 9, Ciudad de Guatemala">Zona 9</option><option value="Zona 10, Ciudad de Guatemala">Zona 10</option><option value="Zona 11, Ciudad de Guatemala">Zona 11</option><option value="Zona 13, Ciudad de Guatemala">Zona 13</option><option value="Zona 14, Ciudad de Guatemala">Zona 14</option><option value="Zona 15, Ciudad de Guatemala">Zona 15</option><option value="Zona 16, Ciudad de Guatemala">Zona 16</option></optgroup>
+              <optgroup label="Ciudad de Guatemala"><option value="Zona 1, Ciudad de Guatemala">Zona 1</option><option value="Zona 2, Ciudad de Guatemala">Zona 2</option><option value="Zona 4, Ciudad de Guatemala">Zona 4</option><option value="Zona 5, Ciudad de Guatemala">Zona 5</option><option value="Zona 6, Ciudad de Guatemala">Zona 6</option><option value="Zona 9, Ciudad de Guatemala">Zona 9</option><option value="Zona 10, Ciudad de Guatemala">Zona 10</option><option value="Zona 11, Ciudad de Guatemala">Zona 11</option><option value="Zona 13, Ciudad de Guatemala">Zona 13</option><option value="Zona 14, Ciudad de Guatemala">Zona 14</option><option value="Zona 15, Ciudad de Guatemala">Zona 15</option><option value="Zona 16, Ciudad de Guatemala">Zona 16</option></optgroup>
               <optgroup label="Mixco"><option value="Zona 8 (San Cristóbal), Mixco">Zona 8 (San Cristóbal)</option><option value="Zona 11, Mixco">Zona 11</option></optgroup>
             <option value="Otra zona (fuera de cobertura): paso a recoger">Otra zona: paso a recoger</option>
           </select>
-          <span class="ayuda" id="ayuda-zona">Entregamos en 13 zonas de Ciudad de Guatemala y Mixco. Fuera de ellas, el pedido se recoge.</span>
+          <span class="ayuda" id="ayuda-zona">Entregamos en 14 zonas de Ciudad de Guatemala y Mixco. Fuera de ellas, el pedido se recoge.</span>
         </div>
 
         <div class="campo campo--ancho">

@@ -264,7 +264,7 @@ const PAGINAS = [
     archivo: 'encargos/index.html', ruta: '/encargos/', profundidad: 1, nav: 'encargos', prioridad: '0.9',
     plantilla: 'encargos.html',
     titulo: 'Cotizar un encargo | Eventos y empresas en Guatemala',
-    descripcion: 'Cotizá pan y bocadillos para tu evento, capacitación o celebración con 24 horas de anticipación. Entregas programadas en Ciudad de Guatemala y San Cristóbal.'
+    descripcion: `Cotizá pan y bocadillos para tu evento, capacitación o celebración con ${N.anticipacionEncargoHoras} horas de anticipación. Entregas programadas en ${N.coberturaResumen}.`
   },
   {
     archivo: 'contacto/index.html', ruta: '/contacto/', profundidad: 1, nav: 'contacto', prioridad: '0.7',
@@ -755,7 +755,8 @@ function cajaBusqueda(pagina) {
   };
   const productos = todosLosProductos.map((p) => ({
     id: p.id, nombre: p.nombre, unidad: p.unidad, categoria: p.categoria,
-    desc: p.descripcion || '', img: miniatura(p), minimo: p.minimo || 1
+    desc: p.descripcion || '', img: miniatura(p), minimo: p.minimo || 1,
+    ...(p.anticipacionDias ? { anticipacionDias: p.anticipacionDias } : {})
   }));
   return `
   <div class="busqueda" id="busqueda" data-busqueda hidden>
@@ -936,6 +937,7 @@ function varsServicio(s) {
     SERVICIO_PRODUCTOS: productos.map((p) => tarjetaProducto(p)).join(''),
     SERVICIO_FAQ: bloqueFAQ(resolverFAQ(s.faq)),
     SERVICIO_FOTO: foto(archivoDe(s), 'ancha', s.alt || s.nombre, { prioridad: true }),
+    SERVICIO_TIPO: encodeURIComponent(s.tipoFormulario || ''),
     SERVICIO_WA: `https://wa.me/${esc(N.whatsapp)}?text=${encodeURIComponent(s.whatsapp)}`
   };
 }

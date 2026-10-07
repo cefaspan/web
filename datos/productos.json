@@ -40,7 +40,8 @@
         { "id": "pan-de-banano", "nombre": "Pan de Banano", "descripcion": "Pan de banano casero con nuez, húmedo y aromático. Se vende en porción individual.", "unidad": "porción", "destacado": false, "minorista": true },
         { "id": "cachito", "nombre": "Cachito", "descripcion": "Cachito de masa dulce enrollada, ligero y perfecto para la refacción.", "unidad": "unidad", "destacado": false, "minorista": true },
         { "id": "canillitas", "nombre": "Canillitas de Leche", "descripcion": "Canillitas suaves con sabor a leche, ideales para los niños.", "unidad": "unidad", "destacado": false, "minorista": true },
-        { "id": "docena-pan-dulce", "nombre": "Docena Surtida de Pan Dulce", "descripcion": "Docena surtida con champurradas, cubiletes, magdalenas y conchas. La forma más fácil de llevar de todo.", "unidad": "docena", "destacado": true, "imagen": "docena-pan-dulce.jpg" }
+        { "id": "docena-pan-dulce", "nombre": "Docena Surtida de Pan Dulce", "descripcion": "Docena surtida con champurradas, cubiletes, magdalenas y conchas. La forma más fácil de llevar de todo.", "unidad": "docena", "destacado": true, "imagen": "docena-pan-dulce.jpg" },
+        { "id": "pan-figuras-docena", "nombre": "Pan de Figuras (docena)", "descripcion": "Docena de pan dulce con forma de tortuga y cocodrilo, hecho a mano. El favorito de las actividades con niños.", "unidad": "docena", "destacado": false, "imagen": "pan-tortuga.jpg" }
       ]
     },
     {
@@ -62,8 +63,8 @@
       "descripcion": "Cajas de pan, bocadillos y canastas para oficinas, reuniones, coffee breaks y eventos en Ciudad de Guatemala.",
       "icono": "caja",
       "productos": [
-        { "id": "caja-desayuno", "nombre": "Caja de Desayuno", "descripcion": "Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido.", "unidad": "por caja", "minimo": 10, "destacado": true, "encargo": true, "imagen": "caja-desayuno.jpg" },
-        { "id": "coffee-break", "nombre": "Coffee Break Empresarial", "descripcion": "Servicio de coffee break: pan dulce surtido, bocadillos salados, café y agua.", "unidad": "por persona", "minimo": 10, "destacado": true, "encargo": true, "imagen": "coffee-break.jpg" },
+        { "id": "caja-desayuno", "nombre": "Caja de Desayuno", "descripcion": "Caja individual con pan dulce, croissant, jugo y café.", "unidad": "por caja", "minimo": 10, "anticipacionDias": 3, "destacado": true, "encargo": true, "imagen": "caja-desayuno.jpg" },
+        { "id": "coffee-break", "nombre": "Coffee Break Empresarial", "descripcion": "Servicio de coffee break: pan dulce surtido, bocadillos salados, café y agua.", "unidad": "por persona", "minimo": 10, "anticipacionDias": 3, "destacado": true, "encargo": true, "imagen": "coffee-break.jpg" },
         { "id": "bandeja-bocadillos", "nombre": "Bandeja de Bocadillos Salados", "descripcion": "Bandeja de 50 bocadillos surtidos: mini sándwiches, enrollados y empanaditas.", "unidad": "bandeja 50 piezas", "destacado": false, "encargo": true, "imagen": "bandeja-bocadillos.jpg" },
         { "id": "canasta-regalo", "nombre": "Canasta de Regalo", "descripcion": "Canasta con selección de panes artesanales y café guatemalteco. Ideal para regalo corporativo.", "unidad": "canasta", "destacado": false, "encargo": true, "imagen": "canasta-regalo.jpg" },
         { "id": "pan-mayoreo", "nombre": "Pan al Mayoreo", "descripcion": "Abastecemos tiendas, cafeterías, hoteles y restaurantes con entrega programada y condiciones por volumen.", "unidad": "cotización", "destacado": false, "encargo": true, "imagen": "pan-mayoreo.jpg" }

@@ -18,7 +18,7 @@
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
   function $$(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
   function normalizar(s) {
-    return (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
   /* Icono del sprite SVG que ya viene en la página (ver herramientas/iconos.js) */
   function iconoHTML(nombre) {
@@ -47,10 +47,12 @@
   /* Mínimos por producto (coffee break y cajas de desayuno, desde 10). Vienen
      en el JSON de productos de la página; sin él, todo arranca en 1. */
   var MINIMOS = {};
+  var ANTICIPACIONES = {};  // días sugeridos (coffee break y cajas: 3)
   try {
     var datosMin = document.querySelector('[data-productos-datos]');
     JSON.parse(datosMin ? datosMin.textContent : '[]').forEach(function (p) {
       if (p.minimo > 1) MINIMOS[p.id] = p.minimo;
+      if (p.anticipacionDias) ANTICIPACIONES[p.id] = p.anticipacionDias;
     });
   } catch (e) { /* sin mínimos */ }
   function minimoDe(id) { return MINIMOS[id] || 1; }
@@ -261,10 +263,16 @@
      producto recién agregado (si no, cada + hacía saltar todas), y el foco
      vuelve al mismo botón: al repintar, el que se acababa de pulsar ya no existe. */
   var idNuevo = null;
+  /* Lo que tiene que enterarse de cada cambio de la cotización (agregar,
+     quitar, vaciar, la calculadora, el buscador) se apunta aquí: todos esos
+     caminos terminan en pintarCarrito(). Hoy lo usa el aviso de anticipación
+     del formulario de encargos. */
+  var alCambiarPedido = [];
 
   function pintarCarrito() {
     pintarContador();
     pintarTarjetas();
+    alCambiarPedido.forEach(function (f) { f(); });
     if (!cuerpo) return;
 
     var activo = document.activeElement;
@@ -494,11 +502,22 @@
   });
 
   /* --- Medición (GoatCounter) ---------------------------------------------
-     Cuenta como eventos los clics que importan: WhatsApp (por página y si es
-     para pedir una prueba), llamadas, y las cotizaciones enviadas desde el
+     Cuenta como eventos los clics que importan: WhatsApp (por página, bloque y
+     si es para pedir una prueba), llamadas, y las cotizaciones enviadas desde el
      panel o el formulario. Sin GoatCounter configurado no hace nada.      */
   var PAGINA = (window.location.pathname.replace(/\/index\.html$/, '/').split('/').filter(Boolean).pop()) || 'inicio';
   if (PAGINA === 'web') PAGINA = 'inicio';
+  /* El bloque donde está el enlace (portada, como-pedir, cierre, barra-app…):
+     dice qué secciones venden y cuáles se pueden quitar. Se usa el id de la
+     sección; si no tiene, su título (aria-labelledby="t-como" → «como») o su
+     aria-label; fuera de toda sección, la clase del enlace (wa-flotante). */
+  function bloqueDe(a) {
+    var s = a.closest('section, header, footer, nav, aside');
+    if (!s) return (a.className || '').split(/\s+/)[0] || 'pagina';
+    var nombre = s.id || (s.getAttribute('aria-labelledby') || '').replace(/^t-/, '') ||
+      s.getAttribute('aria-label') || s.className.split(/\s+/)[0] || s.tagName;
+    return normalizar(nombre).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
   function medir(nombre) {
     try {
       if (window.goatcounter && window.goatcounter.count) {
@@ -511,7 +530,7 @@
     if (!a) return;
     var href = a.getAttribute('href');
     if (href.indexOf('wa.me/') !== -1) {
-      medir('whatsapp-' + (href.indexOf('prueba') !== -1 ? 'prueba-' : '') + PAGINA);
+      medir('whatsapp-' + (href.indexOf('prueba') !== -1 ? 'prueba-' : '') + PAGINA + '-' + bloqueDe(a));
     } else if (href.indexOf('tel:') === 0) {
       medir('llamada-' + PAGINA);
     } else if (href.indexOf('pedidosya') !== -1) {
@@ -738,6 +757,59 @@
     if (fecha) fecha.addEventListener('change', validarEntrega);
     if (hora) hora.addEventListener('change', validarEntrega);
 
+    /* Coffee breaks y cajas llevan montaje: se piden con 3 a 5 días. No se
+       bloquea (con menos tiempo a veces hay capacidad), pero se avisa al
+       cliente y el mensaje lo dice, para que nadie lo dé por confirmado. */
+    var tipo = $('#tipo', form);
+    var avisoAnticipacion = $('[data-aviso-anticipacion]', form);
+    // Quien llega desde una página de servicio trae el tipo en la URL
+    // (encargos/?tipo=Coffee%20break%20%2F%20desayunos#formulario).
+    try {
+      var tipoURL = new URLSearchParams(window.location.search).get('tipo');
+      if (tipo && tipoURL) {
+        Array.prototype.forEach.call(tipo.options, function (o) {
+          if (o.value === tipoURL) tipo.value = tipoURL;
+        });
+      }
+    } catch (e) { /* navegador sin URLSearchParams: queda el tipo por defecto */ }
+    // Días sugeridos: los del tipo elegido o los de algún producto de la
+    // cotización (una caja de desayuno agregada desde el menú también cuenta).
+    function diasSugeridos() {
+      var opcion = tipo && tipo.options[tipo.selectedIndex];
+      var dias = Number(opcion && opcion.getAttribute('data-anticipacion-dias')) || 0;
+      pedido.forEach(function (l) { dias = Math.max(dias, ANTICIPACIONES[l.id] || 0); });
+      return dias;
+    }
+    // Se cuenta por días de calendario, como lo lee el cliente («de 3 a 5
+    // días»): el lunes, un coffee break para el jueves ya no avisa, sea a la
+    // hora que sea; para el miércoles, sí. La hora no cambia el resultado.
+    function pocaAnticipacion() {
+      if (!fecha || !fecha.value) return false;
+      var dias = diasSugeridos();
+      if (!dias) return false;
+      var limite = new Date();
+      limite.setHours(0, 0, 0, 0);
+      limite.setDate(limite.getDate() + dias);
+      return fechaDeCampo(fecha.value) < limite;
+    }
+    // El aviso sólo se une al campo cuando se ve: un aria-describedby fijo
+    // haría que el lector de pantalla lo leyera siempre, aunque esté oculto.
+    function pintarAvisoAnticipacion() {
+      if (!avisoAnticipacion || !fecha) return;
+      var mostrar = pocaAnticipacion();
+      avisoAnticipacion.hidden = !mostrar;
+      if (mostrar) fecha.setAttribute('aria-describedby', avisoAnticipacion.id);
+      else fecha.removeAttribute('aria-describedby');
+    }
+    [tipo, fecha].forEach(function (el) {
+      if (el) el.addEventListener('change', pintarAvisoAnticipacion);
+    });
+    // También cuando cambia la cotización: agregar una caja de desayuno desde
+    // el buscador, con la fecha ya puesta, tiene que mostrar el aviso, y
+    // quitarla, esconderlo. Y una vez al cargar (fecha que recuerda el navegador).
+    alCambiarPedido.push(pintarAvisoAnticipacion);
+    pintarAvisoAnticipacion();
+
     // La zona sólo hace falta si el pedido va a domicilio. Para recoger, el
     // campo se esconde y no se exige.
     var entrega = $('#entrega', form);
@@ -771,6 +843,7 @@
         '*Fecha de entrega:* ' + v('fecha') + (v('hora') ? ' a las ' + v('hora') : ''),
         '*Entrega:* ' + v('entrega') + (v('zona') ? ' — ' + v('zona') : '')
       ];
+      if (pocaAnticipacion()) partes.push('', 'Sé que la fecha es más próxima de lo que piden para coffee break y cajas: ¿tienen capacidad ese día?');
 
       var resumen = resumenPedido();
       if (resumen) partes.push('', '*Productos a cotizar:*', resumen);
