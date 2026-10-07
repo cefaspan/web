@@ -1,25 +1,38 @@
 <!-- ===================== PORTADA =====================
      Una sola idea: qué es, para quién y cómo pedir. Los datos de compra
      (mínimo, anticipación, zonas) viven una única vez, en «Cómo pedir». -->
-<section class="portada">
+<section class="portada portada--color">
   <div class="contenedor portada__grid">
     <div class="portada__texto">
       <p class="portada__marca">Cefas Panadería · Ciudad de Guatemala</p>
-      <h1>Pan y bocadillos para tus eventos</h1>
+      <h1>Pan recién horneado, a la hora de tu evento</h1>
       <p class="portada__sub">
         Coffee breaks, cajas de desayuno y bandejas para oficinas y actividades,
         horneados el mismo día. Te cotizamos hoy por WhatsApp.
       </p>
       <div class="grupo-btn">
-        <a class="btn btn--principal btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
-        <a class="btn btn--secundario btn--grande" href="{{BASE}}menu/">Ver el menú</a>
+        <a class="btn btn--claro btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+        <a class="btn btn--contorno-claro btn--grande" href="{{BASE}}menu/">Ver el menú</a>
       </div>
     </div>
 
-    <figure class="portada__foto foto">
-      {{foto:docena-pan-dulce.jpg|hero|Canasta de pan dulce recién horneado: conchas y cuernitos|alta}}
-    </figure>
+    <div class="portada__imagen">
+      <figure class="portada__foto foto">
+        {{foto:docena-pan-dulce.jpg|hero|Canasta de pan dulce recién horneado: conchas y cuernitos|alta}}
+      </figure>
+      <span class="sello" aria-hidden="true">Horneado<br>hoy</span>
+    </div>
   </div>
+</section>
+
+<!-- ===================== PROMESAS =====================
+     Lo que más calma el miedo a cotizar con alguien nuevo, a la vista. -->
+<section class="promesas" aria-label="Lo que prometemos">
+  <ul class="contenedor promesas__lista">
+    <li>{{ico:fuego}}<span><strong>Horneado el mismo día</strong> de tu evento</span></li>
+    <li>{{ico:reloj}}<span><strong>Cotización hoy</strong> por WhatsApp</span></li>
+    <li>{{ico:camion}}<span><strong>Entrega</strong> en {{COBERTURA_RESUMEN}}</span></li>
+  </ul>
 </section>
 
 <!-- ===================== CATEGORÍAS =====================
@@ -63,8 +76,23 @@
   </div>
 </section>
 
+<!-- ===================== BLOQUE DE FOTO =====================
+     Una frase y una foto grande: aquí se abre el apetito, antes de los productos. -->
+<section class="banda-foto" aria-labelledby="t-foto">
+  <div class="contenedor banda-foto__grid">
+    <div class="banda-foto__texto" data-reveal>
+      <h2 id="t-foto">Horneado esta mañana, en tu mesa a la hora.</h2>
+      <p>Tu pedido sale de nuestro horno el día del evento y llega a la hora que acordemos. Tú solo nos cuentas cuántos son.</p>
+      <a class="btn btn--oscuro btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+    </div>
+    <figure class="banda-foto__foto foto" data-reveal>
+      {{foto:canasta-regalo.jpg|ancha|Canasta de mimbre con pan artesanal y pan dulce recién horneado}}
+    </figure>
+  </div>
+</section>
+
 <!-- ===================== LO MÁS PEDIDO ===================== -->
-<section class="seccion seccion--sin-arriba" id="destacados" aria-labelledby="t-destacados">
+<section class="seccion" id="destacados" aria-labelledby="t-destacados">
   <div class="contenedor">
     <h2 id="t-destacados" class="titulo-seccion">Lo más pedido</h2>
     <div class="rejilla rejilla--4">
@@ -131,7 +159,7 @@
     <h2 id="t-cierre">¿Cuándo es tu actividad?</h2>
     <p>Contanos la fecha y cuántas personas son. Te respondemos hoy.</p>
     <div class="grupo-btn grupo-btn--centro">
-      <a class="btn btn--principal btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+      <a class="btn btn--claro btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
     </div>
     <p class="cierre__alt">¿Preferís un formulario? <a href="{{BASE}}encargos/#formulario">Cotizar con el formulario</a></p>
   </div>

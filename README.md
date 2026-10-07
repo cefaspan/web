@@ -136,9 +136,13 @@ ni su tipografía).
   `--corteza` #C2410C botones principales · `--corteza-oscura` #9A3412 título de portada y
   enlaces · `--carbon` #2A1A12 (café tostado) banda oscura, pie y títulos ·
   `--crema` #F2EEE8 lienzo · `--crema-2` #E9E3DA zonas de corte · `--masa` blanco, tarjetas.
-  El flotante de WhatsApp conserva el verde de la app porque es su icono.
-- **Ritmo del inicio**: portada crema → servicios en tarjetas blancas → «Cómo pedir» en banda
-  oscura → preguntas sobre `--crema-2` → cierre crema → pie oscuro.
+  El flotante de WhatsApp y la barra móvil usan el mismo terracota: un solo color de acción.
+- **Ritmo del inicio**: portada en bloque de color (foto a sangre + sello «Horneado hoy») →
+  tira de promesas (`--dorado-suave`) → fichas de categoría → servicios en tarjetas →
+  bloque de foto en `--dorado` → «Lo más pedido» (con etiqueta) → «Cómo pedir» en banda oscura →
+  5 preguntas sobre `--crema-2` → cierre en degradado de corteza → pie oscuro. Los bloques de
+  color llevan un grano sutil (SVG en `estilos.css`). «Mi cotización» es de contorno para que
+  el único botón sólido sea el de cotizar.
 - **Botones**: siempre en píldora; principal relleno, secundario con contorno del acento;
   en la banda oscura, blanco + contorno blanco. Al presionar, `scale(.95)`.
 - **Tarjetas**: blancas, 12 px de radio, sombras suaves en capas (nunca una sola pesada).

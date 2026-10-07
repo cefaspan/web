@@ -108,6 +108,7 @@ const ZONAS_TEXTO = N.cobertura.map((g) => {
 /* La FAQ ya resuelta, para que el texto visible y el JSON-LD digan lo mismo */
 const resolverFAQ = (lista) => (lista || []).map((f) => ({ p: f.p, r: f.r.replace(/\{zonas\}/g, ZONAS_TEXTO) }));
 const FAQ = resolverFAQ(CAT.faq);
+const FAQ_INICIO = FAQ.slice(0, 5);
 
 /* Foto de relleno mientras no haya fotos reales de cada producto.
    Poné el nombre del archivo en el campo "imagen" de datos/productos.json
@@ -309,12 +310,13 @@ function fichasCategorias() {
 /* Inicio: los destacados publicados, con «Agregar a mi cotización» a la vista */
 function destacados() {
   return todosLosProductos.filter((p) => p.destacado).slice(0, 4)
-    .map((p) => tarjetaProducto(p)).join('');
+    .map((p) => tarjetaProducto(p, { insignia: true })).join('');
 }
 
 function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
   const buscar = `${p.nombre} ${p.descripcion} ${p.categoria || ''}`;
   const etiquetas = [
+    insignia ? `<span class="etiqueta etiqueta--top">${ico('estrella')} Lo más pedido</span>` : '',
     p.encargo ? `<span class="etiqueta etiqueta--encargo">${ico('calendario')} Por encargo</span>` : '',
   ].filter(Boolean).join('');
 
@@ -552,7 +554,7 @@ function schemaServicioEncargos() {
 
 function schemasDe(pagina) {
   const lista = [schemaNegocio(), schemaSitio(), schemaMigas(pagina)];
-  if (pagina.nav === 'inicio') lista.push(schemaFAQ());
+  if (pagina.nav === 'inicio') lista.push(schemaFAQ(FAQ_INICIO));
   if (pagina.nav === 'menu') lista.push(schemaMenu());
   if (pagina.nav === 'encargos') lista.push(schemaServicioEncargos());
   if (pagina.servicio) {
@@ -686,7 +688,7 @@ function cabecera(pagina) {
       <button class="busqueda-btn" type="button" data-busqueda-abrir aria-label="Buscar productos" aria-expanded="false" aria-controls="busqueda">
         ${ico('lupa')}
       </button>
-      <button class="btn btn--oscuro carrito-btn" type="button" data-carrito-abrir aria-label="Mi cotización">
+      <button class="btn btn--secundario carrito-btn" type="button" data-carrito-abrir aria-label="Mi cotización">
         ${ico('canasta')}<span class="btn--texto-largo">Mi cotización</span>
         <span class="carrito-btn__contador" data-carrito-contador hidden>0</span>
       </button>
@@ -963,7 +965,7 @@ function sustituir(html, pagina) {
     PEDIDOSYA_BLOQUE: bloquePedidosYa(),
     CATEGORIAS_FICHAS: fichasCategorias(),
     DESTACADOS: destacados(),
-    FAQ: bloqueFAQ(),
+    FAQ: bloqueFAQ(FAQ_INICIO),
     ZONAS: bloqueZonas(),
     HORARIOS: bloqueHorarios(),
     OPCIONES_PRODUCTO: opcionesProducto(),

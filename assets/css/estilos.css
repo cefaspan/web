@@ -217,8 +217,8 @@ html.js [data-reveal].visible {
 @keyframes latir { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
 @keyframes girar { to { transform: rotate(1turn); } }
 @keyframes halo {
-  0%, 100% { box-shadow: var(--sombra-flotante), 0 0 0 0 rgba(30, 132, 80, .55); }
-  70% { box-shadow: var(--sombra-flotante), 0 0 0 14px rgba(30, 132, 80, 0); }
+  0%, 100% { box-shadow: var(--sombra-flotante), 0 0 0 0 rgba(194, 65, 12, .55); }
+  70% { box-shadow: var(--sombra-flotante), 0 0 0 14px rgba(194, 65, 12, 0); }
 }
 
 /* --- 4. Iconos y fotos --------------------------------------------------- */
@@ -485,6 +485,73 @@ a:hover > .ico--desliza { transform: translateX(4px); }
   .portada__foto { aspect-ratio: 16 / 10; }
 }
 
+/* Portada del inicio: bloque de color de marca, foto a sangre y un sello */
+.portada--color {
+  position: relative; overflow: hidden; padding: clamp(44px, 6.5vw, 92px) 0;
+  background: radial-gradient(circle at 78% 12%, rgba(244, 165, 116, .45), transparent 48%),
+    linear-gradient(135deg, var(--corteza-oscura) 0%, var(--corteza) 100%);
+  color: #fff;
+}
+.portada--color h1 { color: #fff; max-width: 14ch; }
+.portada--color .portada__marca { color: #fff; }
+.portada--color .portada__sub { color: rgba(255, 255, 255, .93); }
+.portada--color .portada__grid { grid-template-columns: 1fr; }
+.portada--color .portada__texto { max-width: min(560px, 50vw - 20px); position: relative; z-index: 1; }
+.portada--color .portada__imagen { position: absolute; top: 0; right: 0; bottom: 0; width: 44vw; }
+.portada--color .portada__foto {
+  position: absolute; inset: 0; aspect-ratio: auto; box-shadow: none;
+  border-radius: 40px 0 0 40px;
+}
+.sello {
+  position: absolute; left: -52px; bottom: clamp(36px, 8vw, 84px); z-index: 2;
+  display: grid; place-items: center; width: 112px; height: 112px; border-radius: 50%;
+  background: var(--dorado); color: var(--carbon); text-align: center; transform: rotate(-10deg);
+  font-family: var(--f-titulo); font-weight: 800; font-size: 1.12rem; line-height: 1.05;
+  box-shadow: 0 8px 20px -6px rgba(42, 26, 18, .5);
+}
+.sello::after {
+  content: ""; position: absolute; inset: 6px; border-radius: 50%;
+  border: 1.5px dashed rgba(42, 26, 18, .55);
+}
+@media (max-width: 900px) {
+  .portada--color { padding: 40px 0 0; }
+  .portada--color .portada__texto { max-width: none; }
+  .portada--color h1 { max-width: 16ch; }
+  .portada--color .portada__imagen { position: relative; width: auto; margin: 32px -20px 0; aspect-ratio: 4 / 3; }
+  .portada--color .portada__foto { border-radius: 0; }
+  .sello { left: auto; right: 16px; bottom: auto; top: -40px; width: 96px; height: 96px; font-size: .98rem; }
+}
+
+/* Promesas: tres garantías bajo la portada */
+.promesas { background: var(--dorado-suave); color: var(--carbon); }
+.promesas__lista {
+  list-style: none; margin-block: 0; padding-block: 18px;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 24px;
+}
+.promesas__lista li { display: flex; align-items: center; gap: 12px; font-size: .98rem; }
+.promesas__lista .ico { width: 1.7rem; height: 1.7rem; flex: none; color: var(--corteza-oscura); vertical-align: 0; }
+.promesas__lista strong { font-weight: 700; }
+@media (max-width: 760px) { .promesas__lista { grid-template-columns: 1fr; padding-block: 16px; } }
+.promesas + .fichas-categorias { padding-top: clamp(20px, 3vw, 32px); }
+
+/* Bloque de foto: color cálido, una frase y una foto grande */
+.banda-foto { background: var(--dorado); color: var(--carbon); padding: clamp(48px, 7vw, 96px) 0; }
+.banda-foto__grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 80px); align-items: center;
+}
+.banda-foto h2 { font-size: clamp(1.9rem, 3.8vw, 3rem); max-width: 16ch; margin-bottom: .45em; text-wrap: balance; }
+.banda-foto p { font-size: 1.1rem; max-width: 42ch; margin-bottom: 1.8em; color: var(--carbon); }
+.banda-foto__foto { aspect-ratio: 5 / 4; border-radius: 24px; box-shadow: 0 18px 40px -18px rgba(42, 26, 18, .55); }
+@media (max-width: 860px) { .banda-foto__grid { grid-template-columns: 1fr; } }
+
+/* Grano sutil en los bloques de color: les da cuerpo, como papel */
+.portada--color::before, .banda::before, .cierre::before, .banda-foto::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .09; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.banda, .banda-foto { position: relative; }
+
 .titulo-seccion { max-width: 30ch; margin-bottom: clamp(24px, 3.5vw, 40px); }
 .seccion--tono { background: var(--crema-2); }
 .banda { background: var(--carbon); color: rgba(255, 255, 255, .72); }
@@ -623,9 +690,14 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 .rejilla--4 { grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
 
 /* Cierre: una pregunta, un botón */
-.cierre { padding: clamp(64px, 9vw, 120px) 0; text-align: center; }
-.cierre h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); margin-bottom: .35em; }
-.cierre p { color: var(--tinta-suave); font-size: 1.1rem; }
+.cierre {
+  position: relative; padding: clamp(64px, 9vw, 120px) 0; text-align: center; color: #fff;
+  background: radial-gradient(circle at 15% 0%, rgba(244, 165, 116, .35), transparent 45%),
+    linear-gradient(135deg, var(--corteza-oscura), var(--corteza));
+}
+.cierre h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); margin-bottom: .35em; color: #fff; }
+.cierre p { color: rgba(255, 255, 255, .92); font-size: 1.1rem; }
+.cierre__alt a { color: #fff; }
 .cierre .grupo-btn { margin: 1.8em 0 1.2em; }
 .cierre__alt { font-size: .98rem; }
 
@@ -659,6 +731,7 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 .producto:hover { transform: translateY(-4px); box-shadow: var(--sombra-alta); border-color: #E2CDAE; }
 }
 .producto .foto { border-radius: 0; }
+.producto .foto--4-3 { aspect-ratio: 5 / 4; }
 @media (hover: hover) and (pointer: fine) {
 .producto:hover .foto img { transform: scale(1.06); }
 }
@@ -699,6 +772,7 @@ a:hover > .ico--desliza { transform: translateX(4px); }
 }
 .etiqueta .ico { width: .95rem; height: .95rem; vertical-align: 0; }
 .etiqueta--encargo { color: var(--corteza-oscura); }
+.etiqueta--top { background: var(--corteza); color: #fff; backdrop-filter: none; }
 
 /* --- 10. Menú: filtros, buscador y bloques ------------------------------- */
 .filtros {
@@ -1018,7 +1092,7 @@ html.js .linea-carrito--nueva { animation: surgir .25s var(--salida); }
   right: calc(18px + env(safe-area-inset-right, 0px));
   bottom: calc(18px + env(safe-area-inset-bottom, 0px));
   gap: 0; height: 58px; padding: 0 15px; border-radius: 999px;
-  background: linear-gradient(160deg, var(--verde-claro), var(--verde-oscuro)); color: #fff; text-decoration: none;
+  background: linear-gradient(160deg, var(--corteza), var(--corteza-oscura)); color: #fff; text-decoration: none;
   /* El halo pulsa tres veces y para: infinito repintaba box-shadow en cada
      frame, en todas las páginas, y competía con el botón de cotizar. */
   box-shadow: var(--sombra-flotante);
@@ -1063,7 +1137,7 @@ html.js .linea-carrito--nueva { animation: surgir .25s var(--salida); }
   .barra-app > :active { transform: scale(.95); }
   .barra-app .ico { width: 1.45rem; height: 1.45rem; vertical-align: 0; }
   .barra-app [aria-current="page"] { color: var(--corteza-oscura); }
-  .barra-app__wa .ico { color: var(--verde); }
+  .barra-app__wa .ico { color: var(--corteza); }
   .barra-app__ico { position: relative; display: inline-flex; }
   .barra-app__contador {
     position: absolute; top: -6px; right: -12px; min-width: 18px; height: 18px; padding: 0 4px;
