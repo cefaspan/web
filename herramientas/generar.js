@@ -318,9 +318,25 @@ function resenas() {
         <blockquote><p>${esc(r.texto)}</p></blockquote>
         <figcaption>
           <span class="resena__avatar" aria-hidden="true">${esc(r.nombre.charAt(0))}</span>
-          <span class="resena__quien"><strong>${esc(r.nombre)}</strong>${r.pidio ? `<span>Pidió: ${esc(r.pidio)}</span>` : '<span>Cliente de Cefas</span>'}</span>
-        </figcaption>
+          <span class="resena__quien"><strong>${esc(r.nombre)}</strong><span>${esc(r.detalle || 'Cliente de Cefas')}</span></span>
+        </figcaption>${pedidoDeResena(r)}
       </figure>`).join('');
+}
+
+/* Al tocar «Ver su pedido» se despliega lo que encargó, con foto: así la
+   reseña se conecta con productos concretos. <details> nativo, sin JS. */
+function pedidoDeResena(r) {
+  if (!r.pedido || !r.pedido.length) return '';
+  const items = r.pedido.map((p) => {
+    const chica = `${p.img}-400.jpg`;
+    const archivo = existeImg(chica) ? chica : `${p.img}.jpg`;
+    return `<li><img src="{{BASE}}assets/img/${archivo}" alt="" width="44" height="44" loading="lazy" decoding="async">${esc(p.nombre)}</li>`;
+  }).join('');
+  return `
+        <details class="resena__pedido">
+          <summary>Ver su pedido ${ico('chevron')}</summary>
+          <ul>${items}</ul>
+        </details>`;
 }
 
 function destacados() {
