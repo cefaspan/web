@@ -1,8 +1,8 @@
-<!-- ===================== SERVICIO: CABECERA =====================
-     Una página por servicio (datos/servicios.json). El H1 es la búsqueda
-     tal cual la escribe la gente; el resto responde a qué incluye, para
-     quién, cuánto antes y dónde, que es lo que decide la cotización. -->
-<section class="seccion seccion--corta">
+<!-- ===================== SERVICIO: PORTADA =====================
+     Una página por servicio (datos/servicios.json), con el mismo ritmo que
+     el inicio: crema → tarjetas → banda oscura → preguntas → cierre. El H1 es
+     la búsqueda tal cual la escribe la gente; el resto, corto y al grano. -->
+<section class="portada portada--servicio">
   <div class="contenedor">
     <nav class="migas" aria-label="Estás en">
       <a href="{{BASE}}index.html">Inicio</a> <span aria-hidden="true">›</span>
@@ -10,109 +10,112 @@
       <span aria-current="page">{{SERVICIO_NOMBRE}}</span>
     </nav>
 
-    <div class="dos-columnas">
-      <div class="dos-columnas__texto" data-reveal>
-        <span class="eyebrow eyebrow--ico">{{SERVICIO_ICONO}} {{SERVICIO_EYEBROW}}</span>
+    <div class="portada__grid">
+      <div class="portada__texto">
+        <p class="portada__marca">{{SERVICIO_EYEBROW}}</p>
         <h1>{{SERVICIO_H1}}</h1>
-        <p class="entradilla">{{SERVICIO_INTRO}}</p>
-
+        <p class="portada__sub">{{SERVICIO_INTRO}}</p>
         <div class="grupo-btn">
-          <a class="btn btn--wa btn--grande" href="{{SERVICIO_WA}}" rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
-          <a class="btn btn--secundario btn--grande" href="{{BASE}}encargos/#formulario">{{ico:calendario}} Cotizar con el formulario</a>
+          <a class="btn btn--principal btn--grande" href="{{SERVICIO_WA}}" rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+          <a class="btn btn--secundario btn--grande" href="#productos">Ver qué se pide</a>
         </div>
-
-        <p class="nota-suelta">
-          {{ico:camion}} Entregamos en {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}; fuera de ellas, el pedido se recoge.
-          Sin precios en la web: <strong>todo se cotiza</strong> según personas, fecha y zona.
-        </p>
       </div>
 
-      <div class="dos-columnas__medios" data-reveal>
-        <figure class="foto foto--4-3 foto--marco">
-          {{SERVICIO_FOTO}}
-        </figure>
-      </div>
+      <figure class="portada__foto foto">
+        {{SERVICIO_FOTO}}
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- ===================== DATOS RÁPIDOS ===================== -->
-<section class="confianza" aria-label="Datos del servicio">
-  <div class="contenedor confianza__grid confianza__grid--3">
-    {{SERVICIO_DATOS}}
+<!-- ===================== QUÉ INCLUYE ===================== -->
+<section class="seccion" aria-labelledby="t-incluye">
+  <div class="contenedor dos-bloques">
+    <div class="bloque-blanco">
+      <h2 id="t-incluye">Qué incluye</h2>
+      <ul class="lista-ico">
+        {{SERVICIO_INCLUYE}}
+      </ul>
+    </div>
+    <div class="dos-bloques__lado">
+      <h2>Ideal para</h2>
+      <p>{{SERVICIO_PARA_QUIEN}}</p>
+      {{SERVICIO_CALCULADORA}}
+    </div>
   </div>
 </section>
 
-<!-- ===================== QUÉ INCLUYE Y PARA QUIÉN ===================== -->
-<section class="seccion" aria-labelledby="t-incluye">
-  <div class="contenedor">
-    <div class="rejilla rejilla--2">
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:check:ico--l}}</span>
-        <h2 id="t-incluye">Qué incluye</h2>
-        <ul class="lista-ico">
-          {{SERVICIO_INCLUYE}}
-        </ul>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:usuarios:ico--l}}</span>
-        <h2>Para qué actividades</h2>
-        <p>{{SERVICIO_PARA_QUIEN}}</p>
-        <p class="tarjeta-info__nota">
-          ¿No sabés cuánto pedir? <a href="{{BASE}}cuanto-pan/">Calculá cuánto pan necesitás {{ico:flecha:ico--desliza}}</a>
-        </p>
+<!-- ===================== CÓMO PEDIR (banda oscura) ===================== -->
+<section class="seccion banda" aria-labelledby="t-como">
+  <div class="contenedor como">
+    <div class="como__intro">
+      <h2 id="t-como" class="titulo-seccion">Cómo pedir</h2>
+      <dl class="datos-clave">
+        {{SERVICIO_DATOS}}
+        <div class="dato"><dt>con entrega en {{COBERTURA_RESUMEN}}</dt><dd>{{TOTAL_ZONAS}} zonas</dd></div>
+      </dl>
+    </div>
+
+    <div>
+      <ol class="como__pasos">
+        <li>
+          <h3>Contanos qué necesitás y para cuándo</h3>
+          <p>Por WhatsApp o con el formulario.</p>
+        </li>
+        <li>
+          <h3>Te cotizamos el mismo día</h3>
+          <p>Con el envío incluido. Todo se cotiza según personas, fecha y zona.</p>
+        </li>
+        <li>
+          <h3>Lo horneamos y lo llevamos</h3>
+          <p>Sale de nuestro horno para tu fecha. Fuera de las zonas de entrega, se recoge.</p>
+        </li>
+      </ol>
+      <div class="grupo-btn">
+        <a class="btn btn--claro" href="{{SERVICIO_WA}}" rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+        <a class="btn btn--contorno-claro" href="{{BASE}}encargos/#formulario">Usar el formulario</a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===================== PRODUCTOS DEL SERVICIO ===================== -->
-<section class="seccion seccion--crema" aria-labelledby="t-productos">
+<section class="seccion" id="productos" aria-labelledby="t-productos">
   <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:canasta}} Del menú</span>
-      <h2 id="t-productos">Lo que se pide para este servicio</h2>
-      <p class="entradilla">
-        Tocá <strong>Agregar a mi cotización</strong>, ajustá las cantidades y enviala por WhatsApp
-        en un clic. Te respondemos con la cotización y la hora de entrega.
-      </p>
-    </div>
+    <h2 id="t-productos" class="titulo-seccion">Lo que se pide para {{SERVICIO_NOMBRE_MIN}}</h2>
+    <p class="entradilla entradilla--corta">Agregalo a tu cotización y enviala por WhatsApp en un clic.</p>
 
     <div class="rejilla rejilla--3">
       {{SERVICIO_PRODUCTOS}}
     </div>
 
-    <div class="grupo-btn grupo-btn--suelto" data-reveal>
-      <a class="btn btn--secundario" href="{{BASE}}menu/">Ver el menú completo {{ico:flecha:ico--desliza}}</a>
-    </div>
+    <p class="enlaces-suaves">
+      <a href="{{BASE}}menu/">Ver el menú completo {{ico:flecha:ico--desliza}}</a>
+    </p>
   </div>
 </section>
 
-<!-- ===================== FAQ DEL SERVICIO ===================== -->
-<section class="seccion" aria-labelledby="t-faq">
-  <div class="contenedor">
-    <div class="cabecera-seccion centro" data-reveal>
-      <span class="eyebrow">Antes de cotizar</span>
-      <h2 id="t-faq">Preguntas sobre {{SERVICIO_NOMBRE_MIN}}</h2>
+<!-- ===================== PREGUNTAS ===================== -->
+<section class="seccion seccion--tono" aria-labelledby="t-faq">
+  <div class="contenedor preguntas">
+    <div class="preguntas__intro">
+      <h2 id="t-faq" class="titulo-seccion">Preguntas sobre {{SERVICIO_NOMBRE_MIN}}</h2>
+      <p>¿Otra duda? <a href="{{SERVICIO_WA}}" rel="noopener">Escribinos por WhatsApp</a>.</p>
     </div>
-
     <div class="faq">
       {{SERVICIO_FAQ}}
     </div>
   </div>
 </section>
 
-<!-- ===================== CTA ===================== -->
-<section class="seccion seccion--crema">
-  <div class="contenedor">
-    <div class="cta-final" data-reveal>
-      <span class="cta-final__ico" aria-hidden="true">{{ico:chat:ico--xl}}</span>
-      <h2>Contanos fecha, hora y cuántas personas</h2>
-      <p>Con eso te mandamos la cotización el mismo día. Horneamos para tu fecha, no antes.</p>
-      <div class="grupo-btn grupo-btn--centro">
-        <a class="btn btn--wa btn--grande" href="{{SERVICIO_WA}}" rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
-        <a class="btn btn--secundario btn--grande" href="{{BASE}}encargos/#formulario">{{ico:calendario}} Usar el formulario</a>
-      </div>
+<!-- ===================== CIERRE ===================== -->
+<section class="cierre" aria-labelledby="t-cierre">
+  <div class="contenedor cierre__caja">
+    <h2 id="t-cierre">¿Para cuándo lo necesitás?</h2>
+    <p>Contanos la fecha y cuántas personas son. Te respondemos hoy.</p>
+    <div class="grupo-btn grupo-btn--centro">
+      <a class="btn btn--principal btn--grande" href="{{SERVICIO_WA}}" rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
     </div>
+    <p class="cierre__alt">¿Preferís un formulario? <a href="{{BASE}}encargos/#formulario">Cotizar con el formulario</a></p>
   </div>
 </section>

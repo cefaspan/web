@@ -82,26 +82,60 @@ fuera de la lista, la alternativa que ofrece el sitio es recoger en la panaderí
 
 ## El sitio está armado para vender
 
-El orden del inicio es un embudo, no un folleto: primero para qué sirve y el botón de cotizar,
-la historia del negocio al final.
+El inicio dice una sola cosa por bloque y cada dato de compra **una sola vez**. Antes eran
+11 secciones con el mínimo, las 24 h y las zonas repetidos en cuatro sitios, y quien entraba
+no sabía qué era la página. Ahora son cinco:
 
-1. Hero con la ocasión (eventos, oficinas, actividades) y dos botones de cotización.
-2. Barra de datos de compra (mínimo, 1 clic, anticipación, zonas).
-3. **Para qué ocasión**: las seis situaciones que se venden.
-4. **Lo más pedido**, con `Agregar a mi cotización` a la vista.
-5. **Docenas, paquetes y bandejas**, ordenadas de la presentación más chica a la más grande.
-6. Desvío a PedidosYa → 7. Cómo cotizar → 8. Cobertura → 9. Preguntas.
-10. Quiénes horneamos (corto) → 11. Cierre con los dos botones.
+1. **Portada**: marca, qué es (`Pan y bocadillos para tus eventos`), una frase y un solo botón
+   principal (`Cotizar por WhatsApp`) más `Ver el menú`.
+2. **Lo que preparamos**: los cuatro servicios en mosaico de fotos, cada uno enlazado a su página.
+3. **Cómo pedir**: mínimo, anticipación y zonas, y los tres pasos.
+4. **Preguntas frecuentes** (son las que alimentan el JSON-LD `FAQPage`: no quitarlas).
+5. **Cierre**: una pregunta y el mismo botón.
+
+Los productos, la lista de zonas y el desvío a PedidosYa viven en el menú y en contacto, no
+en el inicio. Si se agrega algo al inicio, que sea reemplazando, no sumando.
+
+Las demás páginas siguen el mismo patrón (portada → bloque principal → banda oscura con
+datos y pasos → preguntas → cierre con un botón):
+
+- **Servicios** (`plantillas/servicio.html`): qué incluye + ideal para → «Cómo pedir» con los
+  `datos` del servicio → productos → preguntas. Un servicio con `"calculadora": false` en
+  `servicios.json` no muestra el enlace a la calculadora (es por persona: no aplica al mayoreo).
+- **Encargos**: el formulario va justo debajo de la portada; plazos y pasos en la banda.
+- **Menú**: portada corta con el buscador; el desvío a PedidosYa va **al final**, para no
+  mandar a la gente afuera antes de que vea el menú.
+- **Contacto**: datos, horarios y formas de pedir en tres tarjetas; recogida y envío en la
+  banda; zonas. No invita a «pasar por la panadería»: es una cocina de producción.
+- **Calculadora**: el formulario arriba, las reglas en una tarjeta, preguntas.
 
 Piezas de conversión que conviene no quitar:
 
-- **Contador en cada tarjeta**: al agregar, el botón se convierte en `− 2 +`. Lo crea
-  `app.js` al vuelo (son 50 tarjetas: mandarlo en el HTML sumaba ~20 KB por página).
+- **Contador en cada tarjeta** (menú y servicios): al agregar, el botón se convierte en
+  `− 2 +`. Lo crea `app.js` al vuelo (son 50 tarjetas: mandarlo en el HTML sumaba ~20 KB).
 - **Total en el botón de la cabecera** y **barra fija de pedido en móvil** con el total y
   "Ver mi pedido".
-- **Sección de paquetes**: entra ahí todo producto cuya `unidad` declara varias piezas
-  (`docena` = 12, `paquete de 6` = 6, `bandeja 50 piezas` = 50), ordenado por número de
-  piezas. Si `unidad` no dice piezas, el producto no aparece en esa sección.
+
+### Estilo visual
+
+Estructura de cafetería tomada como referencia del `DESIGN.md` de Starbucks en
+[awesome-design-md](https://github.com/VoltAgent/awesome-design-md): se copió el sistema
+(papeles de cada color, ritmo de bloques, botones, sombras), no la identidad (ni su verde,
+ni su tipografía).
+
+- **Tonos de corteza, cada uno con un papel** (tokens en `estilos.css`):
+  `--corteza` #C2410C botones principales · `--corteza-oscura` #9A3412 título de portada y
+  enlaces · `--carbon` #2A1A12 (café tostado) banda oscura, pie y títulos ·
+  `--crema` #F2EEE8 lienzo · `--crema-2` #E9E3DA zonas de corte · `--masa` blanco, tarjetas.
+  El flotante de WhatsApp conserva el verde de la app porque es su icono.
+- **Ritmo del inicio**: portada crema → servicios en tarjetas blancas → «Cómo pedir» en banda
+  oscura → preguntas sobre `--crema-2` → cierre crema → pie oscuro.
+- **Botones**: siempre en píldora; principal relleno, secundario con contorno del acento;
+  en la banda oscura, blanco + contorno blanco. Al presionar, `scale(.95)`.
+- **Tarjetas**: blancas, 12 px de radio, sombras suaves en capas (nunca una sola pesada).
+- **Tipografía**: Bricolage Grotesque para títulos, Inter para texto; la jerarquía va por
+  peso y color, no sólo por tamaño.
+- **Sin etiquetas en mayúsculas** sobre cada título.
 
 > No hay reseñas, estrellas ni "clientes satisfechos" en el sitio. Poner testimonios
 > inventados es lo que más rápido quema la confianza (y Google penaliza el marcado de
@@ -238,7 +272,7 @@ Campos de un producto:
   "unidad": "unidad",           // si dice piezas ("docena", "paquete de 6",
                                 // "bandeja 50 piezas") entra en la sección
                                 // de paquetes del inicio, ordenada por piezas
-  "destacado": true,            // aparece en "Lo más pedido" del inicio
+  "destacado": true,            // marca el producto como destacado
   "encargo": true,              // muestra la etiqueta "Por encargo"
   "minorista": true,            // NO se publica: se vende por pieza en PedidosYa
   "imagen": "pan-frances.jpg"   // opcional: archivo dentro de assets/img/
@@ -298,7 +332,7 @@ plantillas/     contenido de cada página con {{VARIABLES}}, {{ico:…}} y {{fot
 herramientas/   generar.js, verificar.js, iconos.js, optimizar-imagenes.js
 assets/css/     estilos.css  (incluye las @font-face de las tipografías propias)
 assets/js/      app.js
-assets/fonts/   fraunces-*.woff2, inter-*.woff2   ← autohospedadas
+assets/fonts/   bricolage-*.woff2, inter-*.woff2   ← autohospedadas
 assets/img/     logo-cefas.png, og-cefas.jpg, fotos + variantes -400 y .webp
 .github/workflows/verificar.yml   ← regenera y compara en cada push
 index.html  menu/  encargos/  contacto/  404.html   ← GENERADOS
@@ -438,7 +472,7 @@ Cuando quieras analítica, agregá el script de Google Analytics 4 o Plausible e
   `decoding="async"` y `width`/`height` en todas, para que no haya salto de layout. La foto del
   hero va con `fetchpriority="high"` y un `preload` que apunta a la variante que el navegador
   va a elegir de verdad, no al original.
-- **Tipografías**: Fraunces e Inter autohospedadas en `assets/fonts/`. Son fuentes variables,
+- **Tipografías**: Bricolage Grotesque e Inter autohospedadas en `assets/fonts/`. Son fuentes variables,
   así que un solo `.woff2` por subconjunto cubre todos los pesos (`font-weight: 400 700`). Se
   precargan los dos subconjuntos latinos; el `latin-ext` sólo se baja si aparece un carácter
   que lo necesite. Para actualizarlas, bajá de nuevo los `.woff2` de Google Fonts

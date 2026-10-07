@@ -11,7 +11,7 @@
   "email": "correocefas.panaderia@gmail.com",
   "rangoPrecios": "Q100 - Q300",
   "direccion": {
-    "calle": "Zona 6, Ciudad de Guatemala (dark kitchen)",
+    "calle": "Zona 6, Ciudad de Guatemala",
     "zona": "",
     "ciudad": "Ciudad de Guatemala",
     "departamento": "Guatemala",
@@ -38,7 +38,7 @@
 
   "_notaCobertura": "Solo se entrega en las zonas listadas aca. Todo lo que se agregue se publica como promesa de entrega en la pagina y en el areaServed de los datos estructurados, asi que no agregues una zona a la que no se llega. Cada municipio va en su propio grupo: el nombre del municipio se usa tal cual en los datos estructurados.",
   "entregaSolo": "Entregamos solo en las zonas de esta lista",
-  "coberturaResumen": "Ciudad de Guatemala y San Cristóbal",
+  "coberturaResumen": "Ciudad de Guatemala y Mixco",
   "cobertura": [
     {
       "municipio": "Ciudad de Guatemala",
