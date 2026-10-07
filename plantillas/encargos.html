@@ -1,121 +1,42 @@
-<div class="contenedor">
-  <nav class="migas" aria-label="Ruta de navegación">
-    <ol>
-      <li><a href="{{BASE}}index.html">Inicio</a></li>
-      <li>Encargos</li>
-    </ol>
-  </nav>
-</div>
-
-<section class="seccion seccion--corta">
+<!-- ===================== ENCARGOS: PORTADA =====================
+     Esta página existe para el formulario: va justo debajo de la portada.
+     Pasos y plazos, una sola vez, en la banda oscura. -->
+<section class="portada portada--servicio">
   <div class="contenedor">
-    <div class="dos-columnas">
-      <div class="dos-columnas__texto" data-reveal>
-        <span class="eyebrow eyebrow--ico">{{ico:pin}} {{COBERTURA_RESUMEN}}</span>
+    <nav class="migas" aria-label="Estás en">
+      <a href="{{BASE}}index.html">Inicio</a> <span aria-hidden="true">›</span>
+      <span aria-current="page">Encargos</span>
+    </nav>
+
+    <div class="portada__grid">
+      <div class="portada__texto">
+        <p class="portada__marca">Encargos · {{COBERTURA_RESUMEN}}</p>
         <h1>Cotizá el pan de tu evento o actividad</h1>
-        <p class="entradilla">
-          Contanos la fecha, cuántas personas y qué necesitás. Lo horneamos ese día y te lo
-          entregamos en tu oficina, salón o evento a la hora que lo pidas. Cotización el mismo
-          día por WhatsApp.
+        <p class="portada__sub">
+          Llená el formulario y se abre WhatsApp con tu pedido ya escrito. Te cotizamos el mismo día.
         </p>
         <div class="grupo-btn">
           <a class="btn btn--principal btn--grande" href="#formulario">{{ico:calendario}} Llenar el formulario</a>
-          <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20un%20encargo." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+          <a class="btn btn--secundario btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20un%20encargo." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
         </div>
       </div>
 
-      <div class="dos-columnas__medios" data-reveal>
-        <figure class="foto foto--4-3 foto--marco">
-          {{foto:pan-img-generico.jpg|ancha|Pan de Cefas Panadería listo para entregar}}
-        </figure>
-        <div class="dato-flotante">
-          <span class="dato-flotante__ico" aria-hidden="true">{{ico:reloj}}</span>
-          <span><strong>{{ANTICIPACION}} horas</strong>de anticipación mínima</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== CÓMO FUNCIONA ===================== -->
-<section class="seccion seccion--oscura" aria-labelledby="t-pasos">
-  <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <h2 id="t-pasos">Cómo funciona un encargo</h2>
-    </div>
-    <ol class="pasos">
-      <li data-reveal>
-        <span class="pasos__ico" aria-hidden="true">{{ico:chat}}</span>
-        <h3>Contanos qué necesitás</h3>
-        <p>Llená el formulario de abajo o mandanos un WhatsApp con el producto, la cantidad y la fecha.</p>
-      </li>
-      <li data-reveal>
-        <span class="pasos__ico" aria-hidden="true">{{ico:check}}</span>
-        <h3>Te confirmamos el pedido</h3>
-        <p>Revisamos disponibilidad y te pasamos la cotización, el tiempo de entrega y la forma de pago.</p>
-      </li>
-      <li data-reveal>
-        <span class="pasos__ico" aria-hidden="true">{{ico:calendario}}</span>
-        <h3>Agendamos la fecha</h3>
-        <p>En pedidos para eventos podemos solicitar un anticipo para reservar el día de entrega.</p>
-      </li>
-      <li data-reveal>
-        <span class="pasos__ico" aria-hidden="true">{{ico:camion}}</span>
-        <h3>Horneamos y entregamos</h3>
-        <p>Preparamos todo el mismo día. Pasás a recogerlo o te lo llevamos a tu dirección.</p>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- ===================== TIEMPOS ===================== -->
-<section class="seccion" aria-labelledby="t-tiempos">
-  <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:reloj}} Planificá con tiempo</span>
-      <h2 id="t-tiempos">Con cuánta anticipación pedir</h2>
-      <p class="entradilla">
-        Todo se hornea fresco, así que necesitamos tiempo de preparación. Estos son nuestros
-        tiempos habituales.
-      </p>
-    </div>
-
-    <div class="rejilla rejilla--3">
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:croissant:ico--l}}</span>
-        <h3>Pan dulce y salado</h3>
-        <p class="tarjeta-info__plazo">Desde {{ANTICIPACION}} horas</p>
-        <p>
-          Docenas de pan francés y pan dulce, panes artesanales, donas y panes decorados.
-          Para cantidades pequeñas muchas veces podemos el mismo día: preguntanos.
-        </p>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:usuarios:ico--l}}</span>
-        <h3>Eventos y empresas</h3>
-        <p class="tarjeta-info__plazo">De 3 a 5 días</p>
-        <p>
-          Coffee breaks, cajas de desayuno y bandejas de bocadillos.
-          Para pedidos recurrentes armamos un calendario de entregas.
-        </p>
-      </div>
+      <figure class="portada__foto foto">
+        {{foto:bandeja-bocadillos.jpg|hero|Bandeja de bocadillos salados lista para entregar|alta}}
+      </figure>
     </div>
   </div>
 </section>
 
 <!-- ===================== FORMULARIO ===================== -->
-<section class="seccion seccion--crema" id="formulario" aria-labelledby="t-form">
+<section class="seccion seccion--tono" id="formulario" aria-labelledby="t-form">
   <div class="contenedor contenedor--angosto">
-    <div class="cabecera-seccion centro" data-reveal>
-      <span class="chapa chapa--centro" aria-hidden="true">{{ico:calendario:ico--l}}</span>
-      <h2 id="t-form">Contanos tu pedido</h2>
-      <p class="entradilla">
-        Al enviar se abre WhatsApp con todo el detalle ya escrito. Si ya armaste una canasta en el
-        menú, también se incluye automáticamente.
-      </p>
-    </div>
+    <h2 id="t-form" class="titulo-seccion titulo-seccion--centro">Contanos tu pedido</h2>
+    <p class="entradilla entradilla--centro">
+      Si armaste una cotización en el menú, va incluida en el mensaje.
+    </p>
 
-    <form class="formulario" data-form-encargo novalidate data-reveal>
+    <form class="formulario" data-form-encargo novalidate>
       <div class="campos">
         <div class="campo">
           <label for="nombre">Tu nombre</label>
@@ -159,7 +80,7 @@
         <div class="campo">
           <label for="entrega">¿Cómo lo querés recibir?</label>
           <select id="entrega" name="entrega" required>
-            <option value="Recojo en la panadería">Recojo en la panadería</option>
+            <option value="Recojo con hora agendada">Recojo con hora agendada</option>
             <option value="Entrega a domicilio">Entrega a domicilio</option>
           </select>
         </div>
@@ -204,63 +125,56 @@
   </div>
 </section>
 
-<!-- ===================== EVENTOS ===================== -->
-<section class="seccion" id="eventos" aria-labelledby="t-eventos">
+<!-- ===================== CÓMO FUNCIONA (banda oscura) ===================== -->
+<section class="seccion banda" aria-labelledby="t-pasos">
+  <div class="contenedor como">
+    <div class="como__intro">
+      <h2 id="t-pasos" class="titulo-seccion">Cómo funciona un encargo</h2>
+      <dl class="datos-clave">
+        <div class="dato"><dt>para docenas, paquetes y bandejas</dt><dd>Desde {{ANTICIPACION}} horas</dd></div>
+        <div class="dato"><dt>para coffee breaks, cajas y eventos con montaje</dt><dd>3 a 5 días</dd></div>
+      </dl>
+    </div>
+
+    <ol class="como__pasos">
+      <li>
+        <h3>Nos contás qué necesitás</h3>
+        <p>Con el formulario o por WhatsApp: producto, cantidad y fecha.</p>
+      </li>
+      <li>
+        <h3>Te confirmamos la cotización</h3>
+        <p>Con el envío y la forma de pago. En eventos podemos pedir un anticipo para reservar el día.</p>
+      </li>
+      <li>
+        <h3>Horneamos y entregamos</h3>
+        <p>Todo sale del horno ese día. Te lo llevamos o pasás a recogerlo.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== POR SERVICIO ===================== -->
+<section class="seccion" aria-labelledby="t-servicios">
   <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:usuarios}} Eventos y empresas</span>
-      <h2 id="t-eventos">Pedidos grandes con entrega programada</h2>
-      <p class="entradilla">
-        Si organizás una capacitación, una reunión mensual o una celebración, podemos encargarnos
-        del pan y los bocadillos de principio a fin.
-      </p>
-    </div>
-
-    <div class="rejilla rejilla--3">
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:cafe:ico--l}}</span>
-        <h3>Oficinas y capacitaciones</h3>
-        <ul class="lista-ico">
-          <li>{{ico:check}} <span>Cajas de desayuno individuales</span></li>
-          <li>{{ico:check}} <span>Coffee break con café y bocadillos</span></li>
-          <li>{{ico:check}} <span>Entrega en la hora que necesités</span></li>
-          <li>{{ico:check}} <span>Factura y pedidos recurrentes</span></li>
-        </ul>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:bolsa:ico--l}}</span>
-        <h3>Negocios y mayoreo</h3>
-        <ul class="lista-ico">
-          <li>{{ico:check}} <span>Tiendas, cafeterías, hoteles y restaurantes</span></li>
-          <li>{{ico:check}} <span>Condiciones especiales por volumen</span></li>
-          <li>{{ico:check}} <span>Calendario fijo de entregas</span></li>
-          <li>{{ico:check}} <span>Producto horneado el mismo día</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <p class="nota-suelta" data-reveal>
-      Cada servicio con su detalle:
-      <a href="{{BASE}}coffee-break/">coffee break</a> ·
-      <a href="{{BASE}}cajas-de-desayuno/">cajas de desayuno</a> ·
-      <a href="{{BASE}}bandejas-de-bocadillos/">bandejas de bocadillos</a> ·
-      <a href="{{BASE}}pan-al-mayoreo/">pan al mayoreo</a>.
-      ¿No sabés cuánto pedir? <a href="{{BASE}}cuanto-pan/">Calculá cuánto pan necesitás</a>.
+    <h2 id="t-servicios" class="titulo-seccion">¿Es para un evento o un negocio?</h2>
+    <p class="enlaces-suaves enlaces-suaves--fichas">
+      <a href="{{BASE}}coffee-break/">Coffee break {{ico:flecha:ico--desliza}}</a>
+      <a href="{{BASE}}cajas-de-desayuno/">Cajas de desayuno {{ico:flecha:ico--desliza}}</a>
+      <a href="{{BASE}}bandejas-de-bocadillos/">Bandejas de bocadillos {{ico:flecha:ico--desliza}}</a>
+      <a href="{{BASE}}pan-al-mayoreo/">Pan al mayoreo {{ico:flecha:ico--desliza}}</a>
+      <a href="{{BASE}}cuanto-pan/">¿Cuánto pan necesito? {{ico:flecha:ico--desliza}}</a>
     </p>
   </div>
 </section>
 
-<!-- ===================== CTA ===================== -->
-<section class="seccion seccion--crema">
-  <div class="contenedor">
-    <div class="cta-final" data-reveal>
-      <span class="cta-final__ico" aria-hidden="true">{{ico:chat:ico--xl}}</span>
-      <h2>¿Preferís hablarlo directo?</h2>
-      <p>Escribinos por WhatsApp o llamanos y armamos tu encargo juntos.</p>
-      <div class="grupo-btn grupo-btn--centro">
-        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20un%20encargo." rel="noopener">{{ico:whatsapp}} Escribir por WhatsApp</a>
-        <a class="btn btn--claro btn--grande" href="tel:{{TELEFONO_E164}}">{{ico:telefono}} Llamar al {{TELEFONO}}</a>
-      </div>
+<!-- ===================== CIERRE ===================== -->
+<section class="cierre" aria-labelledby="t-cierre">
+  <div class="contenedor cierre__caja">
+    <h2 id="t-cierre">¿Preferís hablarlo directo?</h2>
+    <p>Escribinos o llamanos y armamos tu encargo juntos.</p>
+    <div class="grupo-btn grupo-btn--centro">
+      <a class="btn btn--claro btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20un%20encargo." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
     </div>
+    <p class="cierre__alt">O llamanos al <a href="tel:{{TELEFONO_E164}}">{{TELEFONO}}</a></p>
   </div>
 </section>

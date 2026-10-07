@@ -11,7 +11,7 @@
       "icono": "cafe",
       "imagen": "coffee-break.jpg",
       "alt": "Coffee break de Cefas Panadería con pan dulce, bocadillos y café",
-      "intro": "Pan dulce surtido, bocadillos salados, café y agua, servidos a la hora exacta en tu oficina, salón o centro de capacitación. Vos nos decís cuántas personas son y a qué hora arranca el receso; nosotros horneamos ese mismo día y lo dejamos montado.",
+      "intro": "Pan dulce, bocadillos salados, café y agua, horneados ese día y montados a la hora de tu receso.",
       "incluye": [
         "Pan dulce surtido horneado el mismo día",
         "Bocadillos salados: mini sándwiches, enrollados y empanaditas",
@@ -23,7 +23,7 @@
         { "icono": "reloj", "valor": "3 a 5 días", "etiqueta": "de anticipación" },
         { "icono": "camion", "valor": "A la hora", "etiqueta": "montado donde sea el receso" }
       ],
-      "paraQuien": "Capacitaciones, juntas de dirección, talleres, lanzamientos, reuniones mensuales de equipo y convivios de oficina. También colegios, iglesias y actividades comunitarias que necesitan una refacción bien servida.",
+      "paraQuien": "Capacitaciones, juntas, talleres, lanzamientos y convivios de oficina. También colegios e iglesias.",
       "productos": ["coffee-break", "bandeja-bocadillos", "docena-pan-dulce"],
       "faq": [
         { "p": "¿Cuántos bocadillos por persona calculan para un coffee break?", "r": "Para un receso de media mañana o media tarde calculamos 3 a 4 bocadillos salados y 2 piezas de pan dulce por persona. Si el coffee break sustituye una comida, subimos a 5 o 6 bocadillos. En la cotización te proponemos la cantidad y la ajustamos a tu grupo." },
@@ -43,7 +43,7 @@
       "icono": "caja",
       "imagen": "caja-desayuno.jpg",
       "alt": "Caja de desayuno individual de Cefas Panadería",
-      "intro": "Una caja por persona, con pan dulce, croissant, jugo y café, lista para repartir en cada escritorio o en la entrada del evento. Es la opción más ordenada cuando el grupo no come al mismo tiempo o cada quien está en su puesto.",
+      "intro": "Una caja por persona con pan dulce, croissant, jugo y café, lista para repartir en cada escritorio.",
       "incluye": [
         "Pan dulce y croissant horneados ese día",
         "Jugo y café por persona",
@@ -55,7 +55,7 @@
         { "icono": "reloj", "valor": "3 a 5 días", "etiqueta": "de anticipación" },
         { "icono": "usuarios", "valor": "Una por persona", "etiqueta": "sin filas ni bandejas" }
       ],
-      "paraQuien": "Desayunos de trabajo, arranques de jornada, capacitaciones de mañana, brigadas, colegios y eventos donde cada asistente recibe lo suyo sin hacer fila.",
+      "paraQuien": "Desayunos de trabajo, capacitaciones de mañana, brigadas, colegios y eventos sin filas.",
       "productos": ["caja-desayuno", "docena-pan-dulce", "pan-frances-docena"],
       "faq": [
         { "p": "¿Cuál es el mínimo de cajas de desayuno?", "r": "Diez cajas por pedido. Para grupos más chicos, las docenas de pan dulce y de pan francés del menú no tienen mínimo." },
@@ -74,7 +74,7 @@
       "icono": "usuarios",
       "imagen": "bandeja-bocadillos.jpg",
       "alt": "Bandeja de bocadillos salados surtidos de Cefas Panadería",
-      "intro": "Bandejas de 50 bocadillos surtidos y docenas de pan dulce para poner en la mesa y que cada quien se sirva. Es lo que se lleva para cumpleaños, graduaciones, bautizos, convivios y cualquier actividad donde la comida se comparte.",
+      "intro": "Bandejas de 50 bocadillos surtidos y docenas de pan dulce para poner en la mesa y compartir.",
       "incluye": [
         "Bandeja de 50 bocadillos surtidos: mini sándwiches, enrollados y empanaditas",
         "Docena surtida de pan dulce: champurradas, cubiletes, magdalenas y conchas",
@@ -86,7 +86,7 @@
         { "icono": "reloj", "valor": "24 horas", "etiqueta": "de anticipación" },
         { "icono": "check", "valor": "Del día", "etiqueta": "horneado para tu fecha" }
       ],
-      "paraQuien": "Celebraciones familiares, graduaciones, bautizos, cumpleaños de oficina, reuniones de iglesia, kermeses y actividades de colegio.",
+      "paraQuien": "Cumpleaños, graduaciones, bautizos, convivios, reuniones de iglesia y actividades de colegio.",
       "productos": ["bandeja-bocadillos", "docena-pan-dulce", "pan-de-hamburguesa", "pan-de-hot-dog"],
       "faq": [
         { "p": "¿Cuántas bandejas necesito para 50 personas?", "r": "Si los bocadillos acompañan, una bandeja de 50 rinde para 12 a 15 personas (3 a 4 por persona): para 50 personas calculá 4 bandejas. Si son lo principal, 6. La calculadora de la web te lo saca al momento con tu número exacto." },
@@ -97,6 +97,7 @@
     },
     {
       "id": "pan-al-mayoreo",
+      "calculadora": false,
       "nombre": "Pan al mayoreo",
       "titulo": "Pan al mayoreo para negocios | Cefas Panadería Guatemala",
       "descripcion": "Pan francés y pan dulce al mayoreo para tiendas, cafeterías, hoteles y restaurantes en Ciudad de Guatemala, con entrega programada y calendario fijo.",
@@ -105,7 +106,7 @@
       "icono": "bolsa",
       "imagen": "pan-mayoreo.jpg",
       "alt": "Pan francés al mayoreo de Cefas Panadería listo para entregar",
-      "intro": "Abastecemos negocios con pan horneado el mismo día, en un calendario fijo de entregas que se ajusta a tu venta. Sin intermediarios: horno propio en la zona 6 y condiciones por volumen que se definen una vez y se respetan.",
+      "intro": "Pan horneado el mismo día para tu negocio, con entregas en un calendario fijo y condiciones por volumen.",
       "incluye": [
         "Pan francés, pan dulce tradicional y pan para hamburguesa y hot dog",
         "Calendario fijo de entregas: los días y la hora que vende tu negocio",
@@ -117,7 +118,7 @@
         { "icono": "calendario", "valor": "Calendario fijo", "etiqueta": "de entregas" },
         { "icono": "check", "valor": "Factura", "etiqueta": "en cada entrega" }
       ],
-      "paraQuien": "Tiendas de barrio, cafeterías, hoteles, restaurantes, comedores de empresa, colegios y cualquier negocio que venda o sirva pan a diario.",
+      "paraQuien": "Tiendas, cafeterías, hoteles, restaurantes, comedores de empresa y colegios.",
       "productos": ["pan-mayoreo", "pan-frances-docena", "pan-de-hamburguesa", "pan-de-hot-dog"],
       "faq": [
         { "p": "¿Cuál es el mínimo para mayoreo?", "r": "No hay una cifra fija: depende del producto y de la frecuencia. Contanos qué vendés y cuánto a la semana, y te proponemos una condición." },

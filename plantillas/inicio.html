@@ -1,302 +1,176 @@
-<!-- ===================== HERO ===================== -->
-<section class="hero">
-  <div class="hero__resplandor" aria-hidden="true"></div>
-  <div class="contenedor hero__grid">
-    <div class="hero__texto">
-      <span class="eyebrow eyebrow--ico">{{ico:usuarios}} Eventos, oficinas y actividades</span>
-      <h1>Pan y bocadillos para <em>tu evento</em>, horneados ese día</h1>
-      <p>
-        Coffee breaks, cajas de desayuno, bandejas de bocadillos y docenas de pan por
-        encargo. Armá tu cotización acá y enviala por WhatsApp: te respondemos con la cotización
-        y la hora de entrega.
+<!-- ===================== PORTADA =====================
+     Una sola idea: qué es, para quién y cómo pedir. Los datos de compra
+     (mínimo, anticipación, zonas) viven una única vez, en «Cómo pedir». -->
+<section class="portada portada--color">
+  <div class="contenedor portada__grid">
+    <div class="portada__texto">
+      <p class="portada__marca">Cefas Panadería · Ciudad de Guatemala</p>
+      <h1>Pan recién horneado, a la hora de tu evento</h1>
+      <p class="portada__sub">
+        Coffee breaks, cajas de desayuno y bandejas para oficinas y actividades,
+        horneados el mismo día. Te cotizamos hoy por WhatsApp.
       </p>
-
       <div class="grupo-btn">
-        <a class="btn btn--principal btn--grande" href="{{BASE}}menu/">{{ico:canasta}} Ver menú y cotizar</a>
-        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+        <a class="btn btn--claro btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+        <a class="btn btn--contorno-claro btn--grande" href="{{BASE}}menu/">Ver el menú</a>
       </div>
-
-      <ul class="hero__lista">
-        <li>{{ico:check}} Desde 10 personas, con entrega programada</li>
-        <li>{{ico:check}} Todo horneado el mismo día del evento</li>
-        <li>{{ico:check}} Cotización el mismo día por WhatsApp</li>
-      </ul>
-
-      <p class="hero__nota">
-        <span>{{ico:camion}} {{COBERTURA_RESUMEN}}</span>
-        <span>{{ico:reloj}} Desde {{ANTICIPACION}} h de anticipación</span>
-        <span>{{ico:telefono}} <a href="tel:{{TELEFONO_E164}}">{{TELEFONO}}</a></span>
-      </p>
     </div>
 
-    <div class="hero__collage">
-      <figure class="hero__foto hero__foto--grande foto">
-        {{foto:pan-img-generico.jpg|hero|Pan recién horneado de Cefas Panadería en Ciudad de Guatemala|alta}}
+    <div class="portada__imagen">
+      <figure class="portada__foto foto">
+        {{foto:docena-pan-dulce.jpg|hero|Canasta de pan dulce recién horneado: conchas y cuernitos|alta}}
       </figure>
-      <figure class="hero__foto hero__foto--chica foto">
-        {{foto:pan-img-generico.jpg|hero|Pan dulce surtido de Cefas Panadería}}
-      </figure>
-
-      <div class="hero__chapa">
-        <img src="{{LOGO_UI}}" alt="Logo de Cefas Panadería" width="46" height="46" loading="lazy">
-        <span><strong>Horneado ese día</strong>en nuestro propio horno</span>
-      </div>
-
+      <span class="sello" aria-hidden="true">Horneado<br>hoy</span>
     </div>
   </div>
 </section>
 
-<!-- ===================== BARRA DE CONFIANZA ===================== -->
-<section class="confianza" aria-label="Cómo cotizar en Cefas Panadería">
-  <div class="contenedor confianza__grid">
-    <div><span class="confianza__ico" aria-hidden="true">{{ico:usuarios}}</span><strong>Desde 10</strong><span>personas por pedido</span></div>
-    <div><span class="confianza__ico" aria-hidden="true">{{ico:whatsapp}}</span><strong>1 clic</strong><span>y tu cotización va por WhatsApp</span></div>
-    <div><span class="confianza__ico" aria-hidden="true">{{ico:reloj}}</span><strong data-contador="{{ANTICIPACION}}" data-sufijo=" h">{{ANTICIPACION}} h</strong><span>de anticipación mínima</span></div>
-    <div><span class="confianza__ico" aria-hidden="true">{{ico:pin}}</span><strong data-contador="{{TOTAL_ZONAS}}" data-sufijo=" zonas">{{TOTAL_ZONAS}} zonas</strong><span>con entrega programada</span></div>
-  </div>
+<!-- ===================== PROMESAS =====================
+     Lo que más calma el miedo a cotizar con alguien nuevo, a la vista. -->
+<section class="promesas" aria-label="Lo que prometemos">
+  <ul class="contenedor promesas__lista">
+    <li>{{ico:fuego}}<span><strong>Horneado el mismo día</strong> de tu evento</span></li>
+    <li>{{ico:reloj}}<span><strong>Cotización hoy</strong> por WhatsApp</span></li>
+    <li>{{ico:camion}}<span><strong>Entrega</strong> en {{COBERTURA_RESUMEN}}</span></li>
+  </ul>
 </section>
 
-<!-- ===================== PARA QUÉ OCASIÓN ===================== -->
+<!-- ===================== CATEGORÍAS =====================
+     Como en las tiendas de panadería grandes: el menú a un toque, ya filtrado. -->
+<nav class="fichas-categorias" aria-label="Categorías del menú">
+  <div class="contenedor">
+    <div class="fichas-categorias__lista">
+      {{CATEGORIAS_FICHAS}}
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== QUÉ PREPARAMOS ===================== -->
 <section class="seccion" id="ocasiones" aria-labelledby="t-ocasiones">
   <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:calendario}} Para qué lo necesitás</span>
-      <h2 id="t-ocasiones">Pan para eventos, oficinas y actividades en Guatemala</h2>
-      <p class="entradilla">
-        Capacitaciones, juntas, celebraciones de oficina, graduaciones, bautizos y cumpleaños.
-        Vos poné la fecha y el número de personas; nosotros lo horneamos ese día y lo entregamos
-        a la hora que necesités.
-      </p>
+    <h2 id="t-ocasiones" class="titulo-seccion">Lo que preparamos para tu evento</h2>
+
+    <div class="mosaico">
+      <a class="mosaico__item mosaico__item--ancho" href="{{BASE}}coffee-break/">
+        <figure class="foto">{{foto:coffee-break.jpg|ancha|Coffee break servido para una reunión de oficina}}</figure>
+        <h3>Coffee break {{ico:flecha:ico--desliza}}</h3>
+        <p>Pan dulce, bocadillos, café y agua, servido a la hora de tu reunión o capacitación.</p>
+      </a>
+      <a class="mosaico__item" href="{{BASE}}cajas-de-desayuno/">
+        <figure class="foto">{{foto:caja-desayuno.jpg|tarjeta|Caja de desayuno con pan dulce, croissant, jugo y café}}</figure>
+        <h3>Cajas de desayuno {{ico:flecha:ico--desliza}}</h3>
+        <p>Una caja por persona, lista para repartir. Desde 10 cajas.</p>
+      </a>
+      <a class="mosaico__item" href="{{BASE}}bandejas-de-bocadillos/">
+        <figure class="foto">{{foto:bandeja-bocadillos.jpg|tarjeta|Bandeja de bocadillos salados}}</figure>
+        <h3>Bandejas de bocadillos {{ico:flecha:ico--desliza}}</h3>
+        <p>Bocadillos salados y pan surtido para compartir.</p>
+      </a>
+      <a class="mosaico__item mosaico__item--ancho" href="{{BASE}}pan-al-mayoreo/">
+        <figure class="foto">{{foto:pan-mayoreo.jpg|ancha|Cajas de pan listas para entrega al mayoreo}}</figure>
+        <h3>Pan al mayoreo {{ico:flecha:ico--desliza}}</h3>
+        <p>Para tiendas, cafeterías y restaurantes, con entregas en días fijos.</p>
+      </a>
     </div>
 
-    <div class="rejilla rejilla--3">
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:cafe:ico--l}}</span>
-        <h3>Coffee break y capacitaciones</h3>
-        <p>
-          Pan dulce surtido, bocadillos salados, café y jugos para juntas, capacitaciones y
-          convivios. Servimos desde 10 personas, con entrega a la hora exacta.
-        </p>
-        <p class="tarjeta-info__nota"><a href="{{BASE}}coffee-break/">Cómo funciona el coffee break {{ico:flecha:ico--desliza}}</a></p>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:caja:ico--l}}</span>
-        <h3>Cajas de desayuno</h3>
-        <p>
-          Caja individual con pan dulce, croissant, jugo y café, lista para repartir en el
-          escritorio de cada persona. Mínimo 10 cajas.
-        </p>
-        <p class="tarjeta-info__nota"><a href="{{BASE}}cajas-de-desayuno/">Ver las cajas de desayuno {{ico:flecha:ico--desliza}}</a></p>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:usuarios:ico--l}}</span>
-        <h3>Bandejas para compartir</h3>
-        <p>
-          Bandejas de bocadillos salados, docenas surtidas de pan dulce y paquetes de pan para
-          hamburguesa y hot dog: lo que se sirve solo en una actividad.
-        </p>
-        <p class="tarjeta-info__nota"><a href="{{BASE}}bandejas-de-bocadillos/">Ver las bandejas {{ico:flecha:ico--desliza}}</a></p>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:bolsa:ico--l}}</span>
-        <h3>Pan al mayoreo</h3>
-        <p>
-          Abastecemos tiendas, cafeterías, hoteles y restaurantes con entrega programada y
-          condiciones especiales por volumen. Pedidos recurrentes con calendario fijo.
-        </p>
-        <p class="tarjeta-info__nota"><a href="{{BASE}}pan-al-mayoreo/">Cómo funciona el mayoreo {{ico:flecha:ico--desliza}}</a></p>
-      </div>
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:estrella:ico--l}}</span>
-        <h3>Regalos corporativos</h3>
-        <p>
-          Canastas con selección de panes artesanales y café guatemalteco para
-          clientes, proveedores o tu equipo.
-        </p>
-      </div>
-    </div>
-
-    <div class="grupo-btn grupo-btn--suelto" data-reveal>
-      <a class="btn btn--principal" href="{{BASE}}encargos/#formulario">{{ico:calendario}} Cotizar mi actividad</a>
-      <a class="btn btn--secundario" href="{{BASE}}menu/">Ver menú {{ico:flecha:ico--desliza}}</a>
-    </div>
   </div>
 </section>
 
-<!-- ===================== LO MÁS PEDIDO PARA EVENTOS ===================== -->
-<section class="seccion seccion--crema" id="destacados" aria-labelledby="t-destacados">
-  <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:estrella}} Lo más pedido</span>
-      <h2 id="t-destacados">Lo más pedido para eventos y coffee breaks</h2>
-      <p class="entradilla">
-        Tocá <strong>Agregar a mi cotización</strong> en lo que te sirve. Cuando termines, el mensaje
-        de WhatsApp se arma solo con las cantidades seleccionadas.
-      </p>
+<!-- ===================== BLOQUE DE FOTO =====================
+     Una frase y una foto grande: aquí se abre el apetito, antes de los productos. -->
+<section class="banda-foto" aria-labelledby="t-foto">
+  <div class="contenedor banda-foto__grid">
+    <div class="banda-foto__texto" data-reveal>
+      <h2 id="t-foto">Horneado esta mañana, en tu mesa a la hora.</h2>
+      <p>Tu pedido sale de nuestro horno el día del evento y llega a la hora que acordemos. Tú solo nos cuentas cuántos son.</p>
+      <a class="btn btn--oscuro btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
     </div>
+    <figure class="banda-foto__foto foto" data-reveal>
+      {{foto:canasta-regalo.jpg|ancha|Canasta de mimbre con pan artesanal y pan dulce recién horneado}}
+    </figure>
+  </div>
+</section>
 
+<!-- ===================== LO MÁS PEDIDO ===================== -->
+<section class="seccion" id="destacados" aria-labelledby="t-destacados">
+  <div class="contenedor">
+    <h2 id="t-destacados" class="titulo-seccion">Lo más pedido</h2>
     <div class="rejilla rejilla--4">
       {{DESTACADOS}}
     </div>
-
-    <div class="grupo-btn grupo-btn--suelto" data-reveal>
-      <a class="btn btn--principal" href="{{BASE}}menu/">Ver los {{TOTAL_PRODUCTOS}} productos {{ico:flecha:ico--desliza}}</a>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== PAQUETES Y DOCENAS ===================== -->
-<section class="seccion" id="paquetes" aria-labelledby="t-paquetes">
-  <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:caja}} Presentaciones para compartir</span>
-      <h2 id="t-paquetes">Docenas, paquetes y bandejas</h2>
-      <p class="entradilla">
-        Presentaciones prácticas para repartir en reuniones, actividades y eventos.
-      </p>
-    </div>
-
-    <div class="rejilla rejilla--4">
-      {{PAQUETES}}
-    </div>
-
-    <div class="grupo-btn grupo-btn--suelto" data-reveal>
-      <a class="btn btn--secundario" href="{{BASE}}cuanto-pan/">{{ico:usuarios}} ¿No sabés cuánto pedir? Calculá cuánto pan necesitás</a>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== DESVÍO A PEDIDOSYA ===================== -->
-<section class="seccion seccion--corta" aria-labelledby="t-menudeo">
-  <div class="contenedor">
-    <h2 class="solo-lectores" id="t-menudeo">Venta por unidad</h2>
-    {{PEDIDOSYA_BLOQUE}}
-  </div>
-</section>
-
-<!-- ===================== CÓMO COTIZAR ===================== -->
-<section class="seccion seccion--oscura" id="como-pedir" aria-labelledby="t-como">
-  <div class="contenedor">
-    <div class="cabecera-seccion centro" data-reveal>
-      <span class="eyebrow">Cotizar es así de rápido</span>
-      <h2 id="t-como">Cómo cotizar pan para tu evento</h2>
-    </div>
-
-    <ol class="pasos">
-      <li data-reveal>
-        <span class="pasos__ico" aria-hidden="true">{{ico:canasta}}</span>
-        <h3>Armá tu cotización</h3>
-        <p>Sumá docenas, bandejas, cajas o panes del menú, con las cantidades que necesités.</p>
-      </li>
-      <li data-reveal>
-        <span class="pasos__ico" aria-hidden="true">{{ico:whatsapp}}</span>
-        <h3>Enviala por WhatsApp</h3>
-        <p>Un clic y el mensaje sale con el detalle. Agregá la fecha y la hora.</p>
-      </li>
-      <li data-reveal>
-        <span class="pasos__ico" aria-hidden="true">{{ico:check}}</span>
-        <h3>Confirmamos y agendamos</h3>
-        <p>Te enviamos la cotización final con el envío y agendamos tu pedido.</p>
-      </li>
-      <li data-reveal>
-        <span class="pasos__ico" aria-hidden="true">{{ico:camion}}</span>
-        <h3>Entregamos a la hora</h3>
-        <p>Horneamos ese día y lo dejamos montado en tu oficina o evento, o pasás a recogerlo.</p>
-      </li>
-    </ol>
-
-    <div class="grupo-btn grupo-btn--centro grupo-btn--suelto" data-reveal>
-      <a class="btn btn--claro btn--grande" href="{{BASE}}encargos/#formulario">{{ico:calendario}} Empezar mi cotización</a>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== COBERTURA ===================== -->
-<section class="seccion" id="cobertura" aria-labelledby="t-cobertura">
-  <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:camion}} Entregas programadas</span>
-      <h2 id="t-cobertura">Entregas programadas en {{COBERTURA_RESUMEN}}</h2>
-      <p class="entradilla">
-        Llevamos tu pedido a estas {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}. El costo del
-        envío depende de la zona y lo confirmamos en la cotización, antes de agendar.
-      </p>
-    </div>
-
-    <ul class="zonas zonas--agrupadas" data-reveal>
-      {{ZONAS}}
-    </ul>
-
-    <p class="nota-suelta">
-      ¿Tu dirección no aparece? Escribinos por
-      <a href="https://wa.me/{{WHATSAPP}}" rel="noopener">WhatsApp</a> y te confirmamos si llegamos.
-      También podés pasar a recoger tu pedido por la panadería.
+    <p class="enlaces-suaves">
+      <a href="{{BASE}}menu/">Ver el menú completo {{ico:flecha:ico--desliza}}</a>
+      <a href="{{BASE}}cuanto-pan/">¿Cuánto pan necesito? {{ico:flecha:ico--desliza}}</a>
     </p>
   </div>
 </section>
 
-<!-- ===================== FAQ ===================== -->
-<section class="seccion seccion--crema" id="preguntas" aria-labelledby="t-faq">
+<!-- ===================== RESEÑAS =====================
+     Lo que dicen quienes ya pidieron: reduce el miedo a cotizar con alguien nuevo. -->
+<section class="seccion seccion--sin-arriba" id="resenas" aria-labelledby="t-resenas">
   <div class="contenedor">
-    <div class="cabecera-seccion centro" data-reveal>
-      <span class="eyebrow">Antes de cotizar</span>
-      <h2 id="t-faq">Lo que más nos preguntan</h2>
+    <h2 id="t-resenas" class="titulo-seccion">Lo que dicen quienes ya pidieron</h2>
+    <div class="resenas">{{RESENAS}}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CÓMO PEDIR =====================
+     La banda oscura de la página: corta el ritmo crema → tarjetas y es donde
+     se decide pedir, por eso lleva su propia pareja de botones. -->
+<section class="seccion banda" id="como-pedir" aria-labelledby="t-como">
+  <div class="contenedor como">
+    <div class="como__intro">
+      <h2 id="t-como" class="titulo-seccion">Cómo pedir</h2>
+      <dl class="datos-clave">
+        <div class="dato"><dt>pedido mínimo; coffee break y cajas, desde 10 personas</dt><dd>Desde una docena</dd></div>
+        <div class="dato"><dt>de anticipación; con montaje, de 3 a 5 días</dt><dd>Desde {{ANTICIPACION}} horas</dd></div>
+        <div class="dato"><dt>con entrega en {{COBERTURA_RESUMEN}}</dt><dd>{{TOTAL_ZONAS}} zonas</dd></div>
+      </dl>
+      <div class="grupo-btn">
+        <a class="btn btn--claro" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+        <a class="btn btn--contorno-claro" href="{{BASE}}menu/">Ver el menú</a>
+      </div>
     </div>
 
+    <ol class="como__pasos">
+      <li>
+        <h3>Elegís lo que necesitás</h3>
+        <p>Desde el menú, o contanos la fecha y cuántas personas son.</p>
+      </li>
+      <li>
+        <h3>Te cotizamos por WhatsApp</h3>
+        <p>Con el precio del envío incluido, el mismo día.</p>
+      </li>
+      <li>
+        <h3>Lo horneamos y lo llevamos</h3>
+        <p>Sale de nuestro horno ese día y llega a la hora. También podés recogerlo.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===================== PREGUNTAS ===================== -->
+<section class="seccion seccion--tono" id="preguntas" aria-labelledby="t-faq">
+  <div class="contenedor preguntas">
+    <div class="preguntas__intro">
+      <h2 id="t-faq" class="titulo-seccion">Preguntas frecuentes</h2>
+      <p>¿Otra duda? <a href="https://wa.me/{{WHATSAPP}}" rel="noopener">Escribinos por WhatsApp</a>.</p>
+    </div>
     <div class="faq">
       {{FAQ}}
     </div>
   </div>
 </section>
 
-<!-- ===================== SOBRE CEFAS (corto, al final) ===================== -->
-<section class="seccion" id="nosotros" aria-labelledby="t-nosotros">
-  <div class="contenedor">
-    <div class="dos-columnas">
-      <div class="dos-columnas__medios" data-reveal>
-        <figure class="foto foto--16-10 foto--marco">
-          {{foto:pan-img-generico.jpg|ancha|Pan artesanal horneado en Cefas Panadería}}
-        </figure>
-        <div class="dato-flotante">
-          <span class="dato-flotante__ico" aria-hidden="true">{{ico:trigo}}</span>
-          <span><strong>Horno propio</strong>nada se reventa a terceros</span>
-        </div>
-      </div>
-
-      <div class="dos-columnas__texto" data-reveal>
-        <span class="eyebrow">Quiénes horneamos</span>
-        <h2 id="t-nosotros">Producción propia, no somos intermediarios</h2>
-        <p>
-          Cefas es una panadería con su propio horno en {{CIUDAD}}. Todo lo que va a tu evento
-          se amasa y se hornea acá el mismo día, así que podemos ajustar cantidades y horas
-          de entrega sin depender de nadie más.
-        </p>
-        <p>
-          El pan francés, las champurradas y los cubiletes se hacen con las recetas de siempre;
-          los panes artesanales, con fermentaciones largas.
-        </p>
-        <div class="grupo-btn">
-          <a class="btn btn--secundario" href="{{BASE}}contacto/">{{ico:pin}} Dónde estamos</a>
-        </div>
-      </div>
+<!-- ===================== CIERRE ===================== -->
+<section class="cierre" aria-labelledby="t-cierre">
+  <div class="contenedor cierre__caja">
+    <h2 id="t-cierre">¿Cuándo es tu actividad?</h2>
+    <p>Contanos la fecha y cuántas personas son. Te respondemos hoy.</p>
+    <div class="grupo-btn grupo-btn--centro">
+      <a class="btn btn--claro btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
     </div>
-  </div>
-</section>
-
-<!-- ===================== CTA FINAL ===================== -->
-<section class="seccion seccion--crema">
-  <div class="contenedor">
-    <div class="cta-final" data-reveal>
-      <span class="cta-final__ico" aria-hidden="true">{{ico:calendario:ico--xl}}</span>
-      <h2>¿Cuándo es tu actividad?</h2>
-      <p>
-        Contanos la fecha y el número de personas y te cotizamos hoy mismo. Con
-        {{ANTICIPACION}} horas de anticipación lo tenemos recién horneado.
-      </p>
-      <div class="grupo-btn grupo-btn--centro">
-        <a class="btn btn--claro btn--grande" href="{{BASE}}encargos/#formulario">{{ico:calendario}} Llenar el formulario</a>
-        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20cotizar%20pan%20y%20bocadillos%20para%20un%20evento." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
-      </div>
-    </div>
+    <p class="cierre__alt">¿Preferís un formulario? <a href="{{BASE}}encargos/#formulario">Cotizar con el formulario</a></p>
   </div>
 </section>

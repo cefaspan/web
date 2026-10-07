@@ -64,6 +64,18 @@
         nav.hidden = true;
       }
     });
+    var cerrarNav = function (devolverFoco) {
+      if (esEscritorio() || btnMenu.getAttribute('aria-expanded') !== 'true') return;
+      btnMenu.setAttribute('aria-expanded', 'false');
+      nav.hidden = true;
+      if (devolverFoco) btnMenu.focus();
+    };
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') cerrarNav(nav.contains(document.activeElement));
+    });
+    document.addEventListener('click', function (e) {
+      if (!nav.contains(e.target) && !btnMenu.contains(e.target)) cerrarNav(false);
+    });
     window.addEventListener('resize', sincronizarNav);
     sincronizarNav();
   }
@@ -83,6 +95,17 @@
     var mostrar = function (el, retardo) {
       if (retardo) el.style.transitionDelay = retardo + 'ms';
       el.classList.add('visible');
+      // Terminada la entrada, el elemento vuelve a sus estilos normales: sin
+      // esto se quedaban el will-change (memoria de GPU en decenas de
+      // tarjetas), el retardo del escalonado y la transición de .7s, que
+      // también frenaban el hover.
+      el.addEventListener('transitionend', function limpiar(e) {
+        if (e.target !== el) return;
+        el.removeEventListener('transitionend', limpiar);
+        el.removeAttribute('data-reveal');
+        el.classList.remove('visible');
+        el.style.transitionDelay = '';
+      });
     };
 
     if (sinMovimiento || !('IntersectionObserver' in window)) {
@@ -91,14 +114,15 @@
     }
 
     var observador = new IntersectionObserver(function (entradas) {
+      // Escalonado entre los que entran juntos: las tarjetas de una misma
+      // fila aparecen una detrás de otra. Antes salía de la posición en la
+      // rejilla, y en móvil (una columna) la cuarta tarjeta esperaba 210 ms sola.
+      var lote = 0;
       entradas.forEach(function (entrada) {
         if (!entrada.isIntersecting) return;
         var el = entrada.target;
-        // Escalonado por posición dentro de su rejilla: las tarjetas de una
-        // misma fila aparecen una detrás de otra, no todas de golpe.
-        var hermanos = Array.prototype.slice.call(el.parentNode.children);
-        var retardo = (hermanos.indexOf(el) % 4) * 70;
-        mostrar(el, retardo);
+        mostrar(el, Math.min(lote, 3) * 60);
+        lote++;
         observador.unobserve(el);
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
@@ -130,48 +154,12 @@
     pintar();
   })();
 
-  /* --- Contadores de la barra de confianza -------------------------------- */
-  (function animarContadores() {
-    var marcadores = $$('[data-contador]');
-    if (!marcadores.length) return;
-
-    var contar = function (el) {
-      var destino = parseFloat(el.dataset.contador);
-      var sufijo = el.dataset.sufijo || '';
-      if (isNaN(destino)) return;
-      if (sinMovimiento) { el.textContent = destino + sufijo; return; }
-
-      var inicio = null;
-      var duracion = 1100;
-      var paso = function (ahora) {
-        if (inicio === null) inicio = ahora;
-        var t = Math.min((ahora - inicio) / duracion, 1);
-        var suave = 1 - Math.pow(1 - t, 3);
-        el.textContent = Math.round(destino * suave) + sufijo;
-        if (t < 1) window.requestAnimationFrame(paso);
-      };
-      window.requestAnimationFrame(paso);
-    };
-
-    if (!('IntersectionObserver' in window)) { marcadores.forEach(contar); return; }
-    var observador = new IntersectionObserver(function (entradas) {
-      entradas.forEach(function (entrada) {
-        if (!entrada.isIntersecting) return;
-        contar(entrada.target);
-        observador.unobserve(entrada.target);
-      });
-    }, { threshold: 0.5 });
-    marcadores.forEach(function (el) { observador.observe(el); });
-  })();
-
   /* --- Carrito ------------------------------------------------------------ */
   var panel = $('[data-panel]');
   var velo = $('[data-velo]');
   var cuerpo = $('[data-carrito-cuerpo]');
   var vacio = $('[data-carrito-vacio]');
-  var unidadesEls = $$('[data-carrito-unidades]');
   var contadores = $$('[data-carrito-contador]');
-  var barraVenta = $('[data-barra-venta]');
   var notaEnviado = $('[data-enviado]');
   var trasEnviar = $$('[data-si-enviado]');
   var ultimoFoco = null;
@@ -194,12 +182,6 @@
       el.textContent = n;
       el.hidden = !hay;
     });
-    unidadesEls.forEach(function (el) {
-      el.textContent = n + (n === 1 ? ' producto' : ' productos');
-    });
-    // La barra fija sólo aparece cuando hay algo que cotizar
-    if (barraVenta) barraVenta.hidden = !hay;
-    document.body.classList.toggle('con-barra-venta', hay);
     // Tras abrir WhatsApp con la lista, se ofrece vaciarla; si no queda
     // nada o el cliente sigue editando, el ofrecimiento se retira.
     var ofrecerVaciar = recienEnviado && hay;
@@ -261,17 +243,26 @@
     });
   }
 
+  /* La lista se repinta entera en cada cambio. Sólo se anima la fila del
+     producto recién agregado (si no, cada + hacía saltar todas), y el foco
+     vuelve al mismo botón: al repintar, el que se acababa de pulsar ya no existe. */
+  var idNuevo = null;
+
   function pintarCarrito() {
     pintarContador();
     pintarTarjetas();
     if (!cuerpo) return;
+
+    var activo = document.activeElement;
+    var focoPrevio = activo && cuerpo.contains(activo) && activo.dataset.accion
+      ? { id: activo.dataset.id, accion: activo.dataset.accion } : null;
 
     $$('.linea-carrito', cuerpo).forEach(function (el) { el.remove(); });
     if (vacio) vacio.hidden = pedido.length > 0;
 
     pedido.forEach(function (linea, i) {
       var fila = document.createElement('div');
-      fila.className = 'linea-carrito';
+      fila.className = linea.id === idNuevo ? 'linea-carrito linea-carrito--nueva' : 'linea-carrito';
 
       if (linea.img) {
         var miniatura = document.createElement('img');
@@ -304,6 +295,7 @@
       menos.type = 'button';
       menos.innerHTML = iconoHTML('menos');
       menos.setAttribute('aria-label', 'Quitar uno de ' + linea.nombre);
+      menos.dataset.accion = 'menos'; menos.dataset.id = linea.id;
       menos.addEventListener('click', function () { cambiarCantidad(i, -1); });
       var cant = document.createElement('span');
       cant.textContent = linea.cantidad;
@@ -312,6 +304,7 @@
       mas.type = 'button';
       mas.innerHTML = iconoHTML('mas');
       mas.setAttribute('aria-label', 'Agregar uno de ' + linea.nombre);
+      mas.dataset.accion = 'mas'; mas.dataset.id = linea.id;
       mas.addEventListener('click', function () { cambiarCantidad(i, 1); });
       ctrl.appendChild(menos); ctrl.appendChild(cant); ctrl.appendChild(mas);
 
@@ -319,6 +312,17 @@
       fila.appendChild(ctrl);
       if (vacio) cuerpo.insertBefore(fila, vacio); else cuerpo.appendChild(fila);
     });
+
+    idNuevo = null;
+
+    if (focoPrevio) {
+      var mismo = $$('[data-accion]', cuerpo).filter(function (b) {
+        return b.dataset.id === focoPrevio.id && b.dataset.accion === focoPrevio.accion;
+      })[0];
+      // Si la línea desapareció (quitó la última unidad), al botón de cerrar
+      var destino = mismo || $('[data-panel-cerrar]', panel);
+      if (destino) destino.focus();
+    }
 
     var enviar = $('[data-enviar-wa]');
     if (enviar) enviar.toggleAttribute('disabled', pedido.length === 0);
@@ -342,10 +346,13 @@
       if (pedido[i].id === datos.id) { existente = pedido[i]; break; }
     }
     if (existente) existente.cantidad = fijar ? n : existente.cantidad + n;
-    else pedido.push({
+    else {
+      idNuevo = datos.id;
+      pedido.push({
       id: datos.id, nombre: datos.nombre,
-      unidad: datos.unidad, img: datos.img || '', cantidad: n
-    });
+        unidad: datos.unidad, img: datos.img || '', cantidad: n
+      });
+    }
     guardarPedido(pedido);
     pintarCarrito();
   }
@@ -357,7 +364,7 @@
   var FOCALIZABLES = 'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])';
 
   function focoDelPanel() {
-    return $(FOCALIZABLES, panel).filter(function (el) {
+    return $$(FOCALIZABLES, panel).filter(function (el) {
       return !el.hidden && el.offsetParent !== null;
     });
   }
@@ -380,11 +387,26 @@
     }
   }
 
+  // Igual a la transición de .panel en estilos.css: si el JS lo oculta antes,
+  // el cierre se corta a medio deslizar.
+  var DURACION_PANEL = 320;
+  var temporizadorCierre = null;
+
   function abrirPanel() {
     if (!panel || !velo) return;
-    ultimoFoco = document.activeElement;
+    // Reabrir durante el cierre: sin cancelar el temporizador, éste ocultaba
+    // el panel recién abierto y dejaba la página sin scroll.
+    if (temporizadorCierre) {
+      window.clearTimeout(temporizadorCierre);
+      temporizadorCierre = null;
+    } else {
+      ultimoFoco = document.activeElement;
+    }
     velo.hidden = false; panel.hidden = false;
-    requestAnimationFrame(function () { velo.classList.add('visible'); panel.classList.add('visible'); });
+    // Forzar el estilo de partida antes de añadir .visible: en el mismo frame
+    // que hidden=false el navegador no tiene desde dónde animar.
+    void panel.offsetWidth;
+    velo.classList.add('visible'); panel.classList.add('visible');
     document.body.style.overflow = 'hidden';
     var cerrar = $('[data-panel-cerrar]', panel);
     if (cerrar) cerrar.focus();
@@ -394,12 +416,14 @@
     velo.classList.remove('visible'); panel.classList.remove('visible');
     document.body.style.overflow = '';
     // El foco se devuelve cuando el panel ya está oculto: si se devolvía antes,
-    // un Tab durante los 260 ms de la animación volvía a entrar al panel.
-    window.setTimeout(function () {
+    // un Tab durante la animación volvía a entrar al panel.
+    if (temporizadorCierre) window.clearTimeout(temporizadorCierre);
+    temporizadorCierre = window.setTimeout(function () {
+      temporizadorCierre = null;
       velo.hidden = true; panel.hidden = true;
       if (ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
       ultimoFoco = null;
-    }, 260);
+    }, DURACION_PANEL);
   }
 
   $$('[data-carrito-abrir]').forEach(function (b) { b.addEventListener('click', abrirPanel); });
@@ -716,6 +740,104 @@
       pintarContador();
     });
   }
+
+  /* --- Búsqueda desde la cabecera -----------------------------------------
+     Filtra los productos publicados (vienen en un JSON de la página) y deja
+     agregarlos a la cotización sin ir al menú. Todo se pinta con
+     textContent: los datos nunca entran como HTML.                        */
+  (function buscadorCabecera() {
+    var boton = $('[data-busqueda-abrir]');
+    var caja = $('[data-busqueda]');
+    var datosEl = $('[data-productos-datos]');
+    if (!boton || !caja || !datosEl) return;
+
+    var productos;
+    try { productos = JSON.parse(datosEl.textContent); } catch (e) { return; }
+    productos.forEach(function (p) {
+      p.clave = normalizar(p.nombre + ' ' + p.unidad + ' ' + p.categoria + ' ' + p.desc);
+      // URL absoluta: el panel de la cotización la usa desde cualquier página
+      try { p.img = new URL(p.img, window.location.href).href; } catch (e) { /* se queda relativa */ }
+    });
+
+    var texto = $('[data-busqueda-texto]', caja);
+    var lista = $('[data-busqueda-lista]', caja);
+    var vacio = $('[data-busqueda-vacio]', caja);
+    var estado = $('[data-busqueda-estado]', caja);
+
+    function cantidadEnPedido(id) {
+      for (var i = 0; i < pedido.length; i++) if (pedido[i].id === id) return pedido[i].cantidad;
+      return 0;
+    }
+
+    function pintar() {
+      var terminos = normalizar(texto.value.trim()).split(/\s+/).filter(Boolean);
+      var hallados = productos.filter(function (p) {
+        return terminos.every(function (t) { return p.clave.indexOf(t) !== -1; });
+      });
+      lista.textContent = '';
+      hallados.forEach(function (p) {
+        var fila = document.createElement('li');
+        var img = document.createElement('img');
+        img.src = p.img; img.alt = ''; img.width = 52; img.height = 52; img.loading = 'lazy';
+        var info = document.createElement('span');
+        info.className = 'busqueda__info';
+        var nombre = document.createElement('strong');
+        nombre.textContent = p.nombre;
+        var unidad = document.createElement('span');
+        var n = cantidadEnPedido(p.id);
+        unidad.textContent = n ? p.unidad + ' · ' + n + ' en tu cotización' : p.unidad;
+        info.appendChild(nombre); info.appendChild(unidad);
+        var agregarBtn = document.createElement('button');
+        agregarBtn.type = 'button';
+        agregarBtn.className = 'btn btn--principal btn--compacto';
+        agregarBtn.innerHTML = iconoHTML('mas');
+        var etiqueta = document.createElement('span');
+        etiqueta.className = 'busqueda__agregar';
+        etiqueta.textContent = ' Agregar';
+        agregarBtn.appendChild(etiqueta);
+        agregarBtn.setAttribute('aria-label', 'Agregar ' + p.nombre + ' a mi cotización');
+        agregarBtn.addEventListener('click', function () {
+          agregar({ id: p.id, nombre: p.nombre, unidad: p.unidad, img: p.img }, 1);
+          pintar();
+          estado.textContent = p.nombre + ' agregado a tu cotización';
+          var mismo = $('[data-id="' + p.id + '"]', lista);
+          if (mismo) mismo.focus();
+        });
+        agregarBtn.dataset.id = p.id;
+        fila.appendChild(img); fila.appendChild(info); fila.appendChild(agregarBtn);
+        lista.appendChild(fila);
+      });
+      vacio.hidden = hallados.length > 0;
+      if (terminos.length) estado.textContent = hallados.length + (hallados.length === 1 ? ' producto' : ' productos');
+    }
+
+    function abrir() {
+      caja.hidden = false;
+      boton.setAttribute('aria-expanded', 'true');
+      pintar();
+      texto.focus();
+    }
+    function cerrar(devolverFoco) {
+      if (caja.hidden) return;
+      caja.hidden = true;
+      boton.setAttribute('aria-expanded', 'false');
+      if (devolverFoco) boton.focus();
+    }
+
+    boton.addEventListener('click', function () { if (caja.hidden) abrir(); else cerrar(false); });
+    texto.addEventListener('input', pintar);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !caja.hidden) cerrar(true);
+    });
+    document.addEventListener('click', function (e) {
+      // Un botón de la lista que se acaba de repintar ya no está en la página:
+      // ese clic fue adentro, no afuera.
+      if (!e.target.isConnected) return;
+      if (!caja.hidden && !caja.contains(e.target) && !boton.contains(e.target)) cerrar(false);
+    });
+    // Abrir la cotización desde la búsqueda la cierra: no deben taparse
+    $$('[data-carrito-abrir]').forEach(function (b) { b.addEventListener('click', function () { cerrar(false); }); });
+  })();
 
   /* --- Calculadora ¿cuánto pan necesito? -----------------------------------
      Las reglas (piezas por persona y piezas por unidad de venta) vienen en

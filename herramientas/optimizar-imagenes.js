@@ -156,13 +156,25 @@ async function principal() {
       kb(bytesDespues).padStart(10) + '   ' + (vale ? porcentaje + '%' : 'se deja igual') +
       (redimensionar ? `   ${meta.width}px → ${lado}px` : ''));
 
+    // En Windows y macOS «IMG_1234.JPG» e «IMG_1234.jpg» son el mismo archivo:
+    // comparando las rutas tal cual, se escribía la versión nueva y acto seguido
+    // se borraba como si fuera el original. Y si «foo.png» convive con un
+    // «foo.jpg» distinto, convertirlo pisaría ese otro.
+    const mismoArchivo = destino.toLowerCase() === origen.toLowerCase();
+    if (!mismoArchivo && fs.existsSync(destino)) {
+      console.log(`    ! no se convierte: ya existe ${path.basename(destino)}, que es otra foto. Renombrá una de las dos.`);
+      continue;
+    }
+
     if (!APLICAR || !vale) continue;
 
-    fs.writeFileSync(destino, buffer);
-    if (destino !== origen) {
-      fs.unlinkSync(origen);
-      renombres[nombre] = path.basename(destino);
-    }
+    // Se escribe a un temporal y se renombra al final: si algo falla a mitad,
+    // el original sigue en su sitio.
+    const temporal = destino + '.tmp';
+    fs.writeFileSync(temporal, buffer);
+    if (destino !== origen) fs.unlinkSync(origen);
+    fs.renameSync(temporal, destino);
+    if (destino !== origen) renombres[nombre] = path.basename(destino);
   }
 
   console.log('  ' + '-'.repeat(70));

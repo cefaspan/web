@@ -1,103 +1,74 @@
-<div class="contenedor">
-  <nav class="migas" aria-label="Ruta de navegación">
-    <ol>
-      <li><a href="{{BASE}}index.html">Inicio</a></li>
-      <li>Contacto</li>
-    </ol>
-  </nav>
-</div>
-
-<section class="seccion seccion--corta">
+<!-- ===================== CONTACTO: PORTADA =====================
+     No hay local a la calle: horneamos en una cocina de producción en la
+     zona 6, así que no se publica dirección exacta ni mapa, ni se invita a
+     «pasar por la panadería». La recogida se agenda por WhatsApp. -->
+<section class="portada portada--servicio portada--sin-foto">
   <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:pin}} Contacto</span>
-      <h1>Dónde estamos y cómo pedir</h1>
-      <p class="entradilla">
-        Cotizamos pan y bocadillos para eventos, oficinas y actividades. Escribinos por WhatsApp,
-        llamanos o pasá por la panadería. El pan por unidad se pide en PedidosYa.
-      </p>
-    </div>
+    <nav class="migas" aria-label="Estás en">
+      <a href="{{BASE}}index.html">Inicio</a> <span aria-hidden="true">›</span>
+      <span aria-current="page">Contacto</span>
+    </nav>
 
-    <div class="rejilla rejilla--3">
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:chat:ico--l}}</span>
-        <h3>Datos de contacto</h3>
-        <ul class="datos">
-          <li>
-            <span class="datos__icono" aria-hidden="true">{{ico:pin}}</span>
-            <span><strong>Dirección</strong>{{DIRECCION}}</span>
-          </li>
-          <li>
-            <span class="datos__icono" aria-hidden="true">{{ico:telefono}}</span>
-            <span><strong>Teléfono</strong><a href="tel:{{TELEFONO_E164}}">{{TELEFONO}}</a></span>
-          </li>
-          <li>
-            <span class="datos__icono" aria-hidden="true">{{ico:whatsapp}}</span>
-            <span><strong>WhatsApp</strong><a href="https://wa.me/{{WHATSAPP}}" rel="noopener">Escribir ahora</a></span>
-          </li>
-          <li>
-            <span class="datos__icono" aria-hidden="true">{{ico:correo}}</span>
-            <span><strong>Correo</strong><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span>
-          </li>
-        </ul>
-      </div>
-
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:reloj:ico--l}}</span>
-        <h3>Horarios de atención</h3>
-        <ul class="horarios">
-          {{HORARIOS}}
-        </ul>
-        <p class="tarjeta-info__nota">
-          El pan francés sale en varias tandas durante el día, así que casi siempre vas a
-          encontrarlo caliente.
-        </p>
-      </div>
-
-      <div class="tarjeta-info" data-reveal>
-        <span class="chapa" aria-hidden="true">{{ico:canasta:ico--l}}</span>
-        <h3>Formas de pedir</h3>
-        <ul class="lista-ico">
-          <li>{{ico:check}} <span><a href="{{BASE}}menu/">Armá tu cotización en el menú</a> y enviala por WhatsApp</span></li>
-          <li>{{ico:check}} <span><a href="{{BASE}}encargos/#formulario">Llená el formulario de encargos</a></span></li>
-          <li>{{ico:check}} <span>Llamanos al <a href="tel:{{TELEFONO_E164}}">{{TELEFONO}}</a></span></li>
-          <li>{{ico:check}} <span>Pan por unidad, con entrega inmediata, en <a href="{{PEDIDOSYA}}" rel="noopener nofollow">PedidosYa</a></span></li>
-        </ul>
-      </div>
+    <p class="portada__marca">Contacto</p>
+    <h1>Contacto y horarios</h1>
+    <p class="portada__sub">Escribinos por WhatsApp o llamanos. Te cotizamos el mismo día.</p>
+    <div class="grupo-btn">
+      <a class="btn btn--principal btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20hacer%20un%20encargo." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
+      <a class="btn btn--secundario btn--grande" href="tel:{{TELEFONO_E164}}">{{ico:telefono}} Llamar al {{TELEFONO}}</a>
     </div>
   </div>
 </section>
 
-<!-- ===================== RECOGER EL PEDIDO =====================
-     No hay local a la calle: horneamos en una cocina de producción en la
-     zona 6, así que no se publica dirección exacta ni mapa. El punto de
-     recogida se coordina por WhatsApp al confirmar el encargo. -->
-<section class="seccion seccion--crema" aria-labelledby="t-recoger">
-  <div class="contenedor">
-    <div class="dos-columnas">
-      <div class="dos-columnas__medios" data-reveal>
-        <figure class="foto foto--16-10 foto--marco">
-          {{foto:pan-img-generico.jpg|ancha|Pan recién salido del horno en Cefas Panadería}}
-        </figure>
-      </div>
+<!-- ===================== DATOS, HORARIOS, FORMAS DE PEDIR ===================== -->
+<section class="seccion seccion--sin-arriba" aria-label="Datos de contacto">
+  <div class="contenedor tres-bloques">
+    <div class="bloque-blanco">
+      <h2>Datos</h2>
+      <ul class="datos">
+        <li><span><strong>Dirección</strong>{{DIRECCION}}</span></li>
+        <li><span><strong>Teléfono</strong><a href="tel:{{TELEFONO_E164}}">{{TELEFONO}}</a></span></li>
+        <li><span><strong>WhatsApp</strong><a href="https://wa.me/{{WHATSAPP}}" rel="noopener">Escribir ahora</a></span></li>
+        <li><span><strong>Correo</strong><a href="mailto:{{EMAIL}}">{{EMAIL}}</a></span></li>
+      </ul>
+    </div>
 
-      <div class="dos-columnas__texto" data-reveal>
-        <h2 id="t-recoger">Recoger tu pedido</h2>
-        <p class="entradilla">
-          Horneamos en {{DIRECCION}}. No es un local de mostrador: trabajamos por
-          encargo, así que la recogida se agenda a una hora concreta.
-        </p>
+    <div class="bloque-blanco">
+      <h2>Horarios</h2>
+      <ul class="horarios">
+        {{HORARIOS}}
+      </ul>
+    </div>
 
-        <p>
-          Al confirmar tu cotización te pasamos por WhatsApp el punto exacto y la hora
-          en que tu pedido está listo. Si preferís que llegue, entregamos en
-          {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}.
-        </p>
+    <div class="bloque-blanco">
+      <h2>Formas de pedir</h2>
+      <ul class="lista-ico">
+        <li>{{ico:check}} <span><a href="{{BASE}}menu/">Armá tu cotización en el menú</a> y enviala por WhatsApp</span></li>
+        <li>{{ico:check}} <span><a href="{{BASE}}encargos/#formulario">Llená el formulario de encargos</a></span></li>
+        <li>{{ico:check}} <span>Pan por unidad, con entrega inmediata, en <a href="{{PEDIDOSYA}}" rel="noopener nofollow">PedidosYa</a></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-        <div class="grupo-btn">
-          <a class="btn btn--wa" href="https://wa.me/{{WHATSAPP}}" rel="noopener">{{ico:whatsapp}} Coordinar por WhatsApp</a>
-          <a class="btn btn--secundario" href="{{BASE}}encargos/#formulario">{{ico:caja}} Cotizar un encargo</a>
-        </div>
+<!-- ===================== RECOGER O RECIBIR (banda oscura) ===================== -->
+<section class="seccion banda" aria-labelledby="t-recoger">
+  <div class="contenedor como">
+    <div class="como__intro">
+      <h2 id="t-recoger" class="titulo-seccion">Recoger o recibir tu pedido</h2>
+      <dl class="datos-clave">
+        <div class="dato"><dt>con entrega en {{COBERTURA_RESUMEN}}</dt><dd>{{TOTAL_ZONAS}} zonas</dd></div>
+        <div class="dato"><dt>se agenda al confirmar la cotización</dt><dd>Recogida con hora</dd></div>
+      </dl>
+    </div>
+    <div class="como__texto">
+      <p>
+        Horneamos en {{DIRECCION}}. No es un local de mostrador: trabajamos por encargo, así que
+        al confirmar tu cotización te pasamos por WhatsApp el punto exacto y la hora en que tu
+        pedido está listo.
+      </p>
+      <p>El costo del envío depende de la zona y lo confirmamos en la cotización, antes de agendar.</p>
+      <div class="grupo-btn">
+        <a class="btn btn--claro" href="https://wa.me/{{WHATSAPP}}" rel="noopener">{{ico:whatsapp}} Coordinar por WhatsApp</a>
       </div>
     </div>
   </div>
@@ -106,31 +77,22 @@
 <!-- ===================== ZONAS ===================== -->
 <section class="seccion" aria-labelledby="t-zonas">
   <div class="contenedor">
-    <div class="cabecera-seccion" data-reveal>
-      <span class="eyebrow eyebrow--ico">{{ico:camion}} Entregas a domicilio</span>
-      <h2 id="t-zonas">Zonas con entrega programada</h2>
-      <p class="entradilla">
-        Hacemos entregas programadas en estas {{TOTAL_ZONAS}} zonas de {{COBERTURA_RESUMEN}}. Si tu
-        dirección queda fuera, podés pasar a recoger tu pedido por la panadería. El costo del
-        envío depende de la zona y lo confirmamos en la cotización, antes de agendar.
-      </p>
-    </div>
-    <ul class="zonas zonas--agrupadas" data-reveal>
+    <h2 id="t-zonas" class="titulo-seccion">Zonas con entrega programada</h2>
+    <ul class="zonas zonas--agrupadas">
       {{ZONAS}}
     </ul>
+    <p class="nota-suelta">¿Tu zona no está? Podés recoger tu pedido con hora agendada.</p>
   </div>
 </section>
 
-<section class="seccion seccion--crema">
-  <div class="contenedor">
-    <div class="cta-final" data-reveal>
-      <span class="cta-final__ico" aria-hidden="true">{{ico:baguette:ico--xl}}</span>
-      <h2>Cotizá tu actividad hoy</h2>
-      <p>Con {{ANTICIPACION}} horas de anticipación te tenemos todo recién horneado.</p>
-      <div class="grupo-btn grupo-btn--centro">
-        <a class="btn btn--wa btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20hacer%20un%20encargo." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
-        <a class="btn btn--claro btn--grande" href="{{BASE}}menu/">{{ico:canasta}} Ver menú</a>
-      </div>
+<!-- ===================== CIERRE ===================== -->
+<section class="cierre" aria-labelledby="t-cierre">
+  <div class="contenedor cierre__caja">
+    <h2 id="t-cierre">¿Cuándo es tu actividad?</h2>
+    <p>Contanos la fecha y cuántas personas son. Te respondemos hoy.</p>
+    <div class="grupo-btn grupo-btn--centro">
+      <a class="btn btn--claro btn--grande" href="https://wa.me/{{WHATSAPP}}?text=%C2%A1Hola%20Cefas%20Panader%C3%ADa!%20Quiero%20hacer%20un%20encargo." rel="noopener">{{ico:whatsapp}} Cotizar por WhatsApp</a>
     </div>
+    <p class="cierre__alt"><a href="{{BASE}}menu/">Ver el menú</a></p>
   </div>
 </section>

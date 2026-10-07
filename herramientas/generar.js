@@ -23,6 +23,8 @@ const CAT = leerJSON('datos/productos.json');
 const SERV = leerJSON('datos/servicios.json');
 
 const DOMINIO = N.dominio.replace(/\/$/, '');
+// Ruta del sitio dentro del dominio: "/web" en github.io, "" con dominio propio.
+const RUTA_BASE = (N.rutaBase || '').replace(/\/$/, '');
 const HOY = new Date().toISOString().slice(0, 10);
 
 /* Fecha del último cambio real del contenido, para el <lastmod> del sitemap.
@@ -106,11 +108,14 @@ const ZONAS_TEXTO = N.cobertura.map((g) => {
 /* La FAQ ya resuelta, para que el texto visible y el JSON-LD digan lo mismo */
 const resolverFAQ = (lista) => (lista || []).map((f) => ({ p: f.p, r: f.r.replace(/\{zonas\}/g, ZONAS_TEXTO) }));
 const FAQ = resolverFAQ(CAT.faq);
+const FAQ_INICIO = FAQ.slice(0, 5);
 
 /* Foto de relleno mientras no haya fotos reales de cada producto.
    Poné el nombre del archivo en el campo "imagen" de datos/productos.json
    (categoría o producto) y se usa esa en lugar de la genérica.            */
 const IMG_GENERICA = 'pan-img-generico.jpg';
+// Foto del hero del inicio: es el LCP y la que se precarga.
+const IMG_PORTADA = 'docena-pan-dulce.jpg';
 
 /* Imagen de 1200×630 para compartir el enlace en WhatsApp y redes.
    La genera herramientas/optimizar-imagenes.js. */
@@ -180,16 +185,20 @@ const existeImg = (archivo) => fs.existsSync(path.join(RAIZ, 'assets/img', archi
 /* Cuánto ancho ocupa la foto en cada sitio donde se usa. Sin esto el
    navegador supone 100vw y vuelve a bajar la versión grande.            */
 const SIZES = {
-  hero: '(max-width: 900px) 92vw, 554px',
+  hero: '(max-width: 900px) 92vw, 600px',
   tarjeta: '(max-width: 560px) 92vw, (max-width: 1000px) 45vw, 300px',
   ancha: '(max-width: 900px) 92vw, 560px'
 };
 
-function foto(archivo, contexto, alt, { prioridad = false } = {}) {
+/* Las variantes de una foto que existen en disco, como candidatos de srcset.
+   El WebP sólo se usa si cubre los mismos anchos que el original: con un
+   juego parcial (pasa cuando el optimizador descarta el WebP grande porque
+   pesaba más que el JPEG) el navegador estiraba el de 400 en el hueco grande
+   y, en el hero, tiraba la precarga del JPEG.                              */
+function variantesDe(archivo) {
   const d = dimensionesDe(archivo);
-  const sizes = SIZES[contexto] || SIZES.tarjeta;
   const url = (a) => `{{BASE}}assets/img/${esc(a)}`;
-  const ext = (archivo.match(/\.(?:jpe?g|png)$/i) || ['.jpg'])[0];
+  const ext = (archivo.match(/.(?:jpe?g|png)$/i) || ['.jpg'])[0];
   const raiz = archivo.slice(0, archivo.length - ext.length);
 
   const juego = (extension) => [
@@ -197,8 +206,14 @@ function foto(archivo, contexto, alt, { prioridad = false } = {}) {
     existeImg(`${raiz}${extension}`) ? `${url(`${raiz}${extension}`)} ${d.w}w` : ''
   ].filter(Boolean);
 
-  const webp = juego('.webp');
   const nativo = juego(ext);
+  const webp = juego('.webp');
+  return { d, url, nativo, webp: webp.length === nativo.length ? webp : [] };
+}
+
+function foto(archivo, contexto, alt, { prioridad = false } = {}) {
+  const { d, url, nativo, webp } = variantesDe(archivo);
+  const sizes = SIZES[contexto] || SIZES.tarjeta;
 
   const img = '<img ' + [
     `src="${url(archivo)}"`,
@@ -231,12 +246,6 @@ function piezasPorUnidad(unidad) {
 const todosLosProductos = CATEGORIAS.flatMap((c) =>
   c.productos.map((p) => ({ ...p, categoria: c.nombre, categoriaId: c.id })));
 
-/* Presentaciones que traen varias piezas: la sección «Docenas, paquetes y
-   bandejas» del inicio, de la más chica a la más grande.               */
-const PAQUETES = todosLosProductos
-  .filter((p) => piezasPorUnidad(p.unidad) > 1)
-  .sort((a, b) => piezasPorUnidad(a.unidad) - piezasPorUnidad(b.unidad));
-
 /* --- Páginas -------------------------------------------------------------- */
 const PAGINAS = [
   {
@@ -264,7 +273,10 @@ const PAGINAS = [
     descripcion: 'Dirección, teléfono, WhatsApp y horarios de Cefas Panadería. Escribinos para cotizar pan y bocadillos para eventos en Ciudad de Guatemala y San Cristóbal.'
   },
   {
-    archivo: '404.html', ruta: '/404.html', profundidad: 0, nav: '', prioridad: null, noindex: true,
+    // GitHub Pages sirve el 404 en cualquier URL que no exista, también dentro de
+    // subcarpetas (/web/menu/viejo/): con rutas relativas salía sin estilos ni
+    // enlaces. Por eso es la única página con base absoluta.
+    archivo: '404.html', ruta: '/404.html', profundidad: 0, baseAbsoluta: true, nav: '', prioridad: null, noindex: true,
     plantilla: '404.html',
     titulo: 'Página no encontrada | Cefas Panadería',
     descripcion: 'La página que buscás no existe o cambió de dirección. Volvé al menú de Cefas Panadería para cotizar pan y bocadillos.'
@@ -289,26 +301,33 @@ PAGINAS.splice(PAGINAS.length - 1, 0, ...PAGINAS_SERVICIO, PAGINA_CALCULADORA);
 
 /* --- Bloques generados ---------------------------------------------------- */
 
-function tarjetasCategorias() {
-  return CATEGORIAS.map((c) => `
-        <a class="categoria" href="{{BASE}}menu/#${esc(c.id)}" data-reveal>
-          <div class="foto foto--16-10">
-            ${foto(archivoDe(c), 'tarjeta', `${c.nombre} en ${N.nombre}`)}
-            <span class="categoria__icono" aria-hidden="true">${ico(c.icono, 'ico--l')}</span>
-          </div>
-          <div class="categoria__cuerpo">
-            <h3>${esc(c.nombre)}</h3>
-            <p>${esc(c.descripcion)}</p>
-            <span class="categoria__enlace">Ver ${c.productos.length} productos ${ico('flecha', 'ico--desliza')}</span>
-          </div>
-        </a>`).join('\n');
+/* Inicio: fichas que abren el menú ya filtrado (el filtro vive en el hash) */
+function fichasCategorias() {
+  return CATEGORIAS.map((c) =>
+    `<a href="{{BASE}}menu/#${esc(c.id)}">${ico(c.icono)} ${esc(c.nombre)}</a>`).join('\n      ');
+}
+
+/* Inicio: los destacados publicados, con «Agregar a mi cotización» a la vista */
+/* Inicio: reseñas reales de clientes (datos/negocio.json). Sin estrellas ni
+   puntuaciones inventadas: sólo lo que dijeron, con su nombre de pila. */
+function resenas() {
+  return (N.resenas || []).map((r) => `
+      <figure class="resena" data-reveal>
+        <blockquote>«${esc(r.texto)}»</blockquote>
+        <figcaption><strong>${esc(r.nombre)}</strong>${r.pidio ? `<span>Pidió: ${esc(r.pidio)}</span>` : ''}</figcaption>
+      </figure>`).join('');
+}
+
+function destacados() {
+  return todosLosProductos.filter((p) => p.destacado).slice(0, 4)
+    .map((p) => tarjetaProducto(p, { insignia: true })).join('');
 }
 
 function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
   const buscar = `${p.nombre} ${p.descripcion} ${p.categoria || ''}`;
   const etiquetas = [
+    insignia ? `<span class="etiqueta etiqueta--top">${ico('estrella')} Lo más pedido</span>` : '',
     p.encargo ? `<span class="etiqueta etiqueta--encargo">${ico('calendario')} Por encargo</span>` : '',
-    insignia && !p.encargo ? `<span class="etiqueta etiqueta--favorito">${ico('estrella')} Favorito</span>` : ''
   ].filter(Boolean).join('');
 
   // El contador (− 2 +) lo crea app.js la primera vez que se agrega el
@@ -320,7 +339,7 @@ function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
     : `<a class="btn btn--secundario btn--compacto" href="{{BASE}}encargos/#formulario">${ico('chat')} Pedir cotización</a>`;
 
   return `
-          <article class="producto" data-producto data-id="${esc(p.id)}" data-nombre="${esc(p.nombre)}" data-unidad="${esc(p.unidad)}" data-buscar="${esc(buscar)}" data-reveal>
+          <article class="producto" data-producto data-id="${esc(p.id)}" data-nombre="${esc(p.nombre)}" data-unidad="${esc(p.unidad)}" data-buscar="${esc(buscar)}">
             <div class="foto foto--4-3">
               ${foto(archivoDe(p), 'tarjeta', `${p.nombre} en ${N.nombre}`)}
               ${etiquetas ? `<div class="foto__etiquetas">${etiquetas}</div>` : ''}
@@ -335,10 +354,6 @@ function tarjetaProducto(p, { conBoton = true, insignia = false } = {}) {
               </div>
             </div>
           </article>`;
-}
-
-function bloquePaquetes() {
-  return PAQUETES.map((p) => tarjetaProducto(p)).join('');
 }
 
 /* Desvío al menudeo: lo que se vende por pieza no se cotiza acá, se pide en
@@ -357,7 +372,7 @@ function bloquePedidosYa() {
           PedidosYa, con entrega inmediata.
         </p>
       </div>
-      <a class="btn btn--principal" href="${N.redes.pedidosya}" rel="noopener nofollow">
+      <a class="btn btn--secundario" href="${N.redes.pedidosya}" rel="noopener nofollow">
         ${ico('bolsa')} Pedir en PedidosYa
       </a>
     </div>`;
@@ -378,11 +393,6 @@ function botonesFiltro() {
     .concat(CATEGORIAS.map((c) =>
       `<button class="filtro" type="button" data-filtro="${esc(c.id)}" aria-pressed="false">${ico(c.icono)} ${esc(c.nombre)}</button>`));
   return botones.join('\n          ');
-}
-
-function destacados() {
-  return todosLosProductos.filter((p) => p.destacado).slice(0, 8)
-    .map((p) => tarjetaProducto(p, { insignia: true })).join('');
 }
 
 function bloqueFAQ(lista = FAQ) {
@@ -554,7 +564,7 @@ function schemaServicioEncargos() {
 
 function schemasDe(pagina) {
   const lista = [schemaNegocio(), schemaSitio(), schemaMigas(pagina)];
-  if (pagina.nav === 'inicio') lista.push(schemaFAQ());
+  if (pagina.nav === 'inicio') lista.push(schemaFAQ(FAQ_INICIO));
   if (pagina.nav === 'menu') lista.push(schemaMenu());
   if (pagina.nav === 'encargos') lista.push(schemaServicioEncargos());
   if (pagina.servicio) {
@@ -571,28 +581,27 @@ function schemasDe(pagina) {
   return lista;
 }
 
+/* Prefijo de las rutas internas de una página: relativo, salvo el 404. */
+function baseDe(pagina) {
+  return pagina.baseAbsoluta ? `${RUTA_BASE}/` : '../'.repeat(pagina.profundidad);
+}
+
 /* --- Layout --------------------------------------------------------------- */
 
-/* Precarga la foto grande del hero: es el LCP del inicio. Se precarga la
-   variante que el navegador va a elegir de verdad, no el original. */
+/* Precarga la foto grande del hero: es el LCP del inicio. Sale de las mismas
+   variantes que el <picture>, así que precarga el candidato que el navegador
+   va a elegir de verdad: si difieren, se baja la foto dos veces.          */
 function preloadHero(base) {
-  const ext = path.extname(IMG_GENERICA);
-  const raiz = IMG_GENERICA.slice(0, IMG_GENERICA.length - ext.length);
-  const webp = `${raiz}.webp`;
-  const usa = existeImg(webp) ? webp : IMG_GENERICA;
-  const tipo = usa.endsWith('.webp') ? 'image/webp' : 'image/jpeg';
-  const chica = `${raiz}-400${usa.endsWith('.webp') ? '.webp' : ext}`;
-  // Las dimensiones se leen del JPEG: dimensionesDe() sabe de PNG y JPEG, y
-  // el .webp sale del mismo original, así que mide lo mismo.
-  const ancho = dimensionesDe(IMG_GENERICA).w;
-  const srcset = existeImg(chica)
-    ? ` imagesrcset="${base}assets/img/${chica} 400w, ${base}assets/img/${usa} ${ancho}w" imagesizes="${SIZES.hero}"`
-    : '';
-  return `<link rel="preload" as="image" type="${tipo}" href="${base}assets/img/${usa}"${srcset} fetchpriority="high">`;
+  const { url, nativo, webp } = variantesDe(IMG_PORTADA);
+  const juego = webp.length ? webp : nativo;
+  const tipo = webp.length ? 'image/webp' : 'image/jpeg';
+  const href = (juego[juego.length - 1] || url(IMG_PORTADA)).split(' ')[0];
+  const srcset = juego.length > 1 ? ` imagesrcset="${juego.join(', ')}" imagesizes="${SIZES.hero}"` : '';
+  return `<link rel="preload" as="image" type="${tipo}" href="${href}"${srcset} fetchpriority="high">`.split('{{BASE}}').join(base);
 }
 
 function cabeza(pagina) {
-  const base = '../'.repeat(pagina.profundidad);
+  const base = baseDe(pagina);
   const url = `${DOMINIO}${pagina.ruta}`;
   // Imagen para compartir: 1200×630, la medida que esperan WhatsApp, Facebook
   // y X. Antes iba el logo cuadrado con transparencia y salía recortado sobre
@@ -606,13 +615,13 @@ function cabeza(pagina) {
 <html lang="es-GT">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(pagina.titulo)}</title>
 <meta name="description" content="${esc(pagina.descripcion)}">
 <link rel="canonical" href="${url}">
 ${pagina.noindex ? '<meta name="robots" content="noindex, follow">' : '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">'}
 <meta name="author" content="${esc(N.nombre)}">
-<meta name="theme-color" content="#171310">
+<meta name="theme-color" content="#FFFFFF">
 
 <!-- Geolocalización (SEO local Guatemala) -->
 <meta name="geo.region" content="GT-GU">
@@ -648,7 +657,7 @@ ${ogAlto ? `<meta property="og:image:width" content="${ogAlto.w}">
      venían de fonts.googleapis.com, que añadía dos conexiones TLS al camino
      crítico. Se precargan los dos subconjuntos latinos, los únicos que usa
      el español. -->
-<link rel="preload" as="font" type="font/woff2" href="${base}assets/fonts/fraunces-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="${base}assets/fonts/bricolage-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="${base}assets/fonts/inter-latin.woff2" crossorigin>
 <link rel="stylesheet" href="${base}assets/css/estilos.css">
 ${pagina.nav === 'inicio' ? preloadHero(base) : ''}
@@ -662,7 +671,7 @@ ${enlaces}
 }
 
 function cabecera(pagina) {
-  const base = '../'.repeat(pagina.profundidad);
+  const base = baseDe(pagina);
   const item = (href, texto, clave) =>
     `<a href="${base}${href}"${pagina.nav === clave ? ' aria-current="page"' : ''}>${texto}</a>`;
 
@@ -686,8 +695,11 @@ function cabecera(pagina) {
     </nav>
 
     <div class="cabecera__acciones">
-      <button class="btn btn--principal carrito-btn" type="button" data-carrito-abrir aria-label="Ver mi pedido">
-        ${ico('canasta')}<span class="btn--texto-largo">Mi pedido</span>
+      <button class="busqueda-btn" type="button" data-busqueda-abrir aria-label="Buscar productos" aria-expanded="false" aria-controls="busqueda">
+        ${ico('lupa')}
+      </button>
+      <button class="btn btn--secundario carrito-btn" type="button" data-carrito-abrir aria-label="Mi cotización">
+        ${ico('canasta')}<span class="btn--texto-largo">Mi cotización</span>
         <span class="carrito-btn__contador" data-carrito-contador hidden>0</span>
       </button>
       <button class="menu-btn" type="button" data-menu-btn aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="nav-principal">
@@ -696,11 +708,45 @@ function cabecera(pagina) {
     </div>
   </div>
   <div class="cabecera__progreso" data-progreso aria-hidden="true"></div>
+  ${cajaBusqueda(pagina)}
 </header>`;
 }
 
+/* Búsqueda desde la cabecera, en todas las páginas: los resultados salen ahí
+   mismo con «Agregar», sin ir al menú. Los productos viajan en un JSON chico
+   (sólo los publicados) y app.js filtra en el navegador. */
+function cajaBusqueda(pagina) {
+  const base = baseDe(pagina);
+  const miniatura = (p) => {
+    const archivo = archivoDe(p);
+    const chica = archivo.replace(/(\.[a-z]+)$/i, '-400$1');
+    return `${base}assets/img/${existeImg(chica) ? chica : archivo}`;
+  };
+  const productos = todosLosProductos.map((p) => ({
+    id: p.id, nombre: p.nombre, unidad: p.unidad, categoria: p.categoria,
+    desc: p.descripcion || '', img: miniatura(p)
+  }));
+  return `
+  <div class="busqueda" id="busqueda" data-busqueda hidden>
+    <div class="contenedor">
+      <div class="busqueda__caja" role="search">
+        <label class="solo-lectores" for="busqueda-texto">Buscar productos</label>
+        <span class="busqueda__ico" aria-hidden="true">${ico('lupa')}</span>
+        <input type="search" id="busqueda-texto" data-busqueda-texto placeholder="Buscar pan, bandeja o coffee break…" autocomplete="off" enterkeyhint="search">
+        <ul class="busqueda__lista" data-busqueda-lista></ul>
+        <p class="busqueda__vacio" data-busqueda-vacio hidden>
+          No encontramos ese producto. <a href="https://wa.me/${esc(N.whatsapp)}" rel="noopener">Preguntanos por WhatsApp</a>.
+        </p>
+        <p class="solo-lectores" data-busqueda-estado aria-live="polite"></p>
+        <a class="busqueda__menu" href="${base}menu/">Ver el menú completo ${ico('flecha')}</a>
+      </div>
+    </div>
+    <script type="application/json" data-productos-datos>${jsonld(productos)}</script>
+  </div>`;
+}
+
 function pie(pagina) {
-  const base = '../'.repeat(pagina.profundidad);
+  const base = baseDe(pagina);
   const redes = [];
   const enlaceRed = (url, icono, texto, rel = 'noopener') =>
     `<li><a href="${url}" rel="${rel}">${ico(icono)} ${texto}</a></li>`;
@@ -763,21 +809,26 @@ function pie(pagina) {
 </a>`;
 }
 
-/* Barra fija de cotización para móvil. */
-function barraVenta() {
+/* Barra inferior tipo app, sólo en móvil y siempre visible: inicio, menú,
+   la cotización (con su contador) y WhatsApp a un toque. Reemplaza a la
+   barra de venta que sólo aparecía con productos y al flotante de WhatsApp. */
+function barraApp(pagina) {
+  const base = baseDe(pagina);
+  const actual = (nav) => (pagina.nav === nav ? ' aria-current="page"' : '');
   return `
-<div class="barra-venta" data-barra-venta hidden>
-  <div class="barra-venta__info">
-    <span><span data-carrito-unidades>0</span> en tu cotización</span>
-  </div>
-  <button class="btn btn--wa" type="button" data-carrito-abrir>
-    ${ico('canasta')} Ver mi cotización
+<nav class="barra-app" aria-label="Accesos rápidos">
+  <a href="${base}index.html"${actual('inicio')}>${ico('casa')}<span>Inicio</span></a>
+  <a href="${base}menu/"${actual('menu')}>${ico('pan')}<span>Menú</span></a>
+  <button type="button" data-carrito-abrir>
+    <span class="barra-app__ico">${ico('canasta')}<span class="barra-app__contador" data-carrito-contador hidden>0</span></span>
+    <span>Mi cotización</span>
   </button>
-</div>`;
+  <a class="barra-app__wa" href="https://wa.me/${esc(N.whatsapp)}?text=${encodeURIComponent('¡Hola Cefas Panadería! Quiero cotizar un encargo.')}" rel="noopener">${ico('whatsapp')}<span>WhatsApp</span></a>
+</nav>`;
 }
 
 function panelCarrito(pagina) {
-  const base = '../'.repeat(pagina.profundidad);
+  const base = baseDe(pagina);
   return `
 <div class="velo" data-velo hidden></div>
 <aside class="panel" data-panel hidden role="dialog" aria-modal="true" aria-label="Mi cotización">
@@ -842,9 +893,14 @@ function varsServicio(s) {
     SERVICIO_H1: esc(s.h1),
     SERVICIO_INTRO: esc(s.intro),
     SERVICIO_PARA_QUIEN: esc(s.paraQuien),
+    // La calculadora es por persona: no aplica a servicios como el mayoreo
+    SERVICIO_CALCULADORA: s.calculadora === false ? ''
+      : '<p><a href="{{BASE}}cuanto-pan/">¿Cuánto pan necesito? {{ico:flecha:ico--desliza}}</a></p>',
     SERVICIO_INCLUYE: s.incluye.map((t) => `<li>{{ico:check}} <span>${esc(t)}</span></li>`).join('\n          '),
     SERVICIO_DATOS: s.datos.map((d) =>
-      `<div><span class="confianza__ico" aria-hidden="true">{{ico:${d.icono}}}</span><strong>${esc(d.valor)}</strong><span>${esc(d.etiqueta)}</span></div>`
+      // En la banda «Cómo pedir»: el valor grande arriba y la etiqueta debajo
+      // (el orden visual lo invierte el CSS; el lector oye «personas: Desde 10»)
+      `<div class="dato"><dt>${esc(d.etiqueta)}</dt><dd>${esc(d.valor)}</dd></div>`
     ).join('\n    '),
     SERVICIO_PRODUCTOS: productos.map((p) => tarjetaProducto(p)).join(''),
     SERVICIO_FAQ: bloqueFAQ(resolverFAQ(s.faq)),
@@ -896,7 +952,7 @@ function enlacesServicios(base) {
 /* --- Sustitución de variables --------------------------------------------- */
 
 function sustituir(html, pagina) {
-  const base = '../'.repeat(pagina.profundidad);
+  const base = baseDe(pagina);
   const mapa = {
     BASE: base,
     NOMBRE: esc(N.nombre),
@@ -910,23 +966,18 @@ function sustituir(html, pagina) {
     CIUDAD: esc(N.direccion.ciudad),
     DOMINIO,
     PEDIDOSYA: N.redes.pedidosya || '',
-    MAPA_EMBED: N.redes.googleMapsEmbed || '',
     ANTICIPACION: String(N.anticipacionEncargoHoras),
-    ENTREGA_SOLO: esc(N.entregaSolo),
     COBERTURA_RESUMEN: esc(N.coberturaResumen),
-    TOTAL_MUNICIPIOS: String(N.cobertura.length),
     TOTAL_PRODUCTOS: String(todosLosProductos.length),
-    TOTAL_CATEGORIAS: String(CATEGORIAS.length),
     TOTAL_ZONAS: String(ZONAS.length),
-    CATEGORIAS_TARJETAS: tarjetasCategorias(),
     MENU_COMPLETO: menuCompleto(),
     FILTROS: botonesFiltro(),
-    DESTACADOS: destacados(),
-    PAQUETES: bloquePaquetes(),
     PEDIDOSYA_BLOQUE: bloquePedidosYa(),
-    FAQ: bloqueFAQ(),
+    CATEGORIAS_FICHAS: fichasCategorias(),
+    DESTACADOS: destacados(),
+    RESENAS: resenas(),
+    FAQ: bloqueFAQ(FAQ_INICIO),
     ZONAS: bloqueZonas(),
-    ZONAS_TEXTO: esc(ZONAS_TEXTO),
     HORARIOS: bloqueHorarios(),
     OPCIONES_PRODUCTO: opcionesProducto(),
     OPCIONES_ZONA: opcionesZona(),
@@ -985,7 +1036,7 @@ function fotosDe(html) {
 /* Devuelve las fotos de la página, que el sitemap necesita después. */
 function construirPagina(pagina) {
   const cuerpo = fs.readFileSync(path.join(RAIZ, 'plantillas', pagina.plantilla), 'utf8');
-  const base = '../'.repeat(pagina.profundidad);
+  const base = baseDe(pagina);
 
   const contenido = [
     cabecera(pagina),
@@ -993,7 +1044,7 @@ function construirPagina(pagina) {
     sustituir(cuerpo, pagina).trim(),
     '</main>',
     pie(pagina),
-    barraVenta(),
+    barraApp(pagina),
     panelCarrito(pagina)
   ].join('\n');
 
@@ -1058,8 +1109,8 @@ function construirManifest() {
     start_url: './',
     scope: './',
     display: 'standalone',
-    background_color: '#FDF8F1',
-    theme_color: '#171310',
+    background_color: '#F2EEE8',
+    theme_color: '#FFFFFF',
     icons: [
       { src: `assets/img/${LOGO}`, sizes: '512x512', type: 'image/png', purpose: 'any' },
       { src: `assets/img/${LOGO_MASKABLE}`, sizes: '512x512', type: 'image/png', purpose: 'maskable' }

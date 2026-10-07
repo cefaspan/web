@@ -8,6 +8,8 @@ const path = require('path');
 
 const RAIZ = path.resolve(__dirname, '..');
 const SERV = JSON.parse(fs.readFileSync(path.join(RAIZ, 'datos/servicios.json'), 'utf8'));
+const N = JSON.parse(fs.readFileSync(path.join(RAIZ, 'datos/negocio.json'), 'utf8'));
+const RUTA_BASE = (N.rutaBase || '').replace(/\/$/, '');
 const PAGINAS = [
   'index.html', 'menu/index.html', 'encargos/index.html', 'contacto/index.html',
   ...SERV.servicios.map((s) => `${s.id}/index.html`),
@@ -86,7 +88,10 @@ function comprobarPagina(rel) {
   const rotos = locales.filter((h) => {
     const limpio = h.split('#')[0].split('?')[0];
     if (!limpio) return false;
-    let destino = path.resolve(dirPagina, limpio);
+    // Las rutas absolutas (sólo el 404 las usa) cuelgan de rutaBase, no de la página
+    let destino = limpio.startsWith('/')
+      ? path.join(RAIZ, limpio.startsWith(RUTA_BASE + '/') ? limpio.slice(RUTA_BASE.length) : limpio)
+      : path.resolve(dirPagina, limpio);
     if (limpio.endsWith('/')) destino = path.join(destino, 'index.html');
     return !fs.existsSync(destino);
   });
@@ -146,8 +151,8 @@ console.log('\n── archivos de soporte');
 ['sitemap.xml', 'robots.txt', 'manifest.webmanifest', '.nojekyll', 'assets/css/estilos.css',
  'assets/js/app.js', 'assets/img/logo-cefas.png', 'assets/img/logo-cefas-192.png',
  'assets/img/logo-cefas-maskable.png', 'assets/img/og-cefas.jpg',
- 'assets/fonts/fraunces-latin.woff2', 'assets/fonts/inter-latin.woff2',
- 'assets/fonts/fraunces-latin-ext.woff2', 'assets/fonts/inter-latin-ext.woff2'].forEach((f) => {
+ 'assets/fonts/bricolage-latin.woff2', 'assets/fonts/inter-latin.woff2',
+ 'assets/fonts/bricolage-latin-ext.woff2', 'assets/fonts/inter-latin-ext.woff2'].forEach((f) => {
   if (fs.existsSync(path.join(RAIZ, f))) ok(f);
   else fallo(`falta ${f}`);
 });
@@ -167,7 +172,6 @@ catch (e) { fallo(`manifest inválido: ${e.message}`); }
 
 // --- Datos pendientes de configurar ---------------------------------------
 console.log('\n── datos del negocio pendientes');
-const N = JSON.parse(fs.readFileSync(path.join(RAIZ, 'datos/negocio.json'), 'utf8'));
 if (/0000/.test(N.telefono) || /0000/.test(N.whatsapp)) aviso('teléfono / WhatsApp sigue siendo un valor de ejemplo');
 if (/PENDIENTE/i.test(N.direccion.calle)) aviso('la dirección exacta sigue pendiente');
 if (!N.direccion.ciudad) fallo('datos/negocio.json → direccion.ciudad vacío: addressLocality sale en blanco');
