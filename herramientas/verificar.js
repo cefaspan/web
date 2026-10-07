@@ -28,7 +28,7 @@ function comprobarPagina(rel) {
   const html = fs.readFileSync(path.join(RAIZ, rel), 'utf8');
 
   // 1. Plantilla completamente resuelta
-  const pendientes = html.match(/\{\{\w+\}\}/g);
+  const pendientes = html.match(/\{\{[^}]+\}\}|\{zonas\}/g);
   if (pendientes) fallo(`variables sin resolver: ${[...new Set(pendientes)].join(', ')}`);
   else ok('sin variables de plantilla pendientes');
 
@@ -141,10 +141,67 @@ function comprobarPagina(rel) {
   // 10. Peso
   const kb = Buffer.byteLength(html, 'utf8') / 1024;
   if (kb > 150) aviso(`página de ${kb.toFixed(0)} KB (considerá aligerarla)`);
+
+  // 11. «Un solo botón principal». Un botón sólido (principal, claro, oscuro
+  //     o wa; grande o no, con las clases en cualquier orden) sólo puede ser de
+  //     cotizar o de armar la cotización. Lo demás va de contorno o como enlace.
+  //     La lista es exacta a propósito: un texto nuevo obliga a decidirlo aquí.
+  const SOLIDOS = ['btn--principal', 'btn--claro', 'btn--oscuro', 'btn--wa'];
+  const BOTONES_PERMITIDOS = /^(?:Cotizar por WhatsApp|Pedir cotización por WhatsApp|Enviar mi encargo por WhatsApp|Llenar el formulario|Agregar a mi cotización|Agregar todo a mi cotización|Coordinar por WhatsApp)$/;
+  const ajenos = [...html.matchAll(/<(a|button)\b([^>]*)>([\s\S]*?)<\/\1>/g)]
+    .filter((m) => {
+      const clases = ((m[2].match(/\bclass="([^"]*)"/) || [])[1] || '').split(/\s+/);
+      return clases.includes('btn') && clases.some((c) => SOLIDOS.includes(c));
+    })
+    .map((m) => m[3].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim())
+    .filter((t) => !BOTONES_PERMITIDOS.test(t) && !(rel === '404.html' && t === 'Ver el menú'));
+  // Con el inicio corto ya no queda ninguno: desde aquí es error, no aviso.
+  if (ajenos.length) fallo(`botón sólido que no es de cotizar: «${[...new Set(ajenos)].join('», «')}» (usá uno de contorno o un enlace)`);
+
+  //     Un mismo trato en todo el sitio: el sitio habla de vos. Las reseñas
+  //     (<blockquote>) son palabras del cliente y no se miran. Sólo se buscan
+  //     formas que no pueden ser otra cosa que tú (quieres ≠ querés, escríbenos
+  //     ≠ escribinos). «Elige», «pide», «agrega» o «llena» no se buscan: son
+  //     también tercera persona («la mayoría elige…») y darían avisos falsos.
+  const texto = html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<blockquote[\s\S]*?<\/blockquote>/g, ' ')
+    .replace(/<[^>]+>/g, ' ');
+  const tuteo = texto.match(/(?<!\p{L})(?:tú|quieres|tienes|necesitas|puedes|prefieres|eliges|pides|sabes|vienes|escríbenos|cuéntanos|llámanos|pídenos|avísanos|pídelo|pídela|agrégalo|agrégala|llénalo|revísalo)(?!\p{L})/giu);
+  if (tuteo) aviso(`tuteo en un sitio que habla de vos: ${[...new Set(tuteo)].join(', ')}`);
+}
+
+// El inicio no crece: «si se agrega algo, que sea reemplazando, no sumando».
+// Se cuentan los bloques de primer nivel dentro de <main>, sea cual sea su
+// etiqueta (section, div, aside, nav, figure…): reescribir un bloque como <div>
+// no lo esconde. Hoy son 8: portada, tira de categorías, servicios, lo más
+// pedido, reseñas, cómo pedir, preguntas y cierre. Para sumar un bloque hay que
+// quitar otro; subir este número tiene que ser una decisión a propósito.
+const MAX_BLOQUES_INICIO = 8;
+const VACIAS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr']);
+function bloquesDeMain(html) {
+  const main = (html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/) || [])[1] || '';
+  const limpio = main.replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<(script|style|template)\b[\s\S]*?<\/\1>/g, '<$1></$1>');
+  const bloques = [];
+  let nivel = 0;
+  for (const m of limpio.matchAll(/<(\/?)([a-zA-Z][\w-]*)\b[^>]*?(\/?)>/g)) {
+    const [, cierra, tag, auto] = m;
+    const t = tag.toLowerCase();
+    if (VACIAS.has(t) || auto) { if (!nivel && !cierra) bloques.push(t); continue; }
+    if (cierra) { nivel--; continue; }
+    if (!nivel) bloques.push(t);
+    nivel++;
+  }
+  return bloques;
 }
 
 console.log('Verificando el sitio generado…');
 PAGINAS.forEach(comprobarPagina);
+
+console.log('\n── inicio corto');
+const bloquesInicio = bloquesDeMain(fs.readFileSync(path.join(RAIZ, 'index.html'), 'utf8'));
+if (bloquesInicio.length > MAX_BLOQUES_INICIO) {
+  fallo(`el inicio tiene ${bloquesInicio.length} bloques (tope ${MAX_BLOQUES_INICIO}): reemplazá uno en vez de sumar otro`);
+} else ok(`inicio con ${bloquesInicio.length} bloques (tope ${MAX_BLOQUES_INICIO}): ${bloquesInicio.join(', ')}`);
 
 // --- Archivos de soporte ---------------------------------------------------
 console.log('\n── archivos de soporte');
@@ -163,7 +220,13 @@ const fotosSitemap = [...sitemap.matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].m
 ok(`sitemap con ${locs.length} URLs y ${fotosSitemap.length} imágenes`);
 if (!fotosSitemap.length) aviso('el sitemap no lleva imágenes: ¿las páginas no tienen fotos?');
 // Las fotos del sitemap tienen que existir: Google penaliza los 404 en el sitemap
-const fotosRotas = fotosSitemap.filter((u) => !fs.existsSync(path.join(RAIZ, u.replace(/^https?:\/\/[^/]+\/[^/]+\//, ''))));
+// Se quita rutaBase («/web»), no «el primer directorio»: con dominio propio
+// (rutaBase "/") la regla anterior cortaba «assets/» y todo salía roto.
+const fotosRotas = fotosSitemap.filter((u) => {
+  let ruta = decodeURIComponent(new URL(u).pathname);
+  if (RUTA_BASE && ruta.startsWith(RUTA_BASE + '/')) ruta = ruta.slice(RUTA_BASE.length);
+  return !fs.existsSync(path.join(RAIZ, ruta));
+});
 if (fotosRotas.length) fallo(`imágenes del sitemap que no existen: ${fotosRotas.join(', ')}`);
 const lastmods = [...sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]);
 if (lastmods.some((d) => !/^\d{4}-\d{2}-\d{2}$/.test(d))) fallo('lastmod con formato inválido en el sitemap');

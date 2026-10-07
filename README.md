@@ -97,8 +97,18 @@ tienda de San Martín, sin precios):
 6. **Preguntas frecuentes** (son las que alimentan el JSON-LD `FAQPage`: no quitarlas).
 7. **Cierre**: una pregunta y el mismo botón.
 
+Después se sumaron las **reseñas** (entre «Lo más pedido» y «Cómo pedir»), con la invitación
+a **pedir una prueba** como enlace debajo, no como sección ni botón aparte. Que se hornea el
+día del evento se dice una vez, en el paso 3 de «Cómo pedir» (el título de la portada sólo dice
+«recién horneado»), y la cotización del mismo día una vez, en el paso 2.
+
 Los productos, la lista de zonas y el desvío a PedidosYa viven en el menú y en contacto, no
-en el inicio. Si se agrega algo al inicio, que sea reemplazando, no sumando.
+en el inicio. Si se agrega algo al inicio, que sea reemplazando, no sumando: `verificar.js`
+**falla** si el `<main>` de `index.html` pasa de `MAX_BLOQUES_INICIO = 8` bloques de primer
+nivel (cualquier etiqueta: las 7 secciones más la tira de categorías) o si en cualquier página
+aparece un botón sólido que no sea de cotizar o de armar la cotización (la lista exacta está
+en `BOTONES_PERMITIDOS`). Avisa, sin fallar, si aparece un texto en tú (el sitio habla de
+vos; las reseñas, que son palabras del cliente, no se revisan).
 
 Las demás páginas siguen el mismo patrón (portada → bloque principal → banda oscura con
 datos y pasos → preguntas → cierre con un botón):
@@ -150,9 +160,13 @@ ni su tipografía).
   peso y color, no sólo por tamaño.
 - **Sin etiquetas en mayúsculas** sobre cada título.
 
-> No hay reseñas, estrellas ni "clientes satisfechos" en el sitio. Poner testimonios
-> inventados es lo que más rápido quema la confianza (y Google penaliza el marcado de
-> reseñas falsas). Cuando tengas reseñas reales de Google, se enlazan y listo.
+> Las reseñas del inicio salen de `datos/negocio.json → resenas`. Cada una tiene que ser de
+> un cliente real y con sus palabras, publicada sólo con el nombre de pila (sin apellido ni
+> datos que lo identifiquen): poner testimonios inventados es lo que más rápido quema la confianza (y Google
+> penaliza el marcado de reseñas falsas). Van sin estrellas ni marcado `Review`, porque
+> Google no muestra reseñas que el negocio publica sobre sí mismo. Cada `pedido` lista lo que
+> encargó el cliente (`{ "nombre", "img" }`); conviene que sean productos que se pueden
+> cotizar. Cuando haya reseñas en Google, se enlazan desde la sección.
 
 ---
 
@@ -164,14 +178,22 @@ El sitio está completo y funcional. Queda **un pendiente de contenido**:
 |---|---|---|
 | Teléfono y WhatsApp | `datos/negocio.json` → `telefono`, `telefonoE164`, `whatsapp` | ✅ `+502 4637-9417` |
 | Dirección pública | `datos/negocio.json` → `direccion` | ✅ zona 6, sin calle exacta (ver abajo) |
-| Zonas de entrega | `datos/negocio.json` → `cobertura` | ✅ 11 zonas de la capital + San Cristóbal y Mixco z11 |
+| Zonas de entrega | `datos/negocio.json` → `cobertura` | ✅ 12 zonas de la capital (incluida la 6) + San Cristóbal y Mixco z11 |
 | Nombres y descripciones | `datos/productos.json` | ⚠️ **de ejemplo**, hay que reemplazarlos |
-| Fotos de los productos | `assets/img/` | ⚠️ todas usan la misma foto de relleno |
+| Fotos de los productos | `assets/img/` | ⚠️ 17 fotos propias; confirmar que son del pan real |
 
 El formulario de encargos pide la **zona en una lista cerrada** generada desde `cobertura`, con
 una opción «Otra zona: paso a recoger»: así no llega por WhatsApp un pedido a domicilio a una
 zona a la que no se llega. El campo sólo aparece —y sólo es obligatorio— si el cliente elige
 entrega a domicilio.
+
+La fecha exige `anticipacionEncargoHoras` (24 h). Los productos con `"anticipacionDias": 3`
+en `productos.json` (coffee break y cajas) y el tipo «Coffee break / desayunos»
+(`data-anticipacion-dias` en `encargos.html`) no bloquean una fecha más próxima, pero muestran
+un aviso bajo la fecha y lo dicen en el mensaje. Se cuenta por días de calendario, no por
+horas, y se recalcula al cambiar el tipo, la fecha o la cotización. Las páginas de
+servicio abren el formulario con su tipo ya elegido (`"tipoFormulario"` en `servicios.json`,
+que tiene que coincidir con una opción del `<select>`).
 
 ### Dirección: sólo la zona 6, y a propósito
 
@@ -301,8 +323,8 @@ acepta `imagen`.
 
 ### Fotos de los productos
 
-Hoy **todas las tarjetas usan la misma foto de relleno**: `assets/img/pan-img-generico.jpg`.
-Para poner las fotos reales:
+Hoy 17 productos tienen su propia foto (campo `"imagen"`). Los que no la tienen usan la
+genérica, `assets/img/pan-img-generico.jpg`. Para cambiar o agregar una:
 
 1. Guardá la imagen en `assets/img/` (cuadrada o 4:3, ~800 px de lado es suficiente).
 2. Agregá `"imagen": "nombre-del-archivo.jpg"` al producto o a la categoría.
@@ -413,7 +435,10 @@ posicionar la marca. Después de comprarlo:
 - Sitemap con la extensión de imágenes de Google (las fotos de cada página) y un `lastmod`
   que sale del último commit que tocó el contenido, no de la fecha de generación.
 - `Menu` completo, sin precios: acá todo se cotiza.
-- `FAQPage` con 11 preguntas que la gente busca tal cual («¿cuántos bocadillos por persona?»,
+- `FAQPage` del inicio con las **5 primeras** preguntas de `productos.json → faq`, más la FAQ
+  propia de cada servicio y la de la calculadora (`servicios.json`). Antes de subir una
+  pregunta al inicio, buscala en `servicios.json`: si ya está en otra página, quedaría dos
+  veces. Preguntas que la gente busca tal cual («¿cuántos bocadillos por persona?»,
   «¿emiten factura?»), y la lista de zonas derivada de `cobertura` (no copiada a mano).
 - **Una página por servicio** (`datos/servicios.json`): coffee break, cajas de desayuno, bandejas
   de bocadillos y pan al mayoreo. Cada una con el H1 que la gente busca, qué incluye, para quién,
@@ -447,8 +472,8 @@ Por orden de impacto:
    este sitio, y activá mensajes y productos. Es lo más importante de toda la lista.
 2. **Reseñas** — pedí reseñas a los clientes habituales, con una tarjetita con QR en el
    mostrador. Respondé todas. Es el segundo factor de ranking local.
-3. **Fotos reales** — es el pendiente más grande del sitio: hoy las 17 fotos son de relleno
-   y todas las tarjetas muestran la misma. Una foto por producto sube la conversión
+3. **Fotos reales** — las 17 fotos de producto ya están; falta confirmar que muestran el
+   pan que de verdad hornean y sumar fotos del equipo y del montaje. Una foto real sube la conversión
    notablemente, y de ahí sale también la imagen que se ve al compartir el enlace
    (`og-cefas.jpg`, ver arriba).
 4. **Google Search Console** — `search.google.com/search-console`, verificá el dominio y
@@ -472,7 +497,11 @@ consentimiento). Está **apagado** hasta poner el código de la cuenta en `datos
 (si el panel es `cefas.goatcounter.com`, el código es `cefas`). Además de las visitas, `app.js`
 cuenta estos clics como eventos, con la página donde ocurrieron:
 
-- `whatsapp-<página>`: cualquier botón o enlace de WhatsApp (`whatsapp-prueba-<página>` si es para pedir una prueba)
+- `whatsapp-<página>-<bloque>`: cualquier botón o enlace de WhatsApp, con el bloque donde se
+  tocó (`whatsapp-inicio-portada`, `whatsapp-inicio-como-pedir`, `whatsapp-coffee-break-cierre`,
+  `whatsapp-menu-wa-flotante`…). Si es para pedir una prueba: `whatsapp-prueba-<página>-<bloque>`.
+  El bloque es el `id` de la sección, o su título (`aria-labelledby="t-como"` → `como`), o su
+  `aria-label`. Tras 3 o 4 semanas, el bloque con 0 clics es el candidato a reemplazar.
 - `llamada-<página>` y `pedidosya-<página>`
 - `cotizacion-panel` y `cotizacion-formulario`: cotizaciones enviadas
 
@@ -485,7 +514,8 @@ cuenta estos clics como eventos, con la página donde ocurrieron:
   de `cefas_pedido_v1` a propósito: las listas guardadas con la versión anterior traían
   precios y no se reutilizan.
 - **El formulario no envía datos a ningún servidor**: sólo arma el texto de WhatsApp. No hay
-  backend, ni cookies, ni tracking.
+  backend ni cookies. La única medición es GoatCounter (sin cookies), y sólo si
+  `analitica.goatcounter` tiene un código.
 - **PedidosYa** se enlaza con `rel="nofollow"` para entregas inmediatas, sin ceder autoridad.
 - Los `.html` generados se versionan a propósito: GitHub Pages los sirve tal cual, sin build.
 - **Iconos**: sprite SVG inline (`herramientas/iconos.js`). Sin fuentes de iconos ni

@@ -84,7 +84,7 @@
     "streetAddress": "Zona 6, Ciudad de Guatemala",
     "addressLocality": "Ciudad de Guatemala",
     "addressRegion": "Guatemala",
-    "postalCode": "01001",
+    "postalCode": "01006",
     "addressCountry": "GT"
   },
   "geo": {
@@ -138,6 +138,10 @@
     {
       "@type": "Place",
       "name": "Zona 5, Ciudad de Guatemala"
+    },
+    {
+      "@type": "Place",
+      "name": "Zona 6, Ciudad de Guatemala"
     },
     {
       "@type": "Place",
@@ -274,6 +278,11 @@
           "@type": "MenuItem",
           "name": "Docena Surtida de Pan Dulce",
           "description": "Docena surtida con champurradas, cubiletes, magdalenas y conchas. La forma más fácil de llevar de todo."
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Pan de Figuras (docena)",
+          "description": "Docena de pan dulce con forma de tortuga y cocodrilo, hecho a mano. El favorito de las actividades con niños."
         }
       ]
     },
@@ -285,7 +294,7 @@
         {
           "@type": "MenuItem",
           "name": "Caja de Desayuno",
-          "description": "Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido."
+          "description": "Caja individual con pan dulce, croissant, jugo y café."
         },
         {
           "@type": "MenuItem",
@@ -402,13 +411,23 @@
     "minimo": 1
   },
   {
+    "id": "pan-figuras-docena",
+    "nombre": "Pan de Figuras (docena)",
+    "unidad": "docena",
+    "categoria": "Pan Dulce Tradicional",
+    "desc": "Docena de pan dulce con forma de tortuga y cocodrilo, hecho a mano. El favorito de las actividades con niños.",
+    "img": "../assets/img/pan-tortuga-400.jpg",
+    "minimo": 1
+  },
+  {
     "id": "caja-desayuno",
     "nombre": "Caja de Desayuno",
     "unidad": "por caja",
     "categoria": "Encargos para Eventos y Empresas",
-    "desc": "Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido.",
+    "desc": "Caja individual con pan dulce, croissant, jugo y café.",
     "img": "../assets/img/caja-desayuno-400.jpg",
-    "minimo": 10
+    "minimo": 10,
+    "anticipacionDias": 3
   },
   {
     "id": "coffee-break",
@@ -417,7 +436,8 @@
     "categoria": "Encargos para Eventos y Empresas",
     "desc": "Servicio de coffee break: pan dulce surtido, bocadillos salados, café y agua.",
     "img": "../assets/img/coffee-break-400.jpg",
-    "minimo": 10
+    "minimo": 10,
+    "anticipacionDias": 3
   },
   {
     "id": "bandeja-bocadillos",
@@ -463,7 +483,7 @@
 
     <h1>Menú para eventos y actividades</h1>
     <p class="portada__sub">
-      9 presentaciones para repartir. Agregá lo que necesitás y enviá tu
+      10 presentaciones para repartir. Agregá lo que necesitás y enviá tu
       cotización por WhatsApp en un clic.
     </p>
 
@@ -560,6 +580,21 @@
               </div>
             </div>
           </article>
+          <article class="producto" data-producto data-id="pan-figuras-docena" data-nombre="Pan de Figuras (docena)" data-unidad="docena" data-buscar="Pan de Figuras (docena) Docena de pan dulce con forma de tortuga y cocodrilo, hecho a mano. El favorito de las actividades con niños. Pan Dulce Tradicional">
+            <div class="foto foto--4-3">
+              <picture><source type="image/webp" srcset="../assets/img/pan-tortuga-400.webp 400w, ../assets/img/pan-tortuga.webp 800w" sizes="(max-width: 560px) 92vw, (max-width: 1000px) 45vw, 300px"><img src="../assets/img/pan-tortuga.jpg" srcset="../assets/img/pan-tortuga-400.jpg 400w, ../assets/img/pan-tortuga.jpg 800w" sizes="(max-width: 560px) 92vw, (max-width: 1000px) 45vw, 300px" alt="Pan de Figuras (docena) en Cefas Panadería" width="800" height="800" loading="lazy" decoding="async"></picture>
+              
+            </div>
+            <div class="producto__cuerpo">
+              <div class="producto__cabecera">
+                <h3 class="producto__nombre">Pan de Figuras (docena)</h3>
+                <span class="producto__unidad">docena</span>
+              </div>
+              <p class="producto__desc">Docena de pan dulce con forma de tortuga y cocodrilo, hecho a mano. El favorito de las actividades con niños.</p>
+              <div class="producto__pie"><button class="btn btn--principal btn--compacto" type="button" data-agregar><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-mas"/></svg> Agregar a mi cotización</button>
+              </div>
+            </div>
+          </article>
         </div>
       </section>
 
@@ -567,7 +602,7 @@
         <h2 class="categoria-bloque__titulo" id="titulo-eventos"><span class="chapa" aria-hidden="true"><svg class="ico ico--l" aria-hidden="true" focusable="false"><use href="#i-caja"/></svg></span> Encargos para Eventos y Empresas</h2>
         <p>Cajas de pan, bocadillos y canastas para oficinas, reuniones, coffee breaks y eventos en Ciudad de Guatemala.</p>
         <div class="rejilla rejilla--3">
-          <article class="producto" data-producto data-id="caja-desayuno" data-nombre="Caja de Desayuno" data-unidad="por caja" data-buscar="Caja de Desayuno Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido. Encargos para Eventos y Empresas">
+          <article class="producto" data-producto data-id="caja-desayuno" data-nombre="Caja de Desayuno" data-unidad="por caja" data-buscar="Caja de Desayuno Caja individual con pan dulce, croissant, jugo y café. Encargos para Eventos y Empresas">
             <div class="foto foto--4-3">
               <picture><source type="image/webp" srcset="../assets/img/caja-desayuno-400.webp 400w, ../assets/img/caja-desayuno.webp 800w" sizes="(max-width: 560px) 92vw, (max-width: 1000px) 45vw, 300px"><img src="../assets/img/caja-desayuno.jpg" srcset="../assets/img/caja-desayuno-400.jpg 400w, ../assets/img/caja-desayuno.jpg 800w" sizes="(max-width: 560px) 92vw, (max-width: 1000px) 45vw, 300px" alt="Caja de Desayuno en Cefas Panadería" width="800" height="800" loading="lazy" decoding="async"></picture>
               <div class="foto__etiquetas"><span class="etiqueta etiqueta--encargo"><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-calendario"/></svg> Por encargo</span></div>
@@ -577,7 +612,7 @@
                 <h3 class="producto__nombre">Caja de Desayuno</h3>
                 <span class="producto__unidad">por caja<br>mín. 10</span>
               </div>
-              <p class="producto__desc">Caja individual con pan dulce, croissant, jugo y café. Mínimo 10 cajas por pedido.</p>
+              <p class="producto__desc">Caja individual con pan dulce, croissant, jugo y café.</p>
               <div class="producto__pie"><button class="btn btn--principal btn--compacto" type="button" data-agregar><svg class="ico" aria-hidden="true" focusable="false"><use href="#i-mas"/></svg> Agregar a mi cotización</button>
               </div>
             </div>
@@ -652,7 +687,7 @@
     </p>
 
     <p class="nota-suelta">
-      Entregamos en 13 zonas de Ciudad de Guatemala y Mixco, desde 24 horas de
+      Entregamos en 14 zonas de Ciudad de Guatemala y Mixco, desde 24 horas de
       anticipación. Fuera de esas zonas, el pedido se recoge. La cotización final, con el envío, te
       llega por WhatsApp.
     </p>

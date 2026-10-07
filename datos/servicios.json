@@ -3,6 +3,7 @@
   "servicios": [
     {
       "id": "coffee-break",
+      "tipoFormulario": "Coffee break / desayunos",
       "nombre": "Coffee break",
       "titulo": "Coffee break para empresas en Guatemala | Cefas Panadería",
       "descripcion": "Coffee break para capacitaciones, juntas y eventos en Ciudad de Guatemala: pan dulce, bocadillos salados y café, montado a la hora. Cotizá por WhatsApp.",
@@ -35,6 +36,7 @@
     },
     {
       "id": "cajas-de-desayuno",
+      "tipoFormulario": "Coffee break / desayunos",
       "nombre": "Cajas de desayuno",
       "titulo": "Cajas de desayuno para empresas | Cefas Panadería Guatemala",
       "descripcion": "Cajas de desayuno individuales con pan dulce, croissant, jugo y café para oficinas y eventos en Ciudad de Guatemala. Desde 10 cajas, entregadas a la hora.",
@@ -66,6 +68,7 @@
     },
     {
       "id": "bandejas-de-bocadillos",
+      "tipoFormulario": "Bocadillos para evento",
       "nombre": "Bandejas de bocadillos",
       "titulo": "Bandejas de bocadillos para eventos | Cefas Panadería",
       "descripcion": "Bandejas de 50 bocadillos salados —mini sándwiches, enrollados y empanaditas— y docenas de pan dulce para eventos en Ciudad de Guatemala. Cotizá por WhatsApp.",
@@ -97,6 +100,7 @@
     },
     {
       "id": "pan-al-mayoreo",
+      "tipoFormulario": "Pan al mayoreo",
       "calculadora": false,
       "nombre": "Pan al mayoreo",
       "titulo": "Pan al mayoreo para negocios | Cefas Panadería Guatemala",
