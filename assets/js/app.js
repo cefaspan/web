@@ -741,6 +741,104 @@
     });
   }
 
+  /* --- Búsqueda desde la cabecera -----------------------------------------
+     Filtra los productos publicados (vienen en un JSON de la página) y deja
+     agregarlos a la cotización sin ir al menú. Todo se pinta con
+     textContent: los datos nunca entran como HTML.                        */
+  (function buscadorCabecera() {
+    var boton = $('[data-busqueda-abrir]');
+    var caja = $('[data-busqueda]');
+    var datosEl = $('[data-productos-datos]');
+    if (!boton || !caja || !datosEl) return;
+
+    var productos;
+    try { productos = JSON.parse(datosEl.textContent); } catch (e) { return; }
+    productos.forEach(function (p) {
+      p.clave = normalizar(p.nombre + ' ' + p.unidad + ' ' + p.categoria + ' ' + p.desc);
+      // URL absoluta: el panel de la cotización la usa desde cualquier página
+      try { p.img = new URL(p.img, window.location.href).href; } catch (e) { /* se queda relativa */ }
+    });
+
+    var texto = $('[data-busqueda-texto]', caja);
+    var lista = $('[data-busqueda-lista]', caja);
+    var vacio = $('[data-busqueda-vacio]', caja);
+    var estado = $('[data-busqueda-estado]', caja);
+
+    function cantidadEnPedido(id) {
+      for (var i = 0; i < pedido.length; i++) if (pedido[i].id === id) return pedido[i].cantidad;
+      return 0;
+    }
+
+    function pintar() {
+      var terminos = normalizar(texto.value.trim()).split(/\s+/).filter(Boolean);
+      var hallados = productos.filter(function (p) {
+        return terminos.every(function (t) { return p.clave.indexOf(t) !== -1; });
+      });
+      lista.textContent = '';
+      hallados.forEach(function (p) {
+        var fila = document.createElement('li');
+        var img = document.createElement('img');
+        img.src = p.img; img.alt = ''; img.width = 52; img.height = 52; img.loading = 'lazy';
+        var info = document.createElement('span');
+        info.className = 'busqueda__info';
+        var nombre = document.createElement('strong');
+        nombre.textContent = p.nombre;
+        var unidad = document.createElement('span');
+        var n = cantidadEnPedido(p.id);
+        unidad.textContent = n ? p.unidad + ' · ' + n + ' en tu cotización' : p.unidad;
+        info.appendChild(nombre); info.appendChild(unidad);
+        var agregarBtn = document.createElement('button');
+        agregarBtn.type = 'button';
+        agregarBtn.className = 'btn btn--principal btn--compacto';
+        agregarBtn.innerHTML = iconoHTML('mas');
+        var etiqueta = document.createElement('span');
+        etiqueta.className = 'busqueda__agregar';
+        etiqueta.textContent = ' Agregar';
+        agregarBtn.appendChild(etiqueta);
+        agregarBtn.setAttribute('aria-label', 'Agregar ' + p.nombre + ' a mi cotización');
+        agregarBtn.addEventListener('click', function () {
+          agregar({ id: p.id, nombre: p.nombre, unidad: p.unidad, img: p.img }, 1);
+          pintar();
+          estado.textContent = p.nombre + ' agregado a tu cotización';
+          var mismo = $('[data-id="' + p.id + '"]', lista);
+          if (mismo) mismo.focus();
+        });
+        agregarBtn.dataset.id = p.id;
+        fila.appendChild(img); fila.appendChild(info); fila.appendChild(agregarBtn);
+        lista.appendChild(fila);
+      });
+      vacio.hidden = hallados.length > 0;
+      if (terminos.length) estado.textContent = hallados.length + (hallados.length === 1 ? ' producto' : ' productos');
+    }
+
+    function abrir() {
+      caja.hidden = false;
+      boton.setAttribute('aria-expanded', 'true');
+      pintar();
+      texto.focus();
+    }
+    function cerrar(devolverFoco) {
+      if (caja.hidden) return;
+      caja.hidden = true;
+      boton.setAttribute('aria-expanded', 'false');
+      if (devolverFoco) boton.focus();
+    }
+
+    boton.addEventListener('click', function () { if (caja.hidden) abrir(); else cerrar(false); });
+    texto.addEventListener('input', pintar);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !caja.hidden) cerrar(true);
+    });
+    document.addEventListener('click', function (e) {
+      // Un botón de la lista que se acaba de repintar ya no está en la página:
+      // ese clic fue adentro, no afuera.
+      if (!e.target.isConnected) return;
+      if (!caja.hidden && !caja.contains(e.target) && !boton.contains(e.target)) cerrar(false);
+    });
+    // Abrir la cotización desde la búsqueda la cierra: no deben taparse
+    $$('[data-carrito-abrir]').forEach(function (b) { b.addEventListener('click', function () { cerrar(false); }); });
+  })();
+
   /* --- Calculadora ¿cuánto pan necesito? -----------------------------------
      Las reglas (piezas por persona y piezas por unidad de venta) vienen en
      un <script type="application/json"> generado desde datos/servicios.json.

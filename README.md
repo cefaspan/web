@@ -117,6 +117,9 @@ Piezas de conversión que conviene no quitar:
 
 - **Contador en cada tarjeta** (menú y servicios): al agregar, el botón se convierte en
   `− 2 +`. Lo crea `app.js` al vuelo (son 50 tarjetas: mandarlo en el HTML sumaba ~20 KB).
+- **Lupa en la cabecera** de todas las páginas: los productos publicados viajan en un JSON
+  chico (`data-productos-datos`) y se filtran al escribir, con «Agregar» ahí mismo, sin ir al
+  menú. Se cierra con Esc o tocando afuera.
 - **Contador en el botón «Mi cotización»** de la cabecera (escritorio).
 - **Barra inferior en móvil**, siempre visible, tipo app: Inicio, Menú, Mi cotización (con
   contador; abre el panel) y WhatsApp. En el teléfono reemplaza al flotante de WhatsApp y al

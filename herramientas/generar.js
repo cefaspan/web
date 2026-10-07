@@ -683,6 +683,9 @@ function cabecera(pagina) {
     </nav>
 
     <div class="cabecera__acciones">
+      <button class="busqueda-btn" type="button" data-busqueda-abrir aria-label="Buscar productos" aria-expanded="false" aria-controls="busqueda">
+        ${ico('lupa')}
+      </button>
       <button class="btn btn--oscuro carrito-btn" type="button" data-carrito-abrir aria-label="Mi cotización">
         ${ico('canasta')}<span class="btn--texto-largo">Mi cotización</span>
         <span class="carrito-btn__contador" data-carrito-contador hidden>0</span>
@@ -693,7 +696,41 @@ function cabecera(pagina) {
     </div>
   </div>
   <div class="cabecera__progreso" data-progreso aria-hidden="true"></div>
+  ${cajaBusqueda(pagina)}
 </header>`;
+}
+
+/* Búsqueda desde la cabecera, en todas las páginas: los resultados salen ahí
+   mismo con «Agregar», sin ir al menú. Los productos viajan en un JSON chico
+   (sólo los publicados) y app.js filtra en el navegador. */
+function cajaBusqueda(pagina) {
+  const base = baseDe(pagina);
+  const miniatura = (p) => {
+    const archivo = archivoDe(p);
+    const chica = archivo.replace(/(\.[a-z]+)$/i, '-400$1');
+    return `${base}assets/img/${existeImg(chica) ? chica : archivo}`;
+  };
+  const productos = todosLosProductos.map((p) => ({
+    id: p.id, nombre: p.nombre, unidad: p.unidad, categoria: p.categoria,
+    desc: p.descripcion || '', img: miniatura(p)
+  }));
+  return `
+  <div class="busqueda" id="busqueda" data-busqueda hidden>
+    <div class="contenedor">
+      <div class="busqueda__caja" role="search">
+        <label class="solo-lectores" for="busqueda-texto">Buscar productos</label>
+        <span class="busqueda__ico" aria-hidden="true">${ico('lupa')}</span>
+        <input type="search" id="busqueda-texto" data-busqueda-texto placeholder="Buscar pan, bandeja o coffee break…" autocomplete="off" enterkeyhint="search">
+        <ul class="busqueda__lista" data-busqueda-lista></ul>
+        <p class="busqueda__vacio" data-busqueda-vacio hidden>
+          No encontramos ese producto. <a href="https://wa.me/${esc(N.whatsapp)}" rel="noopener">Preguntanos por WhatsApp</a>.
+        </p>
+        <p class="solo-lectores" data-busqueda-estado aria-live="polite"></p>
+        <a class="busqueda__menu" href="${base}menu/">Ver el menú completo ${ico('flecha')}</a>
+      </div>
+    </div>
+    <script type="application/json" data-productos-datos>${jsonld(productos)}</script>
+  </div>`;
 }
 
 function pie(pagina) {
