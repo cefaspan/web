@@ -309,12 +309,17 @@ function fichasCategorias() {
 
 /* Inicio: los destacados publicados, con «Agregar a mi cotización» a la vista */
 /* Inicio: reseñas reales de clientes (datos/negocio.json). Sin estrellas ni
-   puntuaciones inventadas: sólo lo que dijeron, con su nombre de pila. */
+   puntuaciones inventadas: sólo lo que dijeron, con su nombre de pila. La
+   primera va destacada (más grande y a color). */
 function resenas() {
-  return (N.resenas || []).map((r) => `
-      <figure class="resena" data-reveal>
-        <blockquote>«${esc(r.texto)}»</blockquote>
-        <figcaption><strong>${esc(r.nombre)}</strong>${r.pidio ? `<span>Pidió: ${esc(r.pidio)}</span>` : ''}</figcaption>
+  return (N.resenas || []).map((r, i) => `
+      <figure class="resena${i === 0 ? ' resena--destacada' : ''}" data-reveal>
+        <span class="resena__comillas" aria-hidden="true">“</span>
+        <blockquote><p>${esc(r.texto)}</p></blockquote>
+        <figcaption>
+          <span class="resena__avatar" aria-hidden="true">${esc(r.nombre.charAt(0))}</span>
+          <span class="resena__quien"><strong>${esc(r.nombre)}</strong>${r.pidio ? `<span>Pidió: ${esc(r.pidio)}</span>` : '<span>Cliente de Cefas</span>'}</span>
+        </figcaption>
       </figure>`).join('');
 }
 
