@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es-GT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Videos para descargar | Cefas Panadería</title>
+<meta name="description" content="Videos de Cefas Panadería listos para descargar y publicar en redes sociales.">
+<!-- Página interna para bajar los videos: no tiene que salir en Google. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F2EEE8">
+<link rel="icon" type="image/png" sizes="192x192" href="../img/logo-cefas-192.png">
+<link rel="stylesheet" href="../css/estilos.css">
+<style>
+  /* La hoja del sitio pone tipografías, colores y reset; aquí sólo lo propio
+     de esta página. Para sumar un video: copiá un <li> de la lista y cambiá
+     el nombre del archivo, la portada y el título. */
+  body { background: var(--crema); color: var(--tinta); font-family: var(--f-texto); }
+  .videos { max-width: var(--ancho); margin: 0 auto; padding: 40px 16px 64px; }
+  .videos h1 { font-family: var(--f-titulo); color: var(--carbon); font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.1; margin: 0 0 8px; }
+  .videos > p { color: var(--tinta-suave); margin: 0 0 32px; max-width: 60ch; }
+  .lista { list-style: none; padding: 0; margin: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .video { background: var(--masa); border-radius: var(--radio); box-shadow: var(--sombra-alta); overflow: hidden; display: flex; flex-direction: column; }
+  .video video { display: block; width: 100%; aspect-ratio: 9 / 16; background: var(--carbon); object-fit: cover; }
+  .video div { padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .video h2 { font-family: var(--f-titulo); color: var(--carbon); font-size: 1.1rem; line-height: 1.25; margin: 0; }
+  .video small { color: var(--tinta-suave); font-size: .85rem; }
+  .descargar { margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border-radius: 999px; background: var(--corteza); color: #fff; font-weight: 600; text-decoration: none; transition: background .2s, transform .15s var(--salida); }
+  .descargar:hover { background: var(--corteza-oscura); }
+  .descargar:active { transform: scale(.97); }
+  .descargar:focus-visible { outline: 3px solid var(--carbon); outline-offset: 3px; }
+  .descargar svg { width: 20px; height: 20px; }
+</style>
+</head>
+<body>
+<main class="videos">
+  <h1>Videos de Cefas</h1>
+  <p>Tocá <strong>Descargar</strong> en el video que querés y se guarda en tu teléfono o computadora, listo para subir a redes. Todos son verticales (9:16), duran unos 20 segundos.</p>
+
+  <ul class="lista">
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/adivinas-el-pan.jpg" src="adivinas-el-pan.mp4"></video>
+      <div><h2>¿Adivinás el pan?</h2><small>26 s · 19 MB</small>
+        <a class="descargar" href="adivinas-el-pan.mp4" download="Cefas - Adivinas el pan.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/canasta-de-regalo.jpg" src="canasta-de-regalo.mp4"></video>
+      <div><h2>Canasta de regalo</h2><small>23 s · 16 MB</small>
+        <a class="descargar" href="canasta-de-regalo.mp4" download="Cefas - Canasta de regalo.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/bandeja-de-bocadillos-para-fiesta.jpg" src="bandeja-de-bocadillos-para-fiesta.mp4"></video>
+      <div><h2>La fiesta es mañana: bandeja de bocadillos</h2><small>24 s · 18 MB</small>
+        <a class="descargar" href="bandeja-de-bocadillos-para-fiesta.mp4" download="Cefas - Bandeja de bocadillos para fiesta.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/concha-vs-champurrada.jpg" src="concha-vs-champurrada.mp4"></video>
+      <div><h2>Concha vs. champurrada</h2><small>21 s · 15 MB</small>
+        <a class="descargar" href="concha-vs-champurrada.mp4" download="Cefas - Concha vs champurrada.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/pan-para-tu-negocio.jpg" src="pan-para-tu-negocio.mp4"></video>
+      <div><h2>¿Tenés un negocio? Pan al mayoreo</h2><small>24 s · 8 MB</small>
+        <a class="descargar" href="pan-para-tu-negocio.mp4" download="Cefas - Pan para tu negocio.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/caja-de-desayuno.jpg" src="caja-de-desayuno.mp4"></video>
+      <div><h2>Caja de desayuno</h2><small>23 s · 11 MB</small>
+        <a class="descargar" href="caja-de-desayuno.mp4" download="Cefas - Caja de desayuno.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/pan-de-figuras.jpg" src="pan-de-figuras.mp4"></video>
+      <div><h2>Pan de figuras: tortugas y cocodrilos</h2><small>22 s · 9 MB</small>
+        <a class="descargar" href="pan-de-figuras.mp4" download="Cefas - Pan de figuras.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/cuanto-pan-para-30-personas.jpg" src="cuanto-pan-para-30-personas.mp4"></video>
+      <div><h2>¿Cuánto pan para 30 personas?</h2><small>23 s · 6 MB</small>
+        <a class="descargar" href="cuanto-pan-para-30-personas.mp4" download="Cefas - Cuanto pan para 30 personas.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/pan-para-tu-reunion.jpg" src="pan-para-tu-reunion.mp4"></video>
+      <div><h2>Pan recién horneado para tu reunión</h2><small>24 s · 10 MB</small>
+        <a class="descargar" href="pan-para-tu-reunion.mp4" download="Cefas - Pan para tu reunion.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+    <li class="video">
+      <video controls preload="none" playsinline poster="portadas/pov-coffee-break.jpg" src="pov-coffee-break.mp4"></video>
+      <div><h2>POV: te tocó el coffee break</h2><small>25 s · 8 MB</small>
+        <a class="descargar" href="pov-coffee-break.mp4" download="Cefas - POV coffee break.mp4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Descargar</a></div>
+    </li>
+  </ul>
+</main>
+</body>
+</html>
